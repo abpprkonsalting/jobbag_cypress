@@ -1,14 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
+          MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
+          MatListModule, MatMenuModule, MatDialogModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { FormsModule } from '@angular/forms';
+import { HttpService } from './services/http.service';
+import {WebStorageService} from './services/webstorage.service';
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { CookieService } from 'ngx-cookie-service';
+import { HttpTokenInterceptor } from './services/http.token.interceptor';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -19,9 +37,19 @@ import { MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule, MatFor
     MatToolbarModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatGridListModule,
+    MatListModule,
+    FormsModule,
+    MatMenuModule,
+    HttpClientModule,
+    StorageServiceModule,
+    MatDialogModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ HttpClientModule, HttpService, StorageServiceModule, WebStorageService, JwtHelperService, CookieService,{provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }],
+  bootstrap: [AppComponent],
+  entryComponents: [LoginDialogComponent]
 })
 export class AppModule { }

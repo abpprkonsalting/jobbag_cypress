@@ -1,0 +1,19 @@
+.header-container {
+  background:#3f51b5;
+  width:100%;
+  .toolbar {
+    max-width: 1200px;
+    &.is-mobile {
+      position: fixed;
+      z-index: 2;
+      top:0;
+    }
+    .menu-item-first-level {
+      &:not(.more) {
+        mat-icon {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

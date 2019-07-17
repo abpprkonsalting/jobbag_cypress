@@ -1,0 +1,30 @@
+.dialog-wrapper{
+  display:flex;
+  flex-direction:column;
+
+  p {
+    margin: 10px 0 0;
+  }
+  mat-form-field {
+    width:100%;
+  }
+  .social-button {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    &.f-social {
+      background: #3b5998;
+      color: white;
+      &:hover{
+        background: #b1c5f1;
+        color: #383636;
+      }
+    }
+    &.g-social {
+      border: 1px solid lightgray;
+    }
+    mat-icon {
+      margin-right: 10px;
+    }
+  }
+}
