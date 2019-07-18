@@ -7,7 +7,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
           MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
-          MatListModule, MatMenuModule, MatDialogModule } from '@angular/material';
+          MatListModule, MatMenuModule, MatDialogModule, MatStepperModule } from '@angular/material';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -19,6 +20,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpTokenInterceptor } from './services/http.token.interceptor';
+import { ProjectAddWizardComponent } from './components/project-add-wizard/project-add-wizard.component';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { HttpTokenInterceptor } from './services/http.token.interceptor';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    ProjectAddWizardComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,9 @@ import { HttpTokenInterceptor } from './services/http.token.interceptor';
     MatMenuModule,
     HttpClientModule,
     StorageServiceModule,
-    MatDialogModule
+    MatDialogModule,
+    MatStepperModule,
+    DragDropModule
   ],
   providers: [ HttpClientModule, HttpService, StorageServiceModule, WebStorageService, JwtHelperService, CookieService,{provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }],
   bootstrap: [AppComponent],
