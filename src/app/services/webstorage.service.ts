@@ -84,7 +84,7 @@ export class WebStorageService {
 
   private processUserForView(user: User): User{
 
-    if (user.name == null || user.name != undefined) {
+    if (user.name == null || user.name == undefined) {
       user.name = "Invitado"; // Esto hay que internacionalizarlo.
       user.surname = "";
     }
