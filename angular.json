@@ -35,6 +35,8 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/web/",
+              "outputPath": "../BackEnd/public/web",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -59,6 +61,7 @@
               ]
             },
             "development": {
+              "outputPath": "../BackEnd/public/web",
               "optimization": false,
               "sourceMap": true,
               "extractLicenses": false,
