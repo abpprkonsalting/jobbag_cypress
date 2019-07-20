@@ -61,6 +61,7 @@
               ]
             },
             "development": {
+              "baseHref": "/web/",
               "outputPath": "../BackEnd/public/web",
               "optimization": false,
               "sourceMap": true,
