@@ -5,9 +5,10 @@
     RewriteBase /
     RewriteCond %{HTTP_COOKIE} .*PHPSESSID=.*$ [NC]
     RewriteCond %{HTTP_COOKIE} !.*loged_in_token=.*$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico)$
     RewriteRule ^.*$ /api/checklogin [R=301,L]
 
     RewriteCond %{REQUEST_URI} !^/web/index.html$
-    RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js)$
+    RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico)$
     RewriteRule .* /web/index.html [L,R=302]
 </IfModule>
