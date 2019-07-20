@@ -6,6 +6,7 @@ import { User } from '../infrastructure/model/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import {WebStorageService} from './webstorage.service';
 import { Language } from '../infrastructure/dtos/language.dto';
+import { constants } from '../app-constants.module';
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class HttpService {
 
   login(username: string, password: string) {
 
-    return this.http.post<string>( 'https://jobbag.com/login',
+    return this.http.post<string>( constants.baseUrl + 'login',
                                     new HttpParams({
                                       fromObject: {
                                         grant_type: 'password',
@@ -35,12 +36,12 @@ export class HttpService {
 
   loginFacebook() {
     this.webStorageService.clearSessionToken();
-    window.location.href="https://jobbag.com/connect/facebook";
+    window.location.href= constants.baseUrl + "connect/facebook";
   }
 
   public getLanguages(): Observable<Array<Language>> {
 
-    return this.http.get('/api/languages/',{}).pipe(
+    return this.http.get(constants.apiUrl + 'languages/',{}).pipe(
       map((e:any)=> <Array<Language>>e),
       catchError((e:any)=> throwError(e))
       );
