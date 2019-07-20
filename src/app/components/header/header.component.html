@@ -3,13 +3,13 @@
 
   <div style="width:100%" color="primary" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutAlign.xs="start center">
 
-    <button mat-icon-button (click)="buttonPress()" fxShow.xs fxHide>
+    <button mat-icon-button (click)="buttonPress()" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>
       <mat-icon>more_vert</mat-icon>
     </button>
 
     <div style="margin-left: 20px;"> Hola {{user.name != "" ? user.name + " " + user.surname : (user.email != "" ? user.email : "Invitado") }}!</div>
 
-    <div fxHide fxShow.sm fxShow.md fxShow.lg fxShow.xl>
+    <div fxHide.xs fxShow.sm >
 
       <button mat-button class="menu-item-first-level">
         <mat-icon>search</mat-icon><span>Search Job</span>
