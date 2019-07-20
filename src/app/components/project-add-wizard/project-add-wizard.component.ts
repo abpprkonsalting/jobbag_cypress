@@ -1,96 +1,27 @@
-import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked, Input } from '@angular/core';
-import { CdkDragMove } from '@angular/cdk/drag-drop';
-import { MatStepper } from '@angular/material';
+import { Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+import { RoutingStep } from '../../infrastructure/model/routing-steps.model';
 
 @Component({
   selector: 'app-project-add-wizard',
   templateUrl: './project-add-wizard.component.html',
   styleUrls: ['./project-add-wizard.component.less']
 })
-export class ProjectAddWizardComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked {
-  isLinear = false;
-  @ViewChild('stepperV',{read:false,static:false}) stepperV: MatStepper;
-  @ViewChild('stepperH',{read:false,static:false}) stepperH: MatStepper;
+export class ProjectAddWizardComponent implements OnInit{
 
-  private _dragging: boolean = false;
-  _step: number = 0;
-  _lastStep: number | undefined = undefined;
+  public _steps : RoutingStep[] = [{template: '/project-add-wizard/step1', title: 'step1'},{template: '/project-add-wizard/step2', title: 'step2'},{template: '/project-add-wizard/step3', title: 'step3'}];
+  public selectedStep: number = 0;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
 
+    let step = this._steps[0];
+    this.router.navigateByUrl(step.template);
   }
 
-  ngAfterContentInit() {
-
-  }
-  ngAfterContentChecked() {
-
-  }
-
-  ngAfterViewInit() {
-    if (this._lastStep == undefined) this._lastStep = this.stepperH.steps.length - 1;
-  }
-  ngAfterViewChecked() {
-
-  }
-
-  dragMoved($event: CdkDragMove) {
-    let selectorStepper : MatStepper;
-    let distance : number = 0;
-    if ($event.source.boundaryElementSelector == 'stepperV') {
-      selectorStepper =  this.stepperV;
-      distance = $event.distance.y;
-    }
-    else {
-      selectorStepper =  this.stepperH;
-      distance = $event.distance.x;
-    }
-
-    if (this._dragging) {
-      if (distance < -20) {
-        if (selectorStepper.selectedIndex < (selectorStepper.steps.length - 1)) {
-          selectorStepper.selectedIndex++;
-          this._step = selectorStepper.selectedIndex;
-          console.log(selectorStepper.selectedIndex);
-          this._dragging = false;
-          console.log('drag stopped');
-        }
-      }
-      else if (distance > 20){
-        if (selectorStepper.selectedIndex > 0) {
-          selectorStepper.selectedIndex--;
-          this._step = selectorStepper.selectedIndex;
-          console.log(selectorStepper.selectedIndex);
-          this._dragging = false;
-          console.log('drag stopped');
-        }
-      }
-    }
-  }
-
-  previousStep(){
-    this._step--;
-  }
-
-  nextStep(){
-    this._step++;
-
-  }
-
-  reset() {
-    this.stepperH.reset();
-    this.stepperV.reset();
-    this._step = 0;
-  }
-
-  dragStarted($event) {
-    console.log('drag started');
-    this._dragging = true;
-  }
-  dragEnded($event) {
-    $event.source.reset();
-    this._dragging = false;
+  selectionChanged(event: any) {
+    this.selectedStep = event.selectedIndex;
+    this.router.navigateByUrl(this._steps[this.selectedStep].template);
   }
 }

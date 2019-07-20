@@ -2,91 +2,16 @@
 
   <mat-card-title class='component-header'> Configure su proyecto </mat-card-title>
 
-  <mat-horizontal-stepper [linear]="isLinear" #stepperH fxHide fxShow.md fxShow.lg fxShow.xl labelPosition="bottom">
-    <mat-step>
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' cdkDragBoundary="stepperH" cdkDrag cdkDragLockAxis="x" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_left</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_right</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step>
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' cdkDragBoundary="stepperH" cdkDrag cdkDragLockAxis="x" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_left</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_right</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step>
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' cdkDragBoundary="stepperH" cdkDrag cdkDragLockAxis="x" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_left</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_right</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
-    </mat-step>
-  </mat-horizontal-stepper>
+  <custom-stepper-component fxLayout="column" fxLayout.xs="row" style="width: 100%" (selectionChange)="selectionChanged($event)">
 
-  <mat-vertical-stepper [linear]="isLinear" #stepperV id="stepperV" fxHide fxShow.xs fxShow.sm
-    class="component-wrapper-vertical drag-boundary">
-    <mat-step>
+      <mat-step *ngFor="let step of _steps; let i = index" [label]="step.title">
 
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' ngStyle.xs="width:100%" ngStyle.sm="width:100%" cdkDragBoundary="stepperV"
-          cdkDrag cdkDragLockAxis="y" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="row wrap" fxLayout.xs="column wrap" fxLayout.sm="column wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_up</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_down</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
+		    <router-outlet *ngIf="i === selectedStep"></router-outlet>
 
-    </mat-step>
-    <mat-step>
+      </mat-step>
 
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' ngStyle.xs="width:100%" ngStyle.sm="width:100%" cdkDragBoundary="stepperV"
-          cdkDrag cdkDragLockAxis="y" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="column wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_up</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_down</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step>
+  </custom-stepper-component>
 
-      <div class="step-content-wrapper">
-        <mat-card class='step-content' ngStyle.xs="width:100%" ngStyle.sm="width:100%" cdkDragBoundary="stepperV"
-          cdkDrag cdkDragLockAxis="y" (cdkDragMoved)="dragMoved($event)" (cdkDragEnded)="dragEnded($event)"
-          (cdkDragStarted)="dragStarted($event)">
-        </mat-card>
-        <div class="step-controls" fxLayout="column wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
-          <button mat-button matStepperPrevious (click)="previousStep()" disabled="{{_step == 0}}"><i class="material-icons">keyboard_arrow_up</i></button>
-          <button mat-button matStepperNext (click)="nextStep()" fxHide="{{_step == _lastStep}}"><i class="material-icons">keyboard_arrow_down</i></button>
-          <button mat-button (click)="reset()" fxHide="{{_step < _lastStep}}"><i class="material-icons">refresh</i></button>
-        </div>
-      </div>
 
-    </mat-step>
-  </mat-vertical-stepper>
 
 </mat-card>
