@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { User } from '../infrastructure/model/user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable} from 'rxjs';
-import {of} from 'rxjs';
+import { Observable,of} from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable()
@@ -13,7 +13,7 @@ export class WebStorageService {
   user: User = undefined;
   private _sessionToken: string = undefined;
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) {
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, private cookieservice: CookieService) {
   }
 
   public getUser(): Observable<User> {
@@ -67,13 +67,14 @@ export class WebStorageService {
         let splited = elem.split("=");
         splited[0] = splited[0].trim();
         if(splited[0].indexOf('loged_in_token') == 0) {
-          document.cookie=splited[0] + "=;expires=-1;secure;samesite;path=/";
+          document.cookie=splited[0] + "=;expires="+new Date('Thu, 01 Jan 1970 00:00:01 GMT')+ ";secure;samesite;path=/";
+          this.cookieservice.delete('loged_in_token',"/","jobbag.ca");
           splited[1].trim();
           return splited;
         }
         return null;
       }).filter(elem => elem != null && elem[0] == "loged_in_token");
-      if (filteredCookie.length > 0 && filteredCookie[0][1] != '__') {
+      if (filteredCookie.length > 0 && filteredCookie[0][1] != '__' && filteredCookie[0][1] != '') {
         const helper = new JwtHelperService();
         this.user = this.processUserForView(<User> helper.decodeToken(filteredCookie[0][1]));
         return this.user;
