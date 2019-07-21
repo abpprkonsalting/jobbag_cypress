@@ -5,13 +5,13 @@
   <mat-sidenav [(opened)]="opened">
     <mat-nav-list>
       <div mat-list-item routerLink="project-add-wizard">
-        <button mat-button class="menu-item-first-level" (click)="test1()">
+        <button mat-button class="menu-item-first-level" (click)="closeSidenav()">
           <mat-icon>assignment_turned_in</mat-icon>
           <span>Contratar</span>
         </button>
       </div>
       <div mat-list-item routerLink=".">
-        <button mat-button class="menu-item-first-level" (click)="test1()">
+        <button mat-button class="menu-item-first-level" (click)="closeSidenav()">
           <mat-icon>search</mat-icon>
           <span>Buscar Trabajos</span>
         </button>

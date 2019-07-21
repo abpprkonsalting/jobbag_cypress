@@ -82,10 +82,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     });
   }
-  test1() {
+  closeSidenav() {
     this.opened = !this.opened;
-    this.user.username = 'yo';
-    this.user.name = 'yo';
   }
   test() {
     this.httpService.getLanguages().subscribe(languages => console.log(languages));
