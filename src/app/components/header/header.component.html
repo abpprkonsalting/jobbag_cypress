@@ -7,52 +7,47 @@
       <mat-icon>more_vert</mat-icon>
     </button>
 
-    <div style="margin-left: 20px;"> Hola {{user.name != "" ? user.name + " " + user.surname : (user.email != "" ? user.email : "Invitado") }}!</div>
+    <div *ngIf="user.username != ''" style="margin: 0 auto 0 20px;"> {{user.name + " " + user.surname}}</div>
 
-    <div fxHide.xs fxShow.sm >
+    <div fxHide.xs fxShow.sm>
 
-      <button mat-button class="menu-item-first-level">
-        <mat-icon>search</mat-icon><span>Search Job</span>
+      <button mat-button class="menu-item-first-level" (click)="test()">
+        <mat-icon>assignment_turned_in</mat-icon>
+        <span>Contratar</span>
       </button>
 
-      <button mat-button class="menu-item-first-level" routerLink="/project-add-wizard">
-        <mat-icon>folder_open</mat-icon><span>Post Job</span>
+      <button mat-button class="menu-item-first-level" (click)="test()">
+        <mat-icon>search</mat-icon>
+        <span>Buscar Trabajos</span>
       </button>
 
-      <button mat-button [matMenuTriggerFor]="mainmenu" class="menu-item-first-level more">
+    </div>
+
+    <div ngStyle.xs="margin-left:auto;">
+
+      <button mat-button class="menu-item-first-level" (click)="login()">
+        <mat-icon class="icon-login" [ngClass]="{'not-logged' : user.username == ''}">exit_to_app</mat-icon>
+        <span>{{user.username == "" ? "Entrar" : "Salir"}}</span>
+      </button>
+
+      <button fxHide.xs *ngIf="user.username != ''" mat-button [matMenuTriggerFor]="mainmenu" class="menu-item-first-level more">
         <mat-icon>more_horiz</mat-icon>
       </button>
 
       <mat-menu #mainmenu="matMenu">
-        <button mat-menu-item [matMenuTriggerFor]="user_account">
-          <mat-icon>person</mat-icon>Account
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>Mi Perfil
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="other">
-          <mat-icon>more_horiz</mat-icon>Other
+        <button mat-menu-item>
+          <mat-icon>assignment_ind</mat-icon>Mis Contratos
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="other_more">
-          <mat-icon>more_horiz</mat-icon>Other more
+        <button mat-menu-item>
+          <mat-icon>build</mat-icon>Mis Trabajos
+        </button>
+        <button mat-menu-item>
+          <mat-icon>group</mat-icon>Mis Amigos
         </button>
       </mat-menu>
-
-      <mat-menu #user_account="matMenu" xPosition="before">
-        <button mat-menu-item (click)="login()">Login</button>
-        <button mat-menu-item>Logout</button>
-        <button mat-menu-item>Etc</button>
-      </mat-menu>
-
-      <mat-menu #other="matMenu">
-        <button mat-menu-item>Next</button>
-        <button mat-menu-item>Next</button>
-        <button mat-menu-item>Next</button>
-      </mat-menu>
-
-      <mat-menu #other_more="matMenu">
-        <button mat-menu-item>Next</button>
-        <button mat-menu-item>Next</button>
-        <button mat-menu-item>Next</button>
-      </mat-menu>
-
     </div>
 
   </div>

@@ -4,27 +4,53 @@
 <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
   <mat-sidenav [(opened)]="opened">
     <mat-nav-list>
+      <div mat-list-item routerLink="project-add-wizard">
+        <button mat-button class="menu-item-first-level" (click)="test1()">
+          <mat-icon>assignment_turned_in</mat-icon>
+          <span>Contratar</span>
+        </button>
+      </div>
+      <div mat-list-item routerLink=".">
+        <button mat-button class="menu-item-first-level" (click)="test1()">
+          <mat-icon>search</mat-icon>
+          <span>Buscar Trabajos</span>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+
+      <div *ngIf="user.username != ''" class="side-nav-user-area">
       <div mat-list-item routerLink=".">
         <button mat-button>
-          <mat-icon>more_horiz</mat-icon><span>Login</span>
+          <mat-icon>person</mat-icon>Mi Perfil
         </button>
       </div>
       <div mat-list-item routerLink=".">
         <button mat-button>
-          <mat-icon>folder_open</mat-icon><span>Post Job</span>
-        </button></div>
-      <div mat-list-item routerLink=".">
-        <button mat-button (click)="test()">
-          <mat-icon>search</mat-icon><span>Search Job</span>
+          <mat-icon>assignment_ind</mat-icon>Mis Contratos
         </button>
       </div>
+      <div mat-list-item routerLink=".">
+        <button mat-button>
+          <mat-icon>build</mat-icon>Mis Trabajos
+        </button>
+      </div>
+      <div mat-list-item routerLink=".">
+        <button mat-button>
+          <mat-icon>group</mat-icon>Mis Amigos
+        </button>
+      </div>
+    </div>
 
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
 
-    <div class="content-container" ngClass.xs="mobile-content" ngClass.sm="mobile-content"><router-outlet></router-outlet></div>
+    <div class="content-container" ngClass.xs="mobile-content">
+      <router-outlet></router-outlet>
+    </div>
+
+
     <!-- footer -->
 
     <app-footer style="min-height: 300px;"><span>Footer</span></app-footer>
