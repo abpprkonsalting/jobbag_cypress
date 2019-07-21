@@ -4,7 +4,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 export interface DialogData {
   email: string;
   password: string;
-  facebook: boolean;
+  loginMethod: string;
 }
 
 @Component({
@@ -16,18 +16,17 @@ export class LoginDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<LoginDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
-  location: string = 'https://jobbag.com/connect/facebook';
-
   ngOnInit() {
   }
 
   facebookClick() {
-    this.data.facebook = true;
+    this.data.loginMethod = 'facebook';
     this.dialogRef.close(this.data);
-    //window.location.href="https://jobbag.com/connect/facebook";
   }
 
   onCancel(): void {
+    this.data.loginMethod = '';
+    this.dialogRef.close(this.data);
   }
 
 }

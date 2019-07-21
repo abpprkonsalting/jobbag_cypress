@@ -61,23 +61,31 @@ export class AppComponent implements OnInit, OnDestroy {
   onToggleLogin($event): void {
     const dialogRef = this.loginDialog.open(LoginDialogComponent, {
       width: '350px',
-      data: {email: "", password: "", facebook: false}
+      data: {email: "", password: "", loginMethod: 'normal'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result.facebook) {
-        this.httpService.loginFacebook();
-      }
-      else {
-        this.httpService.login(result.email, result.password).subscribe(
-          token => {this.user = this.webstorageService.setUserFromToken(token);},
-          error => {this.user = new User()});
+      switch (result.loginMethod) {
+        case 'facebook':
+          this.httpService.loginFacebook();
+          break;
+        case 'normal':
+          this.httpService.login(result.email, result.password).subscribe(
+            token => { this.user = this.webstorageService.setUserFromToken(token); },
+            error => { this.user = new User() });
+          break;
+        default:
+          break;
       }
 
     });
   }
-
+  test1() {
+    this.opened = !this.opened;
+    this.user.username = 'yo';
+    this.user.name = 'yo';
+  }
   test() {
     this.httpService.getLanguages().subscribe(languages => console.log(languages));
   }
