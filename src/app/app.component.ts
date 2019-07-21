@@ -5,7 +5,8 @@ import {WebStorageService} from './services/webstorage.service';
 import { User } from './infrastructure/model/user.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
-import { CookieService } from 'ngx-cookie-service';
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
   opened: boolean;
   httpService: HttpService;
   webstorageService: WebStorageService;
-  private _cookieService: CookieService;
 
   title: string;
   user: User | undefined;
@@ -28,14 +28,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   fillerNav = Array.from({length: 10}, (_, i) => `Nav Item ${i + 1}`);
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, httpService: HttpService, webstorageService: WebStorageService,loginDialog: MatDialog, cookieService: CookieService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, httpService: HttpService, webstorageService: WebStorageService,loginDialog: MatDialog
+              ,private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.httpService = httpService;
     this.webstorageService = webstorageService;
     this.loginDialog = loginDialog;
-    this._cookieService = cookieService;
+
+    this.matIconRegistry.addSvgIcon('facebook',this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/facebook.svg'));
+    this.matIconRegistry.addSvgIcon('google-plus',this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/google-plus.svg'));
   }
 
   ngOnInit() {
