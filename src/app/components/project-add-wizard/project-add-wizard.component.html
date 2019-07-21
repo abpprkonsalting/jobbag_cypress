@@ -2,7 +2,7 @@
 
   <mat-card-title class='component-header'> Configure su proyecto </mat-card-title>
 
-  <custom-stepper-component fxLayout="column" fxLayout.xs="row" style="width: 100%" (selectionChange)="selectionChanged($event)">
+  <custom-stepper-component fxLayout="column" style="width: 100%" (selectionChange)="selectionChanged($event)">
 
       <mat-step *ngFor="let step of _steps; let i = index" [label]="step.title">
 
