@@ -27,8 +27,7 @@ export class LoginDialogComponent implements OnInit {
     //window.location.href="https://jobbag.com/connect/facebook";
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  onCancel(): void {
   }
 
 }

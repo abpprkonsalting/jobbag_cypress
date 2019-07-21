@@ -6,13 +6,14 @@
   </mat-form-field>
   <p>Contraseña</p>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.password">
+    <input matInput type="password" [(ngModel)]="data.password">
   </mat-form-field>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
+<div mat-dialog-actions fxLayoutAlign="space-around center">
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onCancel()">Cancelar</button>
 </div>
+<mat-divider class="social-divider"></mat-divider>
 <button mat-button (click)="facebookClick()" class="social-button f-social">
   <mat-icon svgIcon="facebook"></mat-icon>
   <span>Facebook</span>
