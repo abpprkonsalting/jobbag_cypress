@@ -4,5 +4,5 @@ export const constants = {
   baseUrl: environment.production ? 'https://jobbag.ca/' : 'https://jobbag.ca/',
   webUrl: environment.production ? 'web/' : 'web/',
   apiUrl: environment.production ? 'api/' : 'api/',
-  assetsUrl: environment.production ? 'assets/' : '../assets/',
+  assetsUrl: environment.production ? 'assets/' : 'assets/',
 };
