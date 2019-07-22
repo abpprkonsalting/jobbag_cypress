@@ -44,11 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.webstorageService.getUser().subscribe(
-      next => {
-        console.log(next);
-        this.user = next;
-      },
+    this.webstorageService.getUser().subscribe( next => this.user = next,
       error => {
         console.log(error.message);
         this.user = new User();
@@ -59,29 +55,45 @@ export class AppComponent implements OnInit, OnDestroy {
     this.opened = !this.opened;
   }
 
-  onToggleLogin($event): void {
-    const dialogRef = this.loginDialog.open(LoginDialogComponent, {
-      width: '350px',
-      data: {email: "", password: "", loginMethod: 'normal'}
-    });
+  onToggleLoginLogoutButton($event): void {
 
-    dialogRef.afterClosed().subscribe(result => {
+    // Esta condición de abajo implica que hay un usuario logeado, por lo tanto lo que se hace es logout
+    if (this.user.username !== "") {
+      this.webstorageService.logout().subscribe(next => this.user = next,
+      error => {
+        console.log(error.message);
+        this.user = new User();
+      });
+    }
+    else {
+      // Esto es el caso contrario, por lo tanto se hace login
+      const dialogRef = this.loginDialog.open(LoginDialogComponent, {
+        width: '350px',
+        data: {email: "", password: "", loginMethod: 'normal', rememberme: true}
+      });
 
-      switch (result.loginMethod) {
-        case 'facebook':
-          this.httpService.loginFacebook();
-          break;
-        case 'normal':
-          this.httpService.login(result.email, result.password).subscribe(
-            token => { this.user = this.webstorageService.setUserFromToken(token); },
-            error => { this.user = new User() });
-          break;
-        default:
-          break;
-      }
+      dialogRef.afterClosed().subscribe(result => {
 
-    });
+        this.webstorageService.saveRememberMe(result.rememberme);
+
+        switch (result.loginMethod) {
+          case 'facebook':
+            this.webstorageService.saveFacebookLogin();
+            this.httpService.loginFacebook();
+            break;
+          case 'normal':
+            this.httpService.login(result.email, result.password).subscribe(
+              token => { this.user = this.webstorageService.setUserFromToken(token); },
+              error => { this.user = new User() });
+            break;
+          default:
+            break;
+        }
+      });
+    }
+
   }
+
   closeSidenav() {
     this.opened = !this.opened;
   }

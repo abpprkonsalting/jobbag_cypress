@@ -11,7 +11,7 @@ import { User } from '../../infrastructure/model/user.model';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   @Output() toggleNav = new EventEmitter<boolean>();
-  @Output() toggleLogin = new EventEmitter<boolean>();
+  @Output() toggleLoginLogout = new EventEmitter<boolean>();
   @Input() user: User;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.toggleNav.emit(true);
   };
 
-  login() {
+  loginLogout() {
     console.log('login button pressed');
-    this.toggleLogin.emit(true);
+    this.toggleLoginLogout.emit(true);
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 <!-- header -->
-<app-header (toggleNav)="onToggleNav($event)" (toggleLogin)="onToggleLogin($event)" [user]="user"></app-header>
+<app-header (toggleNav)="onToggleNav($event)" (toggleLoginLogout)="onToggleLoginLogoutButton($event)" [user]="user"></app-header>
 
 <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
   <mat-sidenav [(opened)]="opened">

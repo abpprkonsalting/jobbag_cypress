@@ -25,7 +25,7 @@
 
     <div ngStyle.xs="margin-left:auto;">
 
-      <button mat-button class="menu-item-first-level" (click)="login()">
+      <button mat-button class="menu-item-first-level" (click)="loginLogout()">
         <mat-icon class="icon-login" [ngClass]="{'not-logged' : user.username == ''}">exit_to_app</mat-icon>
         <span>{{user.username == "" ? "Entrar" : "Salir"}}</span>
       </button>

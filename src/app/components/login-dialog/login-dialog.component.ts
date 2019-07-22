@@ -5,6 +5,7 @@ export interface DialogData {
   email: string;
   password: string;
   loginMethod: string;
+  rememberme: boolean;
 }
 
 @Component({

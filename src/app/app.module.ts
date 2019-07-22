@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
           MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
-          MatListModule, MatMenuModule, MatDialogModule, MatStepperModule } from '@angular/material';
+          MatListModule, MatMenuModule, MatDialogModule, MatStepperModule, MatCheckboxModule } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './components/header/header.component';
@@ -52,6 +52,7 @@ import { AddWizardModule } from './components/add-wizard/add-wizard.module';
     DragDropModule,
     AddWizardModule,
     AppRoutingModule,
+    MatCheckboxModule
   ],
   providers: [ HttpClientModule, HttpService, StorageServiceModule, WebStorageService, JwtHelperService, CookieService,{provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }],
   bootstrap: [AppComponent],

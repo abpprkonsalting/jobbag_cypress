@@ -10,6 +10,8 @@ import { CookieService } from 'ngx-cookie-service';
 export class WebStorageService {
 
   private _TOKEN_STORAGE_KEY = 'jwt_token';
+  private _REMEMBER_ME_STORAGE_KEY = 'remember_me';
+  private _FB_LOGIN_STORAGE_KEY = 'fb_login';
   user: User = undefined;
   private _sessionToken: string = undefined;
 
@@ -19,10 +21,32 @@ export class WebStorageService {
   public getUser(): Observable<User> {
 
     if (this.user != undefined) return of(this.user);
-    if (this.storage.has(this._TOKEN_STORAGE_KEY)) {
-      return of(this.setUserFromToken(this.storage.get(this._TOKEN_STORAGE_KEY)));
+
+    if (this.storage.has(this._FB_LOGIN_STORAGE_KEY)) {
+      this.storage.remove(this._FB_LOGIN_STORAGE_KEY);
+      return of(this.parseUserFromDocumentCookie());
     }
-    return of(this.parseUserFromDocumentCookie());
+    else if (this.storage.get(this._REMEMBER_ME_STORAGE_KEY) == true) {
+      if (this.storage.has(this._TOKEN_STORAGE_KEY)) {
+        return of(this.setUserFromToken(this.storage.get(this._TOKEN_STORAGE_KEY)));
+      }
+      else return of(this.parseUserFromDocumentCookie());
+    }
+    else  {
+      return this.logout();
+    }
+  }
+
+  public logout(): Observable<User>{
+
+    this.clearSessionToken();
+    document.cookie="loged_in_token=;expires="+new Date('Thu, 01 Jan 1970 00:00:01 GMT')+ ";secure;samesite;path=/";
+    this.storage.set(this._REMEMBER_ME_STORAGE_KEY,false);
+
+    // Aquí tengo que mandar a eliminar la sesión en el servidor (sea por token o por cookie), si es que hay, y después retornar el user vacio.
+
+    this.user = new User();
+    return of(this.user);
   }
 
   public setUserFromToken(token: string): User {
@@ -40,6 +64,14 @@ export class WebStorageService {
   public clearSessionToken() {
     this._sessionToken = undefined;
     this.storage.remove(this._TOKEN_STORAGE_KEY);
+  }
+
+  public saveRememberMe(rememberme) {
+    this.storage.set(this._REMEMBER_ME_STORAGE_KEY,rememberme);
+  }
+
+  public saveFacebookLogin() {
+    this.storage.set(this._FB_LOGIN_STORAGE_KEY,true);
   }
 
   public saveAppState(location: string){

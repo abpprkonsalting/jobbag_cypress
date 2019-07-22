@@ -13,6 +13,7 @@
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   <button mat-button (click)="onCancel()">Cancelar</button>
 </div>
+<mat-checkbox class="remember-me" [(ngModel)]="data.rememberme">Recordarme</mat-checkbox>
 <mat-divider class="social-divider"></mat-divider>
 <button mat-button (click)="facebookClick()" class="social-button f-social">
   <mat-icon svgIcon="facebook"></mat-icon>
