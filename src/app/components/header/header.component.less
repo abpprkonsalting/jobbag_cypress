@@ -1,13 +1,14 @@
 .header-container {
   background:#3f51b5;
   width:100%;
+  &.is-mobile {
+    position: fixed;
+    z-index: 2;
+    top:0;
+  }
   .toolbar {
     max-width: 1200px;
-    &.is-mobile {
-      position: fixed;
-      z-index: 2;
-      top:0;
-    }
+
     .icon-login {
       transition: .5s ease;
       &.not-logged {
