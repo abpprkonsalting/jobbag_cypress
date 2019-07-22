@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProjectAddWizardComponent } from './components/project-add-wizard/project-add-wizard.component';
+import { AddWizardComponent } from './components/add-wizard/add-wizard.component';
 
 const routes: Routes = [
-  { path: 'project-add-wizard', component: ProjectAddWizardComponent,data: {}}]
+  { path: 'add-project', component: AddWizardComponent },
+  { path: 'create-account', component: AddWizardComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{useHash: true})],

@@ -20,7 +20,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpTokenInterceptor } from './services/http.token.interceptor';
-import { ProjectAddWizardModule } from './components/project-add-wizard/project-add-wizard.module';
+import { AddWizardModule } from './components/add-wizard/add-wizard.module';
 
 
 @NgModule({
@@ -50,7 +50,7 @@ import { ProjectAddWizardModule } from './components/project-add-wizard/project-
     MatDialogModule,
     MatStepperModule,
     DragDropModule,
-    ProjectAddWizardModule,
+    AddWizardModule,
     AppRoutingModule,
   ],
   providers: [ HttpClientModule, HttpService, StorageServiceModule, WebStorageService, JwtHelperService, CookieService,{provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }],

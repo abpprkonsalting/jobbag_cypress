@@ -10,20 +10,22 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { LayoutModule } from '@angular/cdk/layout';
 
-import { ProjectAddWizardRoutingModule } from './project-add-wizard-routing.module';
-import { ProjectAddWizardComponent } from './project-add-wizard.component';
-import { ProjectAddWizardStep1Component } from './project-add-wizard-step1/project-add-wizard-step1.component';
-import { ProjectAddWizardStep2Component } from './project-add-wizard-step2/project-add-wizard-step2.component';
-import { ProjectAddWizardStep3Component } from './project-add-wizard-step3/project-add-wizard-step3.component';
+import { AddWizardRoutingModule } from './add-wizard-routing.module';
+import { AddWizardComponent } from './add-wizard.component';
+import { Step1Component } from './project-steps/step1/step1.component';
+import { Step2Component } from './project-steps/step2/step2.component';
+import { Step3Component } from './project-steps/step3/step3.component';
+import { Step1Component as AccountStep1Component } from './create-account-steps/step1/step1.component';
 import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    ProjectAddWizardComponent,
-    ProjectAddWizardStep1Component,
-    ProjectAddWizardStep3Component,
-    ProjectAddWizardStep2Component,
+    AddWizardComponent,
+    Step1Component,
+    Step3Component,
+    Step2Component,
+    AccountStep1Component,
     CustomStepperComponent
   ],
   imports: [
@@ -31,10 +33,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
     MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
     MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,
-    ProjectAddWizardRoutingModule,FlexLayoutModule,DragDropModule,
+    AddWizardRoutingModule,FlexLayoutModule,DragDropModule,
     CdkStepperModule,LayoutModule, BrowserAnimationsModule
   ]
 })
-export class ProjectAddWizardModule { }
+export class AddWizardModule { }
 
 
