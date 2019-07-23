@@ -6,7 +6,7 @@ import { User } from '../infrastructure/model/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import {WebStorageService} from './webstorage.service';
 import { Language } from '../infrastructure/dtos/language.dto';
-import { constants } from '../app-constants.module';
+import { constants } from '../app-constants';
 
 
 @Injectable()
@@ -31,7 +31,7 @@ export class HttpService {
                                     .pipe(
                                       map((body:any)=> <string>body.token),
                                       catchError((e:any)=> throwError(e))
-                                    )
+                                    );
   }
 
   loginFacebook() {
@@ -44,7 +44,7 @@ export class HttpService {
     return this.http.get(constants.apiUrl + 'languages/',{}).pipe(
       map((e:any)=> <Array<Language>>e),
       catchError((e:any)=> throwError(e))
-      );
+    );
   }
 
 }

@@ -7,7 +7,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { constants } from './app-constants.module';
+import { constants } from './app-constants';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.matIconRegistry.addSvgIcon('facebook',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'facebook.svg'));
     this.matIconRegistry.addSvgIcon('google-plus',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'google-plus.svg'));
+    this.matIconRegistry.addSvgIcon('air_conditioner',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'air-conditioner.svg'));
   }
 
   ngOnInit() {
