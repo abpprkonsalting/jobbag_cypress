@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import { LOCAL_STORAGE, SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { User } from '../infrastructure/model/user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable,of} from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import { SessionToken } from '../infrastructure/model/sessionToken.model';
 
 
 @Injectable()
@@ -11,28 +11,38 @@ export class WebStorageService {
 
   private _TOKEN_STORAGE_KEY = 'jwt_token';
   private _REMEMBER_ME_STORAGE_KEY = 'remember_me';
-  private _FB_LOGIN_STORAGE_KEY = 'fb_login';
+  private _FB_STORAGE_KEY = 'facebook';
   user: User = undefined;
-  private _sessionToken: string = undefined;
+  private _sessionToken:  SessionToken = new SessionToken();
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, private cookieservice: CookieService) {
-  }
+  constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage) {}
 
   public getUser(): Observable<User> {
 
     if (this.user != undefined) return of(this.user);
 
-    if (this.storage.has(this._FB_LOGIN_STORAGE_KEY)) {
-      this.storage.remove(this._FB_LOGIN_STORAGE_KEY);
+    if (this.sessionStorage.has(this._FB_STORAGE_KEY)) {
+
+      this.sessionStorage.remove(this._FB_STORAGE_KEY);
       return of(this.parseUserFromDocumentCookie());
     }
-    else if (this.storage.get(this._REMEMBER_ME_STORAGE_KEY) == true) {
-      if (this.storage.has(this._TOKEN_STORAGE_KEY)) {
-        return of(this.setUserFromToken(this.storage.get(this._TOKEN_STORAGE_KEY)));
-      }
-      else return of(this.parseUserFromDocumentCookie());
+    else if (this.sessionStorage.has(this._TOKEN_STORAGE_KEY)) {
+
+      // Si el token está en sessionStorage sacarlo de ahí
+      this._sessionToken = this.sessionStorage.get(this._TOKEN_STORAGE_KEY);
+      if (!this._sessionToken.jwtAuth) return of(this.parseUserFromDocumentCookie());
+      return of(this.setUserFromToken(this._sessionToken.token));
     }
-    else  {
+    else if (this.localStorage.has(this._TOKEN_STORAGE_KEY)) {
+
+      // Sino buscar en localstorage
+      this._sessionToken = this.localStorage.get(this._TOKEN_STORAGE_KEY);
+      if (!this._sessionToken.jwtAuth) return of(this.parseUserFromDocumentCookie());
+      return of(this.setUserFromToken(this._sessionToken.token));
+    }
+    else {
+
+      // Sino entonces limpiar todos los storages.
       return this.logout();
     }
   }
@@ -41,7 +51,7 @@ export class WebStorageService {
 
     this.clearSessionToken();
     document.cookie="loged_in_token=;expires="+new Date('Thu, 01 Jan 1970 00:00:01 GMT')+ ";secure;samesite;path=/";
-    this.storage.set(this._REMEMBER_ME_STORAGE_KEY,false);
+    this.localStorage.remove(this._REMEMBER_ME_STORAGE_KEY);
 
     // Aquí tengo que mandar a eliminar la sesión en el servidor (sea por token o por cookie), si es que hay, y después retornar el user vacio.
 
@@ -49,47 +59,41 @@ export class WebStorageService {
     return of(this.user);
   }
 
-  public setUserFromToken(token: string): User {
+  public setUserFromJWToken(token): User {
+    this._sessionToken.jwtAuth = true;
+    this._sessionToken.token = token;
+    this.saveToken(this._sessionToken);
+    return this.setUserFromToken(token);
+  }
 
-    this.setSessionToken(token);
-    const helper = new JwtHelperService();
-    this.user = this.processUserForView(<User> helper.decodeToken(token));
-    return this.user;
+  public clearSessionToken() {
+    this.sessionStorage.remove(this._TOKEN_STORAGE_KEY);
+    this.localStorage.remove(this._TOKEN_STORAGE_KEY);
+  }
+
+  public saveRememberMe(rememberme) {
+    this.localStorage.set(this._REMEMBER_ME_STORAGE_KEY,rememberme);
+  }
+
+  public saveFacebookSessionTempKey() {
+    this.sessionStorage.set(this._FB_STORAGE_KEY,true);
   }
 
   public getSessionToken() {
     return this._sessionToken;
   }
 
-  public clearSessionToken() {
-    this._sessionToken = undefined;
-    this.storage.remove(this._TOKEN_STORAGE_KEY);
-  }
-
-  public saveRememberMe(rememberme) {
-    this.storage.set(this._REMEMBER_ME_STORAGE_KEY,rememberme);
-  }
-
-  public saveFacebookLogin() {
-    this.storage.set(this._FB_LOGIN_STORAGE_KEY,true);
-  }
-
-  public saveAppState(location: string){
-    // Aquí debo salvar más que location para local storage. Si hay algún proyecto que ese esté procesando o cualquier cosa parecida también debo salvarla.
-    //this.storage.set(this.CURRENT_LOCATION_STORAGE_KEY,location);
-  }
-
-  public restoreAppState(): string{
-    //let tmp = this.storage.get(this.CURRENT_LOCATION_STORAGE_KEY);
-    //if (tmp != undefined) this.storage.remove(this.CURRENT_LOCATION_STORAGE_KEY);
-    return '';
-  }
-
   /**************************** Private Methods ******************************/
 
-  private setSessionToken(token: any) {
-    this.storage.set(this._TOKEN_STORAGE_KEY,token);
-    this._sessionToken = token;
+  private saveToken(sessionToken: SessionToken) {
+    let storage = this.localStorage.get(this._REMEMBER_ME_STORAGE_KEY) == true ? this.localStorage : this.sessionStorage;
+      storage.set(this._TOKEN_STORAGE_KEY,sessionToken);
+  }
+
+  private setUserFromToken(token: string): User {
+    const helper = new JwtHelperService();
+    this.user = <User> helper.decodeToken(token);
+    return this.user;
   }
 
   private parseUserFromDocumentCookie(): User {
@@ -100,27 +104,18 @@ export class WebStorageService {
         splited[0] = splited[0].trim();
         if(splited[0].indexOf('loged_in_token') == 0) {
           document.cookie=splited[0] + "=;expires="+new Date('Thu, 01 Jan 1970 00:00:01 GMT')+ ";secure;samesite;path=/";
-          this.cookieservice.delete('loged_in_token',"/","jobbag.ca");
           splited[1].trim();
           return splited;
         }
         return null;
       }).filter(elem => elem != null && elem[0] == "loged_in_token");
       if (filteredCookie.length > 0 && filteredCookie[0][1] != '__' && filteredCookie[0][1] != '') {
-        const helper = new JwtHelperService();
-        this.user = this.processUserForView(<User> helper.decodeToken(filteredCookie[0][1]));
-        return this.user;
+        this._sessionToken.jwtAuth = false;
+        this._sessionToken.token = filteredCookie[0][1];
+        this.saveToken(this._sessionToken);
+        return this.setUserFromToken(filteredCookie[0][1]);
       }
     }
     return new User();
-  }
-
-  private processUserForView(user: User): User{
-
-    if (user.name == null || user.name == undefined) {
-      user.name = "Invitado"; // Esto hay que internacionalizarlo.
-      user.surname = "";
-    }
-    return user;
   }
 }

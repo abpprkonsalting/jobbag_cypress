@@ -78,12 +78,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
         switch (result.loginMethod) {
           case 'facebook':
-            this.webstorageService.saveFacebookLogin();
+            this.webstorageService.saveFacebookSessionTempKey();
             this.httpService.loginFacebook();
             break;
           case 'normal':
             this.httpService.login(result.email, result.password).subscribe(
-              token => { this.user = this.webstorageService.setUserFromToken(token); },
+              token => { this.user = this.webstorageService.setUserFromJWToken(token); },
               error => { this.user = new User() });
             break;
           default:
