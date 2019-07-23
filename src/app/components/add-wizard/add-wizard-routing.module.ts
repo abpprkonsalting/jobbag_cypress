@@ -9,6 +9,7 @@ import { Step1Component as AccountStep1Component } from './create-account-steps/
 const routes:  Routes  = [
   { path:  'add-project',
     component:  AddWizardComponent,
+    data: {'header':"Nuevo Proyecto"},
     children: [
       {path: '1',component: Step1Component},
       {path: '2',component: Step2Component},
