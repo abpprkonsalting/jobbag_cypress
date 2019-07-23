@@ -4,14 +4,12 @@
 
   <custom-stepper-component fxLayout="column" style="width: 100%" (selectionChange)="selectionChanged($event)">
 
-      <mat-step *ngFor="let step of steps; let i = index" [label]="step">
+      <cdk-step *ngFor="let step of steps; let i = index" [label]="step">
 
 		    <router-outlet *ngIf="i === selectedStep"></router-outlet>
 
-      </mat-step>
+      </cdk-step>
 
   </custom-stepper-component>
-
-
 
 </mat-card>

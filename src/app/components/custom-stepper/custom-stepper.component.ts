@@ -15,8 +15,8 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 export class CustomStepperComponent  extends MatStepper implements OnInit {
 
   private _dragging: boolean = false;
-  _lastStepIndex: number | undefined = undefined;
   v_layout: boolean = false;
+  private _tmpIndex: number = 0;
 
   constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver)
   {
@@ -29,13 +29,9 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           this.v_layout = true;
-          console.log('Matches small viewport');
-          console.log(this.v_layout);
         }
         else {
           this.v_layout = false;
-          console.log('Matches other viewports');
-          console.log(this.v_layout);
         }
       });
   }
@@ -50,7 +46,8 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
   }
   dragEnded($event) {
     $event.source.reset();
-    this._dragging = false;
+    this.selectedIndex = this._tmpIndex;
+    console.log('drag stopped');
   }
 
   dragMoved($event: CdkDragMove) {
@@ -65,19 +62,18 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
 
     if (this._dragging) {
       if (distance < -10) {
-        if (this.selectedIndex < (this.steps.length - 1)) {
-          this.selectedIndex++;
-          console.log(this.selectedIndex);
+        if (this._tmpIndex < (this.steps.length - 1)) {
+          this._tmpIndex++;
+          console.log(this._tmpIndex);
           this._dragging = false;
-          console.log('drag stopped');
         }
       }
       else if (distance > 10){
-        if (this.selectedIndex > 0) {
-          this.selectedIndex--;
-          console.log(this.selectedIndex);
+        if (this._tmpIndex > 0) {
+          this._tmpIndex--;
+          console.log(this._tmpIndex);
           this._dragging = false;
-          console.log('drag stopped');
+
         }
       }
     }
@@ -85,10 +81,12 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
 
   prev(){
     this.selectedIndex--;
+    this._tmpIndex--;
   }
 
   next(){
     this.selectedIndex++;
+    this._tmpIndex++;
   }
 
 }
