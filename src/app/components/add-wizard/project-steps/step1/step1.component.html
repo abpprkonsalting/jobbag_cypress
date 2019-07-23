@@ -1,5 +1,26 @@
-<div class="step-content-wrapper">
 
-    Project Card 1 Content
+<div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="center center" ngStyle.xs="width:80%;margin: 0 auto;">
+
+  <div style="font-size: 120%;margin: 15px auto 30px;">Categoría General del Proyecto</div>
+
+  <div class="step-content-wrapper" fxLayoutAlign="space-around space-around" ngStyle.xs="width:100%;">
+
+    <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutAlign="space-around space-around" ngStyle.xs="width: 100%;align-items: center;">
+
+      <mat-card class="" *ngFor="let profession of professions" style="width:28%;margin-bottom:20px;background:#e6e6e6"
+        fxLayout="column" fxLayoutAlign="center center" (click)="onCardClick()" ngStyle.sm="width:45%;" ngStyle.xs="width:90%;">
+
+        <mat-card-title fxLayout="row" style="width: 100%;text-align:center" fxLayoutAlign="center center">
+          <span fxFlex="80%" style="font-weight: 100;font-size:16px;">{{profession.name}}</span>
+        </mat-card-title>
+
+        <mat-icon *ngIf="profession.avatar.type == 2" svgIcon="{{profession.avatar.url}}" style="font-size: 100px;height: 100px;width: 100px;margin: 20px;"></mat-icon>
+        <mat-icon *ngIf="profession.avatar.type == 1" style="font-size: 100px;height: 100px;width: 100px;margin: 20px;">{{profession.avatar.url}}</mat-icon>
+
+      </mat-card>
+
+    </div>
+
+  </div>
 
 </div>
