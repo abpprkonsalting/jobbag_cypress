@@ -1,24 +1,25 @@
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Injectable } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
-import { MatStepper } from '@angular/material';
+//import { MatStepper } from '@angular/material';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import {Subject} from 'rxjs';
 
 
 @Component({
   selector: 'custom-stepper-component',
   templateUrl: './custom-stepper.component.html',
   styleUrls: ['./custom-stepper.component.less'],
-  providers: [{ provide: MatStepper , useExisting: CustomStepperComponent }],
+  providers: [{ provide: CdkStepper , useExisting: CustomStepperComponent }],
 })
-export class CustomStepperComponent  extends MatStepper implements OnInit {
+export class CustomStepperComponent  extends CdkStepper implements OnInit {
 
   private _dragging: boolean = false;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
 
-  constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver)
+  constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver,protected messageSubscriber: Subscriber<Partial<any>>)
   {
     super(dir, changeDetectorRef);
   }
@@ -34,6 +35,7 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
           this.v_layout = false;
         }
       });
+      this.messageSubscriber.subscribe(message => message.value =="next" ? this.next() : this.prev());
   }
 
   reset() {
@@ -89,4 +91,21 @@ export class CustomStepperComponent  extends MatStepper implements OnInit {
     this._tmpIndex++;
   }
 
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class Subscriber<T>
+{
+  protected observable = new Subject<T>();
+
+  public next(item: T)
+  {
+    this.observable.next(item);
+  }
+
+  public subscribe(callback: (item:T)=>void) {
+    this.observable.subscribe(callback);
+  }
 }
