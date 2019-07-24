@@ -16,7 +16,7 @@ import { Step1Component } from './project-steps/step1/step1.component';
 import { Step2Component } from './project-steps/step2/step2.component';
 import { Step3Component } from './project-steps/step3/step3.component';
 import { Step1Component as AccountStep1Component } from './create-account-steps/step1/step1.component';
-import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
+import { DragStepperComponent } from '../drag-stepper/drag-stepper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -26,7 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     Step3Component,
     Step2Component,
     AccountStep1Component,
-    CustomStepperComponent
+    DragStepperComponent
   ],
   imports: [
     CommonModule,

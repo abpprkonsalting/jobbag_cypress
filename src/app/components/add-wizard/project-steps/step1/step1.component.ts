@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { professions } from '../../../../app-constants';
-import { Subscriber } from '../../../custom-stepper/custom-stepper.component';
+import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.component';
 
 @Component({
   selector: 'step1',
@@ -11,14 +11,14 @@ export class Step1Component implements OnInit {
 
   professions: any[];
 
-  constructor(protected messageSubscriber: Subscriber<Partial<any>>) {}
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>) {}
 
   ngOnInit() {
     this.professions = professions;
   }
 
   onCardClick(){
-    this.messageSubscriber.next({value:"next"});
+    this.stepperMessagesHandle.next({value:"next"});
   }
 
 }

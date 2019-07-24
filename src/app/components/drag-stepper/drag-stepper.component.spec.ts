@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomStepperComponent } from './custom-stepper.component';
+import { DragStepperComponent } from './drag-stepper.component';
 
-describe('CustomStepperComponent', () => {
-  let component: CustomStepperComponent;
-  let fixture: ComponentFixture<CustomStepperComponent>;
+describe('DragStepperComponent', () => {
+  let component: DragStepperComponent;
+  let fixture: ComponentFixture<DragStepperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomStepperComponent ]
+      declarations: [ DragStepperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CustomStepperComponent);
+    fixture = TestBed.createComponent(DragStepperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

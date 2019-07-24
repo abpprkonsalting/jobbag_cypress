@@ -2,14 +2,14 @@
 
   <mat-card-title class='component-header'> {{wizardTitle}} </mat-card-title>
 
-  <custom-stepper-component fxLayout="column" style="width: 100%" (selectionChange)="selectionChanged($event)">
+  <drag-stepper fxLayout="column" style="width: 100%" (selectionChange)="selectionChanged($event)">
 
-      <cdk-step *ngFor="let step of steps; let i = index" [label]="step">
+      <cdk-step *ngFor="let step of steps; let i = index">
 
 		    <router-outlet *ngIf="i === selectedStep"></router-outlet>
 
       </cdk-step>
 
-  </custom-stepper-component>
+  </drag-stepper>
 
 </mat-card>
