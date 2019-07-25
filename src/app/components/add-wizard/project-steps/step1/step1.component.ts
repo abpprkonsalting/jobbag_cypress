@@ -10,6 +10,10 @@ import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.co
 export class Step1Component implements OnInit {
 
   professions: any[];
+  clickPosition: {
+    x: number;
+    y: number;
+  } = {x:0,y:0};
 
   constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>) {}
 
@@ -17,8 +21,15 @@ export class Step1Component implements OnInit {
     this.professions = professions;
   }
 
-  onCardClick(){
-    this.stepperMessagesHandle.next({value:"next"});
+  onmousedown($event){
+    this.clickPosition.x = $event.x;
+    this.clickPosition.y = $event.y;
+    //this.stepperMessagesHandle.next({value:"next"});
   }
-
+  onMouseUp($event){
+    if (($event.x <= this.clickPosition.x + 10) && ($event.x >= this.clickPosition.x - 10) &&
+        ($event.y <= this.clickPosition.y + 10) && ($event.y >= this.clickPosition.y - 10)) {
+          this.stepperMessagesHandle.next({value:"next"});
+    }
+  }
 }

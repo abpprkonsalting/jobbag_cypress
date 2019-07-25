@@ -5,7 +5,8 @@
 
     <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around space-around" class="cards-wrapper" ngClass.xs="mobile">
 
-      <mat-card class="steps-button" ngClass.xs="mobile" *ngFor="let profession of professions" fxLayout="column" fxLayoutAlign="center center" fxLayout.xs="row-reverse" fxLayoutAlign.xs="row-reverse center" (click)="onCardClick()">
+      <mat-card class="steps-button" ngClass.xs="mobile" *ngFor="let profession of professions" fxLayout="column" fxLayoutAlign="center center"
+                fxLayout.xs="row-reverse" fxLayoutAlign.xs="row-reverse center" (mousedown)="onmousedown($event)" (mouseup)="onMouseUp($event)">
 
         <mat-card-title class="button-title" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center center">
           <span fxFlex="80%">{{profession.name}}</span>
