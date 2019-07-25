@@ -1,7 +1,7 @@
 
-<div class="card-drag-boundary" fxLayout="column wrap" ngStyle.xs="padding: 10px 0px;">
+<div class="card-drag-boundary" fxLayout="column wrap" ngClass.xs="mobile">
 
-<mat-card class='step-content' cdkDragBoundary=".card-drag-boundary" cdkDrag cdkDragLockAxis="v_layout ? y : x" (cdkDragMoved)="dragMoved($event)"
+<mat-card class='step-content' ngClass.xs="mobile" cdkDragBoundary=".card-drag-boundary" cdkDrag cdkDragLockAxis="v_layout ? y : x" (cdkDragMoved)="dragMoved($event)"
   (cdkDragEnded)="dragEnded($event)" (cdkDragStarted)="dragStarted($event)">
 
 

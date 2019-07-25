@@ -1,8 +1,8 @@
 <mat-card class="component-wrapper">
 
-  <mat-card-title class='component-header'> {{wizardTitle}} </mat-card-title>
+  <mat-card-title class='wizard-title'> {{wizardTitle}} </mat-card-title>
 
-  <drag-stepper fxLayout="column" style="width: 100%" (selectionChange)="selectionChanged($event)">
+  <drag-stepper fxLayout="column" class="drag-steper" (selectionChange)="selectionChanged($event)">
 
       <cdk-step *ngFor="let step of steps; let i = index">
 
