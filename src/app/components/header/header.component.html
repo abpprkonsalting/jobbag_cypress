@@ -6,6 +6,7 @@
     <button mat-icon-button (click)="buttonPress()" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>
       <mat-icon>more_vert</mat-icon>
     </button>
+    <img src="{{logoUrl}}" style="height: 37px;margin-right: auto;">
 
     <div *ngIf="user.username != ''" style="margin: 0 auto 0 20px;"> {{user.name + " " + user.surname}}</div>
 

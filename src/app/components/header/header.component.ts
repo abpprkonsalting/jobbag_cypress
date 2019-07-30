@@ -2,6 +2,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MediaObserver} from '@angular/flex-layout';
 import {ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy} from '@angular/core';
 import { User } from '../../infrastructure/model/user.model';
+import { constants } from '../../app-constants';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() user: User;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
+  logoUrl: string;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, mediaObserver: MediaObserver) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -24,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.logoUrl = constants.assetsUrl + 'logo.png';
   }
 
   buttonPress(){
