@@ -1,9 +1,10 @@
-<div class="header-container is-mobile" ngClass.xs="" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" >
-<mat-toolbar class="toolbar" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="start center">
+<div class="header-container" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" >
+<mat-toolbar class="toolbar" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="start center">
 
+  <div style="width: 100%;height: 1px;position: absolute;bottom: 0;z-index: -1;box-shadow: 0 1px 1px rgba(51, 51, 51, 0.25);background: transparent;left:0;"></div>
   <div style="width:100%" color="primary" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutAlign.xs="start center">
 
-    <button mat-icon-button (click)="buttonPress()" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>
+    <button class="mobile-button" ngClass.xs="is-mobile" mat-icon-button (click)="buttonPress()" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>
       <mat-icon>more_vert</mat-icon>
     </button>
     <img src="{{logoUrl}}" style="height: 37px;margin-right: auto;">
@@ -26,7 +27,7 @@
 
     <div ngStyle.xs="margin-left:auto;">
 
-      <button mat-button class="menu-item-first-level" (click)="loginLogout()">
+      <button mat-button class="menu-item-first-level login-button" ngClass.xs="is-mobile" (click)="loginLogout()">
         <mat-icon class="icon-login" [ngClass]="{'not-logged' : user.username == ''}">exit_to_app</mat-icon>
         <span>{{user.username == "" ? "Entrar" : "Salir"}}</span>
       </button>

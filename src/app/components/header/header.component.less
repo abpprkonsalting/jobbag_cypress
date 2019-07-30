@@ -1,20 +1,47 @@
 .header-container {
-  background:#3f51b5;
+  /*background:#3f51b5;*/
+  background: white;
+  /*box-shadow: 0 1px 2px rgba(51,51,51,.25);*/
+
   width:100%;
+  position: fixed;
+  z-index: 2;
+  top:0;
+
   &.is-mobile {
-    position: fixed;
-    z-index: 2;
-    top:0;
+    background: white;
+  }
+  .mat-icon, span {
+    fill: #3f51b5;
+    color: #3f51b5;
+    box-shadow: none;
+    font-weight: 300;
   }
   .toolbar {
-    max-width: 1200px;
 
-    .icon-login {
-      transition: .5s ease;
-      &.not-logged {
-        transform: rotate(180deg);
+    max-width: 1200px;
+    /*background:#3f51b5;*/
+    background: transparent;
+    &.is-mobile {
+      background: transparent;
+    }
+    .mobile-button {
+      &.is-mobile {
+        color: #3f51b5;
       }
     }
+    .login-button {
+      &.is-mobile {
+        color: #3f51b5;
+      }
+      .icon-login {
+        transition: .5s ease;
+        &.not-logged {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
     .menu-item-first-level {
       &:not(.more) {
         mat-icon {
