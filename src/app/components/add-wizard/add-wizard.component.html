@@ -4,11 +4,11 @@
 
   <drag-stepper fxLayout="column" class="drag-steper" (selectionChange)="selectionChanged($event)">
 
-      <cdk-step *ngFor="let step of steps; let i = index">
+      <mat-step *ngFor="let step of steps; let i = index">
 
 		    <router-outlet *ngIf="i === selectedStep"></router-outlet>
 
-      </cdk-step>
+      </mat-step>
 
   </drag-stepper>
 
