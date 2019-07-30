@@ -21,6 +21,8 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 import { CookieService } from 'ngx-cookie-service';
 import { HttpTokenInterceptor } from './services/http.token.interceptor';
 import { AddWizardModule } from './components/add-wizard/add-wizard.module';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { AddWizardModule } from './components/add-wizard/add-wizard.module';
     HeaderComponent,
     FooterComponent,
     LoginDialogComponent,
+    LandingPageComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     BrowserModule,
