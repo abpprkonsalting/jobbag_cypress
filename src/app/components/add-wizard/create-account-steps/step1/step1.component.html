@@ -1,5 +1,17 @@
-<div class="step-content-wrapper">
+<form [formGroup]="firstFormGroup" class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column"
+  fxLayoutAlign="start center">
+  <mat-form-field class="mat-form-field" ngClass.xs="mobile">
+    <input matInput placeholder="email" value="" formControlName="firstCtrl" required>
+  </mat-form-field>
 
-    Create Account Card 1 Content
+  <mat-form-field>
+    <input matInput type="password" placeholder="password" formControlName="secondCtrl" required>
+  </mat-form-field>
 
-</div>
+  <button class="join-button" ngClass.xs="mobile" mat-button cdkFocusInitial (click)="onclick($event)">
+
+    <mat-icon class="icon-login">exit_to_app</mat-icon>
+    <span>Unirse a Jobbag</span>
+
+  </button>
+</form>

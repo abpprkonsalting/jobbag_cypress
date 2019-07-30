@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
   MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
   MatListModule, MatMenuModule, MatDialogModule, MatStepperModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -16,6 +17,7 @@ import { Step1Component } from './project-steps/step1/step1.component';
 import { Step2Component } from './project-steps/step2/step2.component';
 import { Step3Component } from './project-steps/step3/step3.component';
 import { Step1Component as AccountStep1Component } from './create-account-steps/step1/step1.component';
+import { Step2Component as AccountStep2Component } from './create-account-steps/step2/step2.component';
 import { DragStepperComponent } from '../drag-stepper/drag-stepper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -26,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     Step3Component,
     Step2Component,
     AccountStep1Component,
+    AccountStep2Component,
     DragStepperComponent
   ],
   imports: [
@@ -34,7 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
     MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,
     AddWizardRoutingModule,FlexLayoutModule,DragDropModule,
-    CdkStepperModule,LayoutModule, BrowserAnimationsModule
+    CdkStepperModule,LayoutModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule
   ]
 })
 export class AddWizardModule { }
