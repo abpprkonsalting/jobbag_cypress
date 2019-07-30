@@ -1,8 +1,8 @@
 <!-- header -->
-<app-header (toggleNav)="onToggleNav($event)" (toggleLoginLogout)="onToggleLoginLogoutButton($event)" [user]="user"></app-header>
+<app-header (toggleNav)="onToggleNav($event)" (toggleLoginLogout)="onToggleLoginLogoutButton($event)" [user]="user" [sideNav]="sideNav" [isDesktop]="mobileQuery.matches ? false: true"></app-header>
 
-<mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-  <mat-sidenav [(opened)]="opened">
+<mat-sidenav-container class="sidenav-container" [style.paddingTop.px]="mobileQuery.matches ? 56 : 0">
+  <mat-sidenav [(opened)]="opened" mode='over'>
     <mat-nav-list>
       <div mat-list-item routerLink="add-project">
         <button mat-button class="menu-item-first-level" (click)="closeSidenav()">

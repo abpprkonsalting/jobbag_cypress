@@ -1,9 +1,10 @@
-import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {HttpService} from './services/http.service';
 import {WebStorageService} from './services/webstorage.service';
 import { User } from './infrastructure/model/user.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatSidenav} from '@angular/material/sidenav';
 import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -15,7 +16,7 @@ import { constants } from './app-constants';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
+  @ViewChild(MatSidenav,{static: true}) sideNav: MatSidenav;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   opened: boolean;
