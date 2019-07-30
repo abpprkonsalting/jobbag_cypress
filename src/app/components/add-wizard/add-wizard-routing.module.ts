@@ -18,6 +18,7 @@ const routes:  Routes  = [
   },
   { path:  'create-account',
     component:  AddWizardComponent,
+    data: {'header':"",'showNav':false},
     children: [
       {path: '1',component: AccountStep1Component}
     ]

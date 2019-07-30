@@ -11,6 +11,7 @@ export class AddWizardComponent implements OnInit{
   public steps : string[];
   public selectedStep: number = 0;
   public wizardTitle: string;
+  public initialShowNav: boolean = true;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }
@@ -18,7 +19,10 @@ export class AddWizardComponent implements OnInit{
   ngOnInit() {
     this.steps = this.route.snapshot.routeConfig.children.map(child => { return child.path });
     let step = this.steps[0];
-    this.route.data.subscribe( data => this.wizardTitle = data.header);
+    this.route.data.subscribe( data => {
+      this.wizardTitle = data.header;
+      this.initialShowNav = data.showNav;
+    });
     this.router.navigate([step], { relativeTo: this.route });
   }
 

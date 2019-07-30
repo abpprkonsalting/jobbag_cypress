@@ -1,5 +1,5 @@
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, OnInit, Injectable, Directive } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Injectable, Input, Directive } from '@angular/core';
 import { CdkStepper, CdkStep,StepperOptions } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material'
 import { CdkDragMove } from '@angular/cdk/drag-drop';
@@ -14,6 +14,7 @@ import {Subject} from 'rxjs';
   providers: [{ provide: MatStepper , useExisting: DragStepperComponent }],
 })
 export class DragStepperComponent  extends MatStepper implements OnInit {
+  @Input() stepperShowNav: boolean;
   private _dragging: boolean = false;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
