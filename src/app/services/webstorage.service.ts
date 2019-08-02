@@ -47,6 +47,11 @@ export class WebStorageService {
     }
   }
 
+  public setUser(user: User) : User {
+    this.user = user;
+    return this.user;
+  }
+
   public logout(): Observable<User>{
 
     this.clearSessionToken();
