@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onToggleLoginLogoutButton($event): void {
 
     // Esta condición de abajo implica que hay un usuario logeado, por lo tanto lo que se hace es logout
-    if (this.user.username !== "") {
+    if (this.user.roles.length > 0) {
       this.webstorageService.logout().subscribe(next => this.user = next,
       error => {
         console.log(error.message);

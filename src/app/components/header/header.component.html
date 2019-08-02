@@ -32,11 +32,11 @@
         <div ngStyle.xs="margin-left:auto;">
 
           <button mat-button class="menu-item-first-level login-button" ngClass.xs="is-mobile" (click)="loginLogout()">
-            <mat-icon class="icon-login" [ngClass]="{'not-logged' : user.username == ''}">exit_to_app</mat-icon>
-            <span>{{user.username == "" ? "Entrar" : "Salir"}}</span>
+            <mat-icon class="icon-login" [ngClass]="{'not-logged' : user.roles.length == 0}">exit_to_app</mat-icon>
+            <span>{{user.roles.length == 0 ? "Entrar" : "Salir"}}</span>
           </button>
 
-          <button fxHide.xs *ngIf="user.username != ''" mat-button [matMenuTriggerFor]="mainmenu" class="menu-item-first-level more">
+          <button fxHide.xs *ngIf="user.roles.length > 0" mat-button [matMenuTriggerFor]="mainmenu" class="menu-item-first-level more">
             <mat-icon>more_horiz</mat-icon>
           </button>
 
