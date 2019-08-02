@@ -15,6 +15,8 @@ import {Subject} from 'rxjs';
 })
 export class DragStepperComponent  extends MatStepper implements OnInit {
   @Input() stepperShowNav: boolean;
+  @Input() linear_u: boolean;
+  private allowed: boolean;
   private _dragging: boolean = false;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
@@ -65,7 +67,7 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
 
     if (this._dragging) {
       if (distance < -9) {
-        if (this.selectedIndex < (this.steps.length - 1)) {
+        if ((this.selectedIndex < (this.steps.length - 1)) && (this.linear_u) && (this.allowed)) {
           this._tmpIndex = this.selectedIndex;
           this._tmpIndex++;
           console.log(this._tmpIndex);
@@ -73,7 +75,7 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
         }
       }
       else if (distance > 9){
-        if (this._tmpIndex > 0) {
+        if ((this._tmpIndex > 0)&& (this.linear_u) && (this.allowed)) {
           this._tmpIndex = this.selectedIndex;
           this._tmpIndex--;
           console.log(this._tmpIndex);
@@ -85,11 +87,15 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
   }
 
   prev(){
+    if (this.linear_u && this.allowed) {
     this.selectedIndex--;
+  }
   }
 
   next(){
+    if (this.linear_u && this.allowed) {
     this.selectedIndex++;
+  }
   }
 
   initExternalMessagesInput() {
@@ -99,10 +105,16 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
       if ( messageType == 'string') {
         switch (message.value) {
           case "next":
-              this.selectedIndex++;
+              this.next();
             break;
           case "prev":
-              this.selectedIndex--;
+              this.prev();
+            break;
+          case "VALID":
+            this.allowed = true;
+            break;
+          case "INVALID":
+            this.allowed = false;
             break;
           default:
             break;

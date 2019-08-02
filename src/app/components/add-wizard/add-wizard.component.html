@@ -2,7 +2,7 @@
 
   <mat-card-title class='wizard-title'> {{wizardTitle}} </mat-card-title>
 
-  <drag-stepper fxLayout="column" class="drag-steper" (selectionChange)="selectionChanged($event)" [stepperShowNav]="initialShowNav" [linear]="true">
+  <drag-stepper fxLayout="column" class="drag-steper" (selectionChange)="selectionChanged($event)" [stepperShowNav]="initialShowNav" [linear_u]="true">
 
       <mat-step *ngFor="let step of steps; let i = index">
 
