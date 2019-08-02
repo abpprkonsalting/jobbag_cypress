@@ -7,6 +7,7 @@ export class User {
   imageUrl: string;
   roles: string[];
   sessionId: string;
+  password?: string;
 
   constructor(){
     this.email = "";
