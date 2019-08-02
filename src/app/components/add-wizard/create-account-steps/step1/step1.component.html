@@ -1,11 +1,12 @@
-<form [formGroup]="firstFormGroup" class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column"
+<form [formGroup]="formGroup" class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column"
   fxLayoutAlign="start center">
-  <mat-form-field class="mat-form-field" ngClass.xs="mobile">
-    <input matInput placeholder="email" value="" formControlName="firstCtrl" required>
+
+  <mat-form-field ngClass.xs="mobile">
+    <input matInput mat-form-field-control type="email" placeholder="email" formControlName="email" required>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput type="password" placeholder="password" formControlName="secondCtrl" required>
+    <input matInput mat-form-field-control type="password" placeholder="password" formControlName="password" required>
   </mat-form-field>
 
   <button class="join-button" ngClass.xs="mobile" mat-button cdkFocusInitial (click)="onclick($event)">
