@@ -50,6 +50,8 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
   }
   dragEnded($event) {
     $event.source.reset();
+    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
+    if (this.selectedIndex == this._tmpIndex) this.messageSubscriber.next({value:'stepChanged'});
     this.selectedIndex = this._tmpIndex;
     console.log('drag stopped');
   }
@@ -87,15 +89,19 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
   }
 
   prev(){
+    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
     if (this.linear_u && this.allowed) {
-    this.selectedIndex--;
-  }
+      this.messageSubscriber.next({value:'stepChanged'});
+      this.selectedIndex--;
+    }
   }
 
   next(){
+    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
     if (this.linear_u && this.allowed) {
-    this.selectedIndex++;
-  }
+      this.messageSubscriber.next({value:'stepChanged'});
+      this.selectedIndex++;
+    }
   }
 
   initExternalMessagesInput() {
