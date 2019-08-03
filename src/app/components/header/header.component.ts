@@ -1,17 +1,18 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MediaObserver} from '@angular/flex-layout';
-import {ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild,AfterViewInit,Renderer2} from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { User } from '../../infrastructure/model/user.model';
 import { constants } from '../../app-constants';
+import {MatToolbar} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.less']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  @ViewChild(CdkDrag,{static: false}) headerDrag: CdkDrag;
+export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
+  @ViewChild(MatToolbar,{static: true}) toolbar: MatToolbar;
   @Output() toggleNav = new EventEmitter<boolean>();
   @Output() toggleLoginLogout = new EventEmitter<boolean>();
   @Input() user: User;
@@ -20,10 +21,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   logoUrl: string;
-  isHidden: boolean = true;
   inter: number;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, mediaObserver: MediaObserver) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, mediaObserver: MediaObserver,private renderer: Renderer2) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -32,16 +32,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logoUrl = constants.assetsUrl + 'logo.png';
-    this.isHidden = true;
+  }
+
+  ngAfterViewInit(){
+    window.setTimeout(function(that){
+      that.renderer.addClass(that.toolbar._elementRef.nativeElement,'is-hidden');
+    },5000,this);
   }
 
   buttonPress(){
-    console.log('button pressed');
     this.toggleNav.emit(true);
   };
 
   loginLogout() {
-    console.log('login button pressed');
     this.toggleLoginLogout.emit(true);
   }
 
@@ -49,14 +52,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  dragEnded($event) {
-    this.inter = window.setInterval(function(that){
-      if (!that.sideNav._opened) {
-        that.headerDrag.reset();
-        that.isHidden = true;
-        window.clearInterval(that.inter);
-      }
-    },5000,this);
+  mouseDown($event) {
+    if (this.toolbar._elementRef.nativeElement.classList.contains('is-hidden')) {
+
+      this.renderer.removeClass(this.toolbar._elementRef.nativeElement,'is-hidden');
+
+      this.inter = window.setInterval(function(that){
+        if (!that.sideNav._opened) {
+          that.renderer.addClass(that.toolbar._elementRef.nativeElement,'is-hidden');
+          window.clearInterval(that.inter);
+        }
+      },5000,this);
+    }
   }
 
 }

@@ -1,8 +1,7 @@
-<div class="header-container" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
+<div class="header-container" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" (mousedown)="mouseDown()">
   <div class="toolbar-container">
     <div class="toolbar-shadow" fxHide.xs ></div>
-    <mat-toolbar class="toolbar" [ngClass.xs]="{'is-mobile':true,'is-hidden':isHidden == true}" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="start center"
-      cdkDrag cdkDragDisabled="{{isDesktop}}" cdkDragLockAxis="y" cdkDragBoundary=".toolbar-container" (cdkDragEnded)="dragEnded($event)">
+    <mat-toolbar class="toolbar" [ngClass.xs]="{'is-mobile':true}" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="start center">
 
       <div class="toolbar-shadow" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl ></div>
 
@@ -13,7 +12,7 @@
         </button>
         <img src="{{logoUrl}}" style="height: 37px;margin-right: auto;">
 
-        <div *ngIf="user.username != ''" style="margin: 0 auto 0 20px;"> {{user.name + " " + user.surname}}</div>
+        <div *ngIf="user.roles.length == 0" fxHide.xs style="margin: 0 auto 0 20px;color:#3f51b5"> {{user.name + " " + user.surname}}</div>
 
         <div fxHide.xs fxShow.sm>
 
