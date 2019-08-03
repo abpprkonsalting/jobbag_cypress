@@ -16,8 +16,9 @@ import {Subject} from 'rxjs';
 export class DragStepperComponent  extends MatStepper implements OnInit {
   @Input() stepperShowNav: boolean;
   @Input() linear_u: boolean;
-  private allowed: boolean;
+  private _allowed: boolean = false;
   private _dragging: boolean = false;
+  private _draggingDir: number;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
 
@@ -50,9 +51,19 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
   }
   dragEnded($event) {
     $event.source.reset();
-    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
-    if (this.selectedIndex == this._tmpIndex) this.messageSubscriber.next({value:'stepChanged'});
-    this.selectedIndex = this._tmpIndex;
+    if (!this._dragging) {
+      if (this._draggingDir == 0) {
+        this.next();
+      }
+      else {
+        this.prev();
+      }
+    }
+    else {
+      this._dragging = false;
+    }
+
+    //this.selectedIndex = this._tmpIndex;
     console.log('drag stopped');
   }
 
@@ -69,38 +80,33 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
 
     if (this._dragging) {
       if (distance < -9) {
-        if ((this.selectedIndex < (this.steps.length - 1)) && (this.linear_u) && (this.allowed)) {
-          this._tmpIndex = this.selectedIndex;
-          this._tmpIndex++;
-          console.log(this._tmpIndex);
-          this._dragging = false;
-        }
+        this._draggingDir = 0;
+        this._dragging = false;
       }
       else if (distance > 9){
-        if ((this._tmpIndex > 0)&& (this.linear_u) && (this.allowed)) {
-          this._tmpIndex = this.selectedIndex;
-          this._tmpIndex--;
-          console.log(this._tmpIndex);
-          this._dragging = false;
-
-        }
+        this._draggingDir = 1;
+        this._dragging = false;
       }
     }
   }
 
   prev(){
-    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
-    if (this.linear_u && this.allowed) {
+    if (!this.linear_u && this._allowed) {
       this.messageSubscriber.next({value:'stepChanged'});
       this.selectedIndex--;
+    }
+    else {
+      this.messageSubscriber.next({value:'stepperReceivedOrderPrev'});
     }
   }
 
   next(){
-    this.messageSubscriber.next({value:'stepperReceivedChangeOrder'});
-    if (this.linear_u && this.allowed) {
+    if (this.linear_u && this._allowed) {
       this.messageSubscriber.next({value:'stepChanged'});
       this.selectedIndex++;
+    }
+    else {
+      this.messageSubscriber.next({value:'stepperReceivedOrderNext'});
     }
   }
 
@@ -117,10 +123,10 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
               this.prev();
             break;
           case "VALID":
-            this.allowed = true;
+            this._allowed = true;
             break;
           case "INVALID":
-            this.allowed = false;
+            this._allowed = false;
             break;
           default:
             break;
