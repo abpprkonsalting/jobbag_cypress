@@ -3,7 +3,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {HttpService} from './services/http.service';
 import {WebStorageService} from './services/webstorage.service';
 import { User } from './infrastructure/model/user.model';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {MatSidenav} from '@angular/material/sidenav';
 import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
 import { MatIconRegistry } from "@angular/material/icon";
@@ -46,7 +46,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.webstorageService.getUser().subscribe( next => this.user = next,
+    this.webstorageService.getUser().subscribe(
+      next => {
+        if ( next.password != null && next.password != undefined && next.password != '') {
+          this.httpService.login(next.username, next.password).subscribe(
+            token => { this.user = this.webstorageService.setUserFromJWToken(token); },
+            error => { this.user = new User() });
+        }
+        else {
+          this.user = next;
+        }
+      },
       error => {
         console.log(error.message);
         this.user = new User();

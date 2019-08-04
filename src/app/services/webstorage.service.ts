@@ -12,6 +12,8 @@ export class WebStorageService {
   private _TOKEN_STORAGE_KEY = 'jwt_token';
   private _REMEMBER_ME_STORAGE_KEY = 'remember_me';
   private _FB_STORAGE_KEY = 'facebook';
+  private _FIRST_TIME_CREDENTIALS_STORAGE_KEY = 'first_time_credentials';
+  private _USER_CONFIRMED_STORAGE_KEY = 'user_confirmed';
   user: User = undefined;
   private _sessionToken:  SessionToken = new SessionToken();
 
@@ -21,7 +23,14 @@ export class WebStorageService {
 
     if (this.user != undefined) return of(this.user);
 
-    if (this.sessionStorage.has(this._FB_STORAGE_KEY)) {
+    if (this.localStorage.has(this._USER_CONFIRMED_STORAGE_KEY) && this.localStorage.has(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY)) {
+
+      const user = this.localStorage.get(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY);
+      this.localStorage.remove(this._USER_CONFIRMED_STORAGE_KEY);
+      this.localStorage.remove(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY);
+      return of(user);
+    }
+    else if (this.sessionStorage.has(this._FB_STORAGE_KEY)) {
 
       this.sessionStorage.remove(this._FB_STORAGE_KEY);
       return of(this.parseUserFromDocumentCookie());
@@ -86,6 +95,20 @@ export class WebStorageService {
 
   public getSessionToken() {
     return this._sessionToken;
+  }
+
+  public saveFirstTimeCredentials(credentials: any){
+    this.localStorage.set(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY,credentials);
+    this.localStorage.set(this._REMEMBER_ME_STORAGE_KEY,true);
+  }
+
+  public checkOtherWindowLogin(): User {
+
+    if (this.localStorage.has(this._TOKEN_STORAGE_KEY)) {
+      this._sessionToken = this.localStorage.get(this._TOKEN_STORAGE_KEY);
+      return this.setUserFromToken(this._sessionToken.token);
+    }
+    return new User();
   }
 
   /**************************** Private Methods ******************************/

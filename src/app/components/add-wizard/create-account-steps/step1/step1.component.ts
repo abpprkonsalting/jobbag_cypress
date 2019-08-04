@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.component';
 import {WebStorageService} from '../../../../services/webstorage.service';
+import {HttpService} from '../../../../services/http.service';
 import { User } from 'src/app/infrastructure/model/user.model';
 
 @Component({
@@ -13,14 +14,17 @@ export class Step1Component implements OnInit {
   formGroup: FormGroup;
   user: User;
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService) { }
+  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private httpService: HttpService) { }
 
   ngOnInit() {
     this.formGroup = this._formBuilder.group({
       email: ['', Validators.required], password: ['', Validators.required]
     });
-    this.formGroup.statusChanges.subscribe(status => this.stepperMessagesHandle.next({value:status}));
-    this.stepperMessagesHandle.next({value:'INVALID'});
+    this.formGroup.statusChanges.subscribe(status => {  this.user.username = this.formGroup.controls.email.value;
+                                                        this.user.password = this.formGroup.controls.password.value;
+                                                        this.webstorageService.setUser(this.user)
+                                                      }
+    );
 
     this.webstorageService.getUser().subscribe(
       next => {
@@ -34,30 +38,44 @@ export class Step1Component implements OnInit {
       error => {
         console.log(error.message);
         this.user = new User();
-      });
+      }
+    );
 
-      this.stepperMessagesHandle.subscribe(message =>
-        {
+    this.stepperMessagesHandle.subscribe(message =>
+      {
         let messageType = typeof (message.value);
         if ( messageType == 'string') {
           switch (message.value) {
-            case "stepperReceivedChangeOrder":
-              this.user.username = this.formGroup.controls.email.value;
-              this.user.password = this.formGroup.controls.password.value;
-              this.webstorageService.setUser(this.user);
-              Object.keys(this.formGroup.controls).forEach((key) => {
-                if (!this.formGroup.get(key).valid) this.formGroup.get(key).markAsTouched();
-              });
+            case "stepperReceivedOrderNext":
+              this.onclick();
               break;
             default:
               break;
           }
         }
-      });
+      }
+    );
   }
 
-  onclick($event){
-    this.stepperMessagesHandle.next({value:"next"});
+  onclick(){
+    if (this.formGroup.valid) {
+      this.registerUser();
+    }
+    else {
+      Object.keys(this.formGroup.controls).forEach((key) => {
+        if (!this.formGroup.get(key).valid) this.formGroup.get(key).markAsTouched();
+      });
+    }
+  }
+
+  registerUser() {
+    this.stepperMessagesHandle.next({value:"VALID"});
+    this.httpService.registerUser(this.user).subscribe(
+      success => {
+        this.webstorageService.saveFirstTimeCredentials({'username':this.user.username,'password':this.user.password});
+        this.stepperMessagesHandle.next({value:"next"});
+      },
+      error => { console.log(error) });
   }
 
 }
