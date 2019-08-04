@@ -12,7 +12,7 @@
         </button>
         <img src="{{logoUrl}}" style="height: 37px;margin-right: auto;">
 
-        <div *ngIf="user.roles.length == 0" fxHide.xs style="margin: 0 auto 0 20px;color:#3f51b5"> {{user.name + " " + user.surname}}</div>
+        <div *ngIf="user.roles.length > 0 && user.name != null && user.name != ''" fxHide.xs style="margin: 0 auto 0 20px;color:#3f51b5"> {{user.name + " " + user.surname}}</div>
 
         <div fxHide.xs fxShow.sm>
 
