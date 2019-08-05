@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router,Route, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'add-wizard',
@@ -8,26 +8,35 @@ import { Router,ActivatedRoute } from '@angular/router';
 })
 export class AddWizardComponent implements OnInit{
 
-  public steps : string[];
+  public steps : Route[];
   public selectedStep: number = 0;
   public wizardTitle: string;
   public initialShowNav: boolean = true;
+  public linear: boolean = true;
+  public data: any;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.steps = this.route.snapshot.routeConfig.children.map(child => { return child.path });
-    let step = this.steps[0];
+    this.steps = this.route.snapshot.routeConfig.children;
+
     this.route.data.subscribe( data => {
       this.wizardTitle = data.header;
-      this.initialShowNav = data.showNav;
+      this.initialShowNav = data.showNav != undefined ? data.showNav : true;;
+      this.linear = data.linear != undefined ? data.linear : false;
     });
-    this.router.navigate([step], { relativeTo: this.route });
+    let step = this.steps[0];
+    this.router.navigate([step.path], { relativeTo: this.route });
   }
 
   selectionChanged(event: any) {
     this.selectedStep = event.selectedIndex;
-    this.router.navigate([this.steps[this.selectedStep]],{relativeTo:this.route});
+    this.steps[this.selectedStep].data = {...this.steps[this.selectedStep].data, ...this.data};
+    this.router.navigate([this.steps[this.selectedStep].path],{relativeTo:this.route});
+  }
+
+  dataChanged($event) {
+    this.data = {...$event};
   }
 }

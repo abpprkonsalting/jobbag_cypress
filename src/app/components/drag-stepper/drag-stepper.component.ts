@@ -1,11 +1,23 @@
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, OnInit, Injectable, Input, Directive } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Injectable, Input, Directive,TemplateRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { CdkStepper, CdkStep,StepperOptions } from '@angular/cdk/stepper';
-import { MatStepper } from '@angular/material'
+import { MatStepper,MatStep } from '@angular/material'
+import { ErrorStateMatcher } from '@angular/material/core';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import {Subject} from 'rxjs';
+import {Subject,Subscription} from 'rxjs';
 
+/*@Directive({
+  selector: 'drag-step',
+  providers: [{ provide: MatStep , useExisting: DragStepComponent }],
+})
+export class DragStepComponent  extends MatStep {
+  data: any;
+  constructor(stepper: DragStepperComponent, _errorStateMatcher: ErrorStateMatcher)
+  {
+    super(stepper, _errorStateMatcher);
+  }
+}*/
 
 @Component({
   selector: 'drag-stepper',
@@ -13,14 +25,18 @@ import {Subject} from 'rxjs';
   styleUrls: ['./drag-stepper.component.less'],
   providers: [{ provide: MatStepper , useExisting: DragStepperComponent }],
 })
-export class DragStepperComponent  extends MatStepper implements OnInit {
+export class DragStepperComponent  extends MatStepper implements OnInit, OnDestroy {
   @Input() stepperShowNav: boolean;
   @Input() linear_u: boolean;
+  @Output() dataChange = new EventEmitter<any>();
+  _data: any = {};
   private _allowed: boolean = false;
   private _dragging: boolean = false;
   private _draggingDir: number;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
+  private _stepperSubscriptionIndex;
+
 
   constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver,protected messageSubscriber: DragStepperMessagesHandle<Partial<any>>)
   {
@@ -91,52 +107,65 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
   }
 
   prev(){
-    if (!this.linear_u && this._allowed) {
-      this.messageSubscriber.next({value:'stepChanged'});
-      this.selectedIndex--;
-    }
-    else {
-      this.messageSubscriber.next({value:'stepperReceivedOrderPrev'});
+    if (this.selectedIndex > 0) {
+      if (!this.linear_u) {
+        this.selectedIndex--;
+        this.messageSubscriber.next({value:'stepChanged',data:this._data});
+      }
+      else {
+        this.messageSubscriber.next({value:'stepperReceivedOrderPrev'});
+      }
     }
   }
 
   next(){
-    if (this.linear_u && this._allowed) {
-      this.messageSubscriber.next({value:'stepChanged'});
-      this.selectedIndex++;
-    }
-    else {
-      this.messageSubscriber.next({value:'stepperReceivedOrderNext'});
-    }
+    if (this.selectedIndex < this._steps.length - 1)
+      if (this._allowed) {
+        this.selectedIndex++;
+        this.messageSubscriber.next({value:'stepChanged',data:this._data});
+      }
+      else {
+        this.messageSubscriber.next({value:'stepperReceivedOrderNext'});
+      }
   }
 
   initExternalMessagesInput() {
-    this.messageSubscriber.subscribe(message =>
+    this._stepperSubscriptionIndex = this.messageSubscriber.subscribe(message =>
       {
-      let messageType = typeof (message.value);
-      if ( messageType == 'string') {
-        switch (message.value) {
-          case "next":
-              this.next();
-            break;
-          case "prev":
-              this.prev();
-            break;
-          case "VALID":
-            this._allowed = true;
-            break;
-          case "INVALID":
-            this._allowed = false;
-            break;
-          default:
-            break;
+        console.log(message);
+        if (message.data != undefined) {
+          this._data = message.data;
+          this.dataChange.emit(this._data);
         }
-      }
-      else if (messageType == 'number' && message.value > 0 && message.value <= this.steps.length) {
-        this.selectedIndex = message.value - 1;
+        let messageType = typeof (message.value);
+        if ( messageType == 'string') {
+          switch (message.value) {
+            case "next":
+                this.next();
+              break;
+            case "prev":
+                this.prev();
+              break;
+            case "VALID":
+              this._allowed = true;
+              break;
+            case "INVALID":
+              this._allowed = false;
+              break;
+            default:
+              break;
+          }
+        }
+        else if (messageType == 'number' && message.value > 0 && message.value <= this.steps.length) {
+          this.selectedIndex = message.value - 1;
       }
     });
   }
+
+  ngOnDestroy() {
+    if (this._stepperSubscriptionIndex != undefined) this.messageSubscriber.unsubscribe(this._stepperSubscriptionIndex);
+  }
+
 }
 
 @Injectable({
@@ -145,24 +174,18 @@ export class DragStepperComponent  extends MatStepper implements OnInit {
 export class DragStepperMessagesHandle<T>
 {
   protected observable = new Subject<T>();
-
+  protected subcriptions: Subscription[] = [];
   public next(item: T)
   {
     this.observable.next(item);
   }
 
-  public subscribe(callback: (item:T)=>void) {
-    this.observable.subscribe(callback);
+  public subscribe(callback: (item:T)=>void):number {
+    this.subcriptions.push(this.observable.subscribe(callback));
+    return this.subcriptions.length - 1;
+  }
+
+  public unsubscribe(index: number) {
+    this.subcriptions[index].unsubscribe();
   }
 }
-
-/*@Component({
-  selector: 'drag-step',
-  providers: [{ provide: CdkStep , useExisting: DragStepComponent }],
-})
-export class DragStepComponent  extends CdkStep {
-  constructor(_stepper: DragStepperComponent)
-  {
-    super(_stepper);
-  }
-}*/

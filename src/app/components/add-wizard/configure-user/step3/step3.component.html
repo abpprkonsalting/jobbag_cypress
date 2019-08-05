@@ -1,0 +1,23 @@
+
+<div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="center center" ngClass.xs="mobile">
+
+    <div class="step-title">Categorías Generales de mis profesiones</div>
+
+      <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around space-around" class="cards-wrapper" ngClass.xs="mobile">
+
+        <mat-card class="steps-button" [ngClass.xs]="{'mobile':true,'selected':profession.selected}" *ngFor="let profession of firstLevelProfessions" fxLayout="column"
+                  fxLayoutAlign="center center" [ngClass]="{'selected':profession.selected}" fxLayout.xs="row-reverse" fxLayoutAlign.xs="row-reverse center"
+                  (mousedown)="onmousedown($event)" (mouseup)="onMouseUp({'$event':$event,'profession':profession})">
+
+          <mat-card-title class="button-title" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center center">
+            <span fxFlex="80%">{{profession.name}}</span>
+          </mat-card-title>
+
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.type == 2" svgIcon="{{profession.avatar.url}}"></mat-icon>
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.type == 1">{{profession.avatar.url}}</mat-icon>
+
+        </mat-card>
+
+      </div>
+
+  </div>

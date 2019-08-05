@@ -1,4 +1,4 @@
-<div class="header-container" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" (mousedown)="mouseDown()">
+<div class="header-container" ngClass.xs="is-mobile" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" (mousedown)="mouseDown($event)">
   <div class="toolbar-container">
     <div class="toolbar-shadow" fxHide.xs ></div>
     <mat-toolbar class="toolbar" [ngClass.xs]="{'is-mobile':true}" color="primary" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="start center">
@@ -40,7 +40,7 @@
           </button>
 
           <mat-menu #mainmenu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item routerLink="configure-user">
               <mat-icon>person</mat-icon>Mi Perfil
             </button>
             <button mat-menu-item>

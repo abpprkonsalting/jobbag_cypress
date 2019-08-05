@@ -11,12 +11,14 @@ export class Profession {
   countryIds: number[];
   name: string;
   avatar: Avatar;
+  selected?: boolean;
 
   constructor(id: number,countryIds: number[],name: string,avatar: Avatar,parentId?: number) {
     this.id = id;
-    this.parentId = parentId != null ? parentId : undefined;
+    this.parentId = (parentId != undefined && parentId != null) ? parentId : undefined;
     this.countryIds = countryIds;
     this.name = name;
     this.avatar = avatar;
+    this.selected = false;
   }
 }

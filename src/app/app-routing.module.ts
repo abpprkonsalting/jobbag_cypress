@@ -7,6 +7,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 const routes: Routes = [
   { path: 'add-project', component: AddWizardComponent },
   { path: 'create-account', component: AddWizardComponent },
+  { path: 'configure-user', component: AddWizardComponent },
 
   { path: '',component: LandingPageComponent },
   { path: '**', component: NotFoundPageComponent }

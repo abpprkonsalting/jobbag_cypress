@@ -9,6 +9,7 @@ import {LoginDialogComponent} from './components/login-dialog/login-dialog.compo
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { constants } from './app-constants';
+import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   fillerNav = Array.from({length: 10}, (_, i) => `Nav Item ${i + 1}`);
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, httpService: HttpService, webstorageService: WebStorageService,loginDialog: MatDialog
-              ,private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer) {
+              ,private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer,private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -50,7 +51,10 @@ export class AppComponent implements OnInit, OnDestroy {
       next => {
         if ( next.password != null && next.password != undefined && next.password != '') {
           this.httpService.login(next.username, next.password).subscribe(
-            token => { this.user = this.webstorageService.setUserFromJWToken(token); },
+            token => {
+              this.user = this.webstorageService.setUserFromJWToken(token);
+              this.router.navigateByUrl('/configure-user',{skipLocationChange:true});
+            },
             error => { this.user = new User() });
         }
         else {

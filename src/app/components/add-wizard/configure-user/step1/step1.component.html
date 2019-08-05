@@ -1,0 +1,26 @@
+
+
+<div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="start center">
+
+  <div class="header">Presentate correctamente:</div>
+
+  <div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+
+    <form class="content-column" [formGroup]="formGroup" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center">
+
+      <mat-form-field ngClass.xs="mobile">
+        <input matInput mat-form-field-control type="text" placeholder="nombre" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput mat-form-field-control type="text" placeholder="apellidos" formControlName="surname">
+      </mat-form-field>
+
+    </form>
+
+    <div class="content-column second" fxLayout="column" fxLayoutAlign="center center">
+      <img href="">
+    </div>
+  </div>
+</div>
+

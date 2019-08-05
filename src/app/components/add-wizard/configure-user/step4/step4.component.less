@@ -1,0 +1,59 @@
+
+.step-content-wrapper {
+
+  &.mobile {
+    width:80%;margin: 0 auto;
+  }
+
+  .step-title {
+    font-size: 120%;margin: 15px auto 30px;
+  }
+
+  .cards-wrapper {
+    width: 100%;
+    &.mobile {
+      align-items: center;
+    }
+
+    .steps-button {
+      width:30%;margin-bottom:20px;background:#e6e6e6;
+
+      &.selected {
+        background:lightblue;
+      }
+      &.mobile {
+        width:100%;
+      }
+
+      .button-title {
+        width: 100%;
+        text-align:center;
+
+        &.mobile {
+          place-content: flex-start;
+          text-align: left;
+        }
+
+        span {
+          font-weight: 100;
+          font-size:16px;
+
+          &.mobile {
+            text-align:left;
+          }
+        }
+      }
+
+      .steps-button-icon {
+        font-size: 100px;height: 100px;width: 100px;margin: 20px;
+
+        &.mobile {
+          font-size: 30px;
+          height: 30px;
+          width: 30px ;
+          margin: 0 15px;
+        }
+      }
+    }
+  }
+}
