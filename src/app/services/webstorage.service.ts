@@ -1,33 +1,48 @@
+
+import { environment } from '../../environments/environment';
+
 import { Inject, Injectable } from '@angular/core';
 import { LOCAL_STORAGE, SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { User } from '../infrastructure/model/user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable,of} from 'rxjs';
+import { Observable, throwError,of} from 'rxjs';
 import { SessionToken } from '../infrastructure/model/sessionToken.model';
+
+import {HttpService} from './http.service';
+import { switchMap } from 'rxjs/operators';
 
 
 @Injectable()
 export class WebStorageService {
 
+  private httpService: any;
   private _TOKEN_STORAGE_KEY = 'jwt_token';
   private _REMEMBER_ME_STORAGE_KEY = 'remember_me';
   private _FB_STORAGE_KEY = 'facebook';
   private _FIRST_TIME_CREDENTIALS_STORAGE_KEY = 'first_time_credentials';
   private _USER_CONFIRMED_STORAGE_KEY = 'user_confirmed';
-  user: User = undefined;
   private _sessionToken:  SessionToken = new SessionToken();
 
-  constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage) {}
+  user: User = undefined;
+
+  constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage, httpService: HttpService) {
+    if (!environment.production) {
+      import('./http.service.dev').then(module => {
+        this.httpService = new module.HttpService();
+      });
+    }
+    else {
+      this.httpService = httpService;
+    }
+  }
 
   public getUser(): Observable<User> {
 
     if (this.user != undefined) return of(this.user);
 
-    if (this.localStorage.has(this._USER_CONFIRMED_STORAGE_KEY) && this.localStorage.has(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY)) {
+    if (this.localStorage.has(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY)) {
 
       const user = this.localStorage.get(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY);
-      this.localStorage.remove(this._USER_CONFIRMED_STORAGE_KEY);
-      this.localStorage.remove(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY);
       return of(user);
     }
     else if (this.sessionStorage.has(this._FB_STORAGE_KEY)) {
@@ -61,6 +76,34 @@ export class WebStorageService {
     return this.user;
   }
 
+  public registerUser(user: User) : Observable<User> {
+
+    this.user = user;
+    return this.httpService.registerUser(user).pipe(
+      switchMap( user => {
+        this.saveFirstTimeCredentials({'username':this.user.username,'password':this.user.password});
+        return of(this.user);
+      }));
+  }
+
+  public login(email: string, passwd: string) : Observable<User> {
+
+    return this.httpService.login(email, passwd).pipe(
+      switchMap( token => {
+
+        if (this.localStorage.has(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY) && this.localStorage.has(this._USER_CONFIRMED_STORAGE_KEY)){
+          this.localStorage.remove(this._FIRST_TIME_CREDENTIALS_STORAGE_KEY);
+          this.localStorage.remove(this._USER_CONFIRMED_STORAGE_KEY);
+        }
+        this.user = this.setUserFromJWToken(token);
+        return of(this.user);
+      }));
+  }
+
+  public loginFacebook() {
+    this.saveFacebookSessionTempKey();
+    this.httpService.loginFacebook();
+  }
   public logout(): Observable<User>{
 
     this.clearSessionToken();
@@ -89,10 +132,6 @@ export class WebStorageService {
     this.localStorage.set(this._REMEMBER_ME_STORAGE_KEY,rememberme);
   }
 
-  public saveFacebookSessionTempKey() {
-    this.sessionStorage.set(this._FB_STORAGE_KEY,true);
-  }
-
   public getSessionToken() {
     return this._sessionToken;
   }
@@ -116,6 +155,11 @@ export class WebStorageService {
   private saveToken(sessionToken: SessionToken) {
     let storage = this.localStorage.get(this._REMEMBER_ME_STORAGE_KEY) == true ? this.localStorage : this.sessionStorage;
       storage.set(this._TOKEN_STORAGE_KEY,sessionToken);
+  }
+
+  private saveFacebookSessionTempKey() {
+    this.clearSessionToken();
+    this.sessionStorage.set(this._FB_STORAGE_KEY,true);
   }
 
   private setUserFromToken(token: string): User {

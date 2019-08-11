@@ -2,17 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError,of } from 'rxjs';
 import { catchError, retry, tap, map } from 'rxjs/operators';
-import { User } from '../infrastructure/model/user.model';
-import { CookieService } from 'ngx-cookie-service';
-import {WebStorageService} from './webstorage.service';
-import { Language } from '../infrastructure/dtos/language.dto';
 import { constants } from '../app-constants';
+
+import { User } from '../infrastructure/model/user.model';
+
+
+
+import { Language } from '../infrastructure/dtos/language.dto';
+
+
+
 
 
 @Injectable()
 export class HttpService {
 
-  constructor(private http: HttpClient, private _cookieService: CookieService, private webStorageService: WebStorageService) {}
+  constructor(private http: HttpClient) {}
 
 
   public login(username: string, password: string) {
@@ -43,7 +48,6 @@ export class HttpService {
   }
 
   public loginFacebook() {
-    this.webStorageService.clearSessionToken();
     window.location.href= constants.baseUrl + "connect/facebook";
   }
 

@@ -13,8 +13,8 @@ export class HttpTokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
       let sessionToken: SessionToken = this._webStorageService.getSessionToken();
       if ( sessionToken != undefined && sessionToken.jwtAuth) {
-      const customReq = request.clone({
-        headers: request.headers.set('Authorization', ' Bearer ' + this._webStorageService.getSessionToken())
+        const customReq = request.clone({
+        headers: request.headers.set('Authorization', ' Bearer ' + sessionToken.token)
       });
       return next.handle(customReq);
     }

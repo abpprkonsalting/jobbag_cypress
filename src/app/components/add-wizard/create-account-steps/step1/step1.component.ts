@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.component';
 import {WebStorageService} from '../../../../services/webstorage.service';
-import {HttpService} from '../../../../services/http.service';
 import { User } from 'src/app/infrastructure/model/user.model';
 
 @Component({
@@ -14,7 +13,7 @@ export class Step1Component implements OnInit {
   formGroup: FormGroup;
   user: User;
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private httpService: HttpService) { }
+  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService) { }
 
   ngOnInit() {
     this.formGroup = this._formBuilder.group({
@@ -70,9 +69,9 @@ export class Step1Component implements OnInit {
 
   registerUser() {
     this.stepperMessagesHandle.next({value:"VALID"});
-    this.httpService.registerUser(this.user).subscribe(
+
+    this.webstorageService.registerUser(this.user).subscribe(
       success => {
-        this.webstorageService.saveFirstTimeCredentials({'username':this.user.username,'password':this.user.password});
         this.stepperMessagesHandle.next({value:"next"});
       },
       error => { console.log(error) });

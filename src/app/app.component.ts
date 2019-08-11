@@ -1,15 +1,17 @@
 import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {HttpService} from './services/http.service';
-import {WebStorageService} from './services/webstorage.service';
-import { User } from './infrastructure/model/user.model';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSidenav} from '@angular/material/sidenav';
-import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { constants } from './app-constants';
 import { Router,ActivatedRoute } from '@angular/router';
+
+import {WebStorageService} from './services/webstorage.service';
+
+import {LoginDialogComponent} from './components/login-dialog/login-dialog.component';
+
+import { User } from './infrastructure/model/user.model';
+import { constants } from './app-constants';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   opened: boolean;
-  httpService: HttpService;
-  webstorageService: WebStorageService;
+
+  webStorageService: WebStorageService;
 
   title: string;
   user: User | undefined;
@@ -31,13 +33,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   fillerNav = Array.from({length: 10}, (_, i) => `Nav Item ${i + 1}`);
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, httpService: HttpService, webstorageService: WebStorageService,loginDialog: MatDialog
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, webStorageService: WebStorageService,loginDialog: MatDialog
               ,private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer,private router: Router) {
+
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.httpService = httpService;
-    this.webstorageService = webstorageService;
+    this.webStorageService = webStorageService;
     this.loginDialog = loginDialog;
 
     this.matIconRegistry.addSvgIcon('facebook',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'facebook.svg'));
@@ -47,12 +49,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.webstorageService.getUser().subscribe(
+    this.webStorageService.getUser().subscribe(
       next => {
         if ( next.password != null && next.password != undefined && next.password != '') {
-          this.httpService.login(next.username, next.password).subscribe(
-            token => {
-              this.user = this.webstorageService.setUserFromJWToken(token);
+
+          this.webStorageService.login(next.username, next.password).subscribe(
+            user => {
+              this.user = user;
               this.router.navigateByUrl('/configure-user',{skipLocationChange:true});
             },
             error => { this.user = new User() });
@@ -75,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Esta condición de abajo implica que hay un usuario logeado, por lo tanto lo que se hace es logout
     if (this.user.roles.length > 0) {
-      this.webstorageService.logout().subscribe(next => this.user = next,
+      this.webStorageService.logout().subscribe(next => this.user = next,
       error => {
         console.log(error.message);
         this.user = new User();
@@ -90,16 +93,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
       dialogRef.afterClosed().subscribe(result => {
 
-        this.webstorageService.saveRememberMe(result.rememberme);
+        this.webStorageService.saveRememberMe(result.rememberme);
 
         switch (result.loginMethod) {
           case 'facebook':
-            this.webstorageService.saveFacebookSessionTempKey();
-            this.httpService.loginFacebook();
+            this.webStorageService.loginFacebook();
             break;
           case 'normal':
-            this.httpService.login(result.email, result.password).subscribe(
-              token => { this.user = this.webstorageService.setUserFromJWToken(token); },
+            this.webStorageService.login(result.email, result.password).subscribe(
+              user => { this.user = user },
               error => { this.user = new User() });
             break;
           default:
@@ -113,9 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
   closeSidenav() {
     this.opened = !this.opened;
   }
-  test() {
+  /*test() {
     this.httpService.getLanguages().subscribe(languages => console.log(languages));
-  }
+  }*/
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
