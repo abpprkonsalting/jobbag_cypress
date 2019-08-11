@@ -19,26 +19,31 @@
       <mat-divider></mat-divider>
 
       <div *ngIf="user.username != ''" class="side-nav-user-area">
-      <div mat-list-item routerLink=".">
+
+      <div mat-list-item routerLink="configure-user" (click)="onToggleNav()">
         <button mat-button>
           <mat-icon>person</mat-icon>Mi Perfil
         </button>
       </div>
-      <div mat-list-item routerLink=".">
+
+      <div mat-list-item routerLink="." (click)="onToggleNav()">
         <button mat-button>
           <mat-icon>assignment_ind</mat-icon>Mis Contratos
         </button>
       </div>
-      <div mat-list-item routerLink=".">
+
+      <div mat-list-item routerLink="." (click)="onToggleNav()">
         <button mat-button>
           <mat-icon>build</mat-icon>Mis Trabajos
         </button>
       </div>
-      <div mat-list-item routerLink=".">
+
+      <div mat-list-item routerLink="." (click)="onToggleNav()">
         <button mat-button>
           <mat-icon>group</mat-icon>Mis Amigos
         </button>
       </div>
+
     </div>
 
     </mat-nav-list>
