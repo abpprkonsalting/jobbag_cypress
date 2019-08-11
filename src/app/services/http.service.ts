@@ -8,6 +8,8 @@ import { User } from '../infrastructure/model/user.model';
 
 
 
+import { Profession } from '../infrastructure/model/profession.model';
+import { Location } from '../infrastructure/model/location.model';
 import { Language } from '../infrastructure/dtos/language.dto';
 
 
@@ -55,6 +57,22 @@ export class HttpService {
 
     return this.http.get(constants.apiUrl + 'languages/',{}).pipe(
       map((e:any)=> <Array<Language>>e),
+      catchError((e:any)=> throwError(e))
+    );
+  }
+
+  public getProfessions(): Observable<Array<Profession>> {
+
+    return this.http.get(constants.apiUrl + 'professions/',{}).pipe(
+      map((e:any)=> <Array<Profession>>e),
+      catchError((e:any)=> throwError(e))
+    );
+  }
+
+  public getLocations(): Observable<Array<Location>> {
+
+    return this.http.get(constants.apiUrl + 'locations/',{}).pipe(
+      map((e:any)=> <Array<Location>>e),
       catchError((e:any)=> throwError(e))
     );
   }

@@ -7,6 +7,8 @@ import { User } from '../infrastructure/model/user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, throwError,of} from 'rxjs';
 import { SessionToken } from '../infrastructure/model/sessionToken.model';
+import { Profession } from '../infrastructure/model/profession.model';
+import { Location } from '../infrastructure/model/location.model';
 
 import {HttpService} from './http.service';
 import { switchMap } from 'rxjs/operators';
@@ -24,6 +26,8 @@ export class WebStorageService {
   private _sessionToken:  SessionToken = new SessionToken();
 
   user: User = undefined;
+  professions: Profession[] = undefined;
+  locations: Location[] = undefined;
 
   constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage, httpService: HttpService) {
     if (!environment.production) {
@@ -148,6 +152,30 @@ export class WebStorageService {
       return this.setUserFromToken(this._sessionToken.token);
     }
     return new User();
+  }
+
+  public getAllProfessions(): Observable<Array<Profession>> {
+
+    if (this.professions != undefined) return of(this.professions);
+
+    return this.httpService.getProfessions();
+  }
+
+  public setAllProfessions(professions: Array<Profession>): Array<Profession> {
+    this.professions = professions;
+    return this.professions;
+  }
+
+  public getAllLocations(): Observable<Array<Location>> {
+
+    if (this.locations != undefined) return of(this.locations);
+
+    return this.httpService.getLocations();
+  }
+
+  public setAllLocations(locations: Array<Location>): Array<Location> {
+    this.locations = locations;
+    return this.locations;
   }
 
   /**************************** Private Methods ******************************/
