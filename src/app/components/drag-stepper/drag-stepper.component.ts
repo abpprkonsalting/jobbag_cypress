@@ -1,5 +1,5 @@
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, OnInit, Injectable, Input, Directive,TemplateRef, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Injectable, Input, Directive,TemplateRef, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CdkStepper, CdkStep,StepperOptions } from '@angular/cdk/stepper';
 import { MatStepper,MatStep } from '@angular/material'
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -25,23 +25,27 @@ export class DragStepComponent  extends MatStep {
   styleUrls: ['./drag-stepper.component.less'],
   providers: [{ provide: MatStepper , useExisting: DragStepperComponent }],
 })
-export class DragStepperComponent  extends MatStepper implements OnInit, OnDestroy {
+export class DragStepperComponent  extends MatStepper implements OnInit, OnDestroy, AfterViewChecked {
   @Input() stepperShowNav: boolean;
   @Input() linear_u: boolean;
   @Output() dataChange = new EventEmitter<any>();
+  @ViewChild('stepContentInner',{static: true}) contentInner : ElementRef;
   _data: any = {};
   _allowed: boolean = false;
   private _dragging: boolean = false;
   private _draggingDir: number;
   v_layout: boolean = false;
-  private _tmpIndex: number = 0;
+  dragDisabled: boolean = true;
+
   private _stepperSubscriptionIndex;
   private _history: number;
+  cdr: ChangeDetectorRef;
 
 
   constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver,protected messageSubscriber: DragStepperMessagesHandle<Partial<any>>)
   {
     super(dir, changeDetectorRef);
+    this.cdr = changeDetectorRef;
   }
 
   ngOnInit() {
@@ -63,10 +67,21 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
     this._history = undefined;
   }
 
+  ngAfterViewChecked() {
+    this.checkDraggable();
+  }
+
+  checkDraggable() {
+    if (this.contentInner.nativeElement.scrollHeight == this.contentInner.nativeElement.clientHeight) this.dragDisabled = false;
+    else this.dragDisabled = true;
+    this.cdr.detectChanges()
+  }
+
   dragStarted($event) {
     console.log('drag started');
     this._dragging = true;
   }
+
   dragEnded($event) {
     $event.source.reset();
     if (!this._dragging) {
