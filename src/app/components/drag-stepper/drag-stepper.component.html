@@ -17,7 +17,7 @@
     <i class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>keyboard_arrow_up</i>
   </button>
 
-  <button mat-button (click)="next()" fxHide="{{selectedIndex == (_steps.length - 1)}}">
+  <button mat-button (click)="next()" fxHide="{{ selectedIndex == (_steps.length - 1)}}" disabled="{{!_allowed }}">
     <i class="material-icons" fxHide.xs fxShow.sm fxShow.md fxShow.lg fxShow.xl>keyboard_arrow_right</i>
     <i class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>keyboard_arrow_down</i>
   </button>

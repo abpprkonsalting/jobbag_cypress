@@ -30,12 +30,13 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
   @Input() linear_u: boolean;
   @Output() dataChange = new EventEmitter<any>();
   _data: any = {};
-  private _allowed: boolean = false;
+  _allowed: boolean = false;
   private _dragging: boolean = false;
   private _draggingDir: number;
   v_layout: boolean = false;
   private _tmpIndex: number = 0;
   private _stepperSubscriptionIndex;
+  private _history: number;
 
 
   constructor(dir: Directionality, changeDetectorRef: ChangeDetectorRef,public breakpointObserver: BreakpointObserver,protected messageSubscriber: DragStepperMessagesHandle<Partial<any>>)
@@ -59,6 +60,7 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
 
   reset() {
     this.selectedIndex = 0;
+    this._history = undefined;
   }
 
   dragStarted($event) {
@@ -109,7 +111,10 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
   prev(){
     if (this.selectedIndex > 0) {
       if (!this.linear_u) {
-        this.selectedIndex--;
+        if (this._history !=undefined) {
+          this.selectedIndex = this._history;
+          this._history = undefined;
+        } else this.selectedIndex--;
         this.messageSubscriber.next({value:'stepChanged',data:this._data});
       }
       else {
@@ -119,14 +124,31 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
   }
 
   next(){
-    if (this.selectedIndex < this._steps.length - 1)
+    if (this.selectedIndex < this._steps.length - 1) {
       if (this._allowed) {
-        this.selectedIndex++;
+        if (this._history !=undefined) {
+          this.selectedIndex = this._history;
+          this._history = undefined;
+        } else this.selectedIndex++;
         this.messageSubscriber.next({value:'stepChanged',data:this._data});
       }
       else {
         this.messageSubscriber.next({value:'stepperReceivedOrderNext'});
       }
+    }
+  }
+
+  last(){
+    if (this.selectedIndex < this._steps.length - 1) {
+      if (this._allowed) {
+        this._history = this.selectedIndex;
+        this.selectedIndex = this._steps.length - 1;
+        this.messageSubscriber.next({value:'stepChanged',data:this._data});
+      }
+      else {
+        this.messageSubscriber.next({value:'stepperReceivedOrderLast'});
+      }
+    }
   }
 
   initExternalMessagesInput() {
@@ -146,6 +168,9 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
             case "prev":
                 this.prev();
               break;
+            case "last":
+              this.last();
+            break;
             case "VALID":
               this._allowed = true;
               break;
@@ -157,6 +182,7 @@ export class DragStepperComponent  extends MatStepper implements OnInit, OnDestr
           }
         }
         else if (messageType == 'number' && message.value > 0 && message.value <= this.steps.length) {
+          this._history = this.selectedIndex;
           this.selectedIndex = message.value - 1;
       }
     });
