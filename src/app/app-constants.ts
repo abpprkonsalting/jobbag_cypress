@@ -11,21 +11,21 @@ export const constants = {
 };
 
 export const professions: Profession[] = [
-  new Profession(1, [1,2,3,4],'Home Repairs',{type: IconType.MaterialNative,url:'home'}),
-  new Profession(2, [1,2,3,4],'Professional Service',{type: IconType.MaterialNative,url:'work'}),
-  new Profession(3, [1,2,3,4],'Technical Services',{type: IconType.MaterialNative,url:'build'}),
+  new Profession(1, [1,2,3,4],'Home Repairs',{iconType: IconType.MaterialNative,url:'home'}),
+  new Profession(2, [1,2,3,4],'Professional Service',{iconType: IconType.MaterialNative,url:'work'}),
+  new Profession(3, [1,2,3,4],'Technical Services',{iconType: IconType.MaterialNative,url:'build'}),
 
-  new Profession(4, [1,2,3,4],'Carpintero',{type: IconType.MaterialNative,url:'home'},1),
-  new Profession(5, [1,2,3,4],'Albañil',{type: IconType.MaterialNative,url:'home'},1),
-  new Profession(6, [1,2,3,4],'Plomero',{type: IconType.MaterialNative,url:'home'},1),
+  new Profession(4, [1,2,3,4],'Carpintero',{iconType: IconType.MaterialNative,url:'home'},1),
+  new Profession(5, [1,2,3,4],'Albañil',{iconType: IconType.MaterialNative,url:'home'},1),
+  new Profession(6, [1,2,3,4],'Plomero',{iconType: IconType.MaterialNative,url:'home'},1),
 
-  new Profession(7, [1,2,3,4],'Programador',{type: IconType.MaterialNative,url:'work'},2),
-  new Profession(8, [1,2,3,4],'Redes',{type: IconType.MaterialNative,url:'work'},2),
-  new Profession(9, [1,2,3,4],'Abogado',{type: IconType.MaterialNative,url:'work'},2),
+  new Profession(7, [1,2,3,4],'Programador',{iconType: IconType.MaterialNative,url:'work'},2),
+  new Profession(8, [1,2,3,4],'Redes',{iconType: IconType.MaterialNative,url:'work'},2),
+  new Profession(9, [1,2,3,4],'Abogado',{iconType: IconType.MaterialNative,url:'work'},2),
 
-  new Profession(10, [1,2,3,4],'Informático',{type: IconType.MaterialNative,url:'build'},3),
-  new Profession(11, [1,2,3,4],'Mecánico',{type: IconType.MaterialNative,url:'build'},3),
-  new Profession(12, [1,2,3,4],'Refrigeración',{type: IconType.MaterialNative,url:'build'},3),
+  new Profession(10, [1,2,3,4],'Informático',{iconType: IconType.MaterialNative,url:'build'},3),
+  new Profession(11, [1,2,3,4],'Mecánico',{iconType: IconType.MaterialNative,url:'build'},3),
+  new Profession(12, [1,2,3,4],'Refrigeración',{iconType: IconType.MaterialNative,url:'build'},3),
 ];
 
 export const locations: Location[] = [
