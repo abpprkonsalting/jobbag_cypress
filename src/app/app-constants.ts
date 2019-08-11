@@ -6,7 +6,7 @@ import { IconType } from './infrastructure/enums/icon-types.enum';
 export const constants = {
   baseUrl: environment.production ? 'https://jobbag.ca/' : 'https://jobbag.ca/',
   webUrl: environment.production ? 'web/' : 'web/',
-  apiUrl: environment.production ? 'api/' : 'api/',
+  apiUrl: environment.production ? 'https://jobbag.ca/api/' : 'https://jobbag.ca/api/',
   assetsUrl: environment.production ? 'assets/' : 'assets/',
 };
 
