@@ -1,14 +1,19 @@
 
+import { Employee } from './employee.model';
+import { Employer } from './employer.model';
+
 export class User {
-  email: string;
+  id: number;
   username: string;
+  password?: string;
   name: string;
   surname: string;
   imageUrl: string;
   roles: string[];
-  sessionId: string;
-  password?: string;
+  employee?: Employee;
+  employer?: Employer;
 
+  email: string;
   constructor(){
     this.email = "";
     this.username = "";
@@ -16,6 +21,6 @@ export class User {
     this.surname = "";
     this.imageUrl = "";
     this.roles = [];
-    this.sessionId ="";
+    this.employee = null;
   }
 }
