@@ -70,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  onToggleNav($event){
+  onToggleNav(){
     this.opened = !this.opened;
   }
 
