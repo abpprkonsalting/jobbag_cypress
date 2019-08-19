@@ -2,25 +2,33 @@
 
 <div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="start center">
 
-  <div class="header">Presentate correctamente:</div>
+  <div class="header">Datos generales:</div>
 
   <div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column" fxLayoutAlign.xs="center center">
 
-    <form class="content-column" [formGroup]="formGroup" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center">
+    <div class="content-column second" fxLayout="column" fxLayoutAlign="center center">
 
-      <mat-form-field ngClass.xs="mobile">
-        <input matInput mat-form-field-control type="text" placeholder="nombre" formControlName="name">
+      <mat-radio-group aria-label="Select an option" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="center start" style='margin-bottom: auto;padding: 25px;' (change)="onSelection($event)">
+        <mat-radio-button value="false" style="margin-bottom: 30px;">Cuenta personal</mat-radio-button>
+        <mat-radio-button value="true">Cuenta empresarial</mat-radio-button>
+      </mat-radio-group>
+
+    </div>
+
+    <form class="content-column" [formGroup]="formGroup" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start start">
+      <mat-form-field ngClass.xs="mobile" class="field">
+        <input matInput mat-form-field-control type="text" placeholder="Nombre" formControlName="name">
       </mat-form-field>
 
-      <mat-form-field>
-        <input matInput mat-form-field-control type="text" placeholder="apellidos" formControlName="surname">
+      <mat-form-field  *ngIf="company=='false'">
+        <input matInput mat-form-field-control type="text" placeholder="Apellido" formControlName="surname">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="company=='true'">
+        <input matInput mat-form-field-control type="text" placeholder="Dirección" formControlName="direccion">
       </mat-form-field>
 
     </form>
-
-    <div class="content-column second" fxLayout="column" fxLayoutAlign="center center">
-      <img href="">
-    </div>
   </div>
 </div>
 

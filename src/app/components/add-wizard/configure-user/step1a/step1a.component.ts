@@ -5,11 +5,11 @@ import {WebStorageService} from '../../../../services/webstorage.service';
 import { User } from '../../../../infrastructure/model/user.model';
 
 @Component({
-  selector: 'step1',
-  templateUrl: './step1.component.html',
-  styleUrls: ['./step1.component.less']
+  selector: 'step1a',
+  templateUrl: './step1a.component.html',
+  styleUrls: ['./step1a.component.less']
 })
-export class Step1Component implements OnInit, OnDestroy {
+export class Step1aComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   user: User;
   private _stepperSubscriptionIndex;

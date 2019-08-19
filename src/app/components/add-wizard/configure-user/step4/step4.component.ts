@@ -41,8 +41,10 @@ export class Step4Component implements OnInit, OnDestroy {
       this.availableProfessions = this.allProfessions.filter(profession => profession.parentId != undefined && this.firstlevelsSelected.includes(profession.parentId));
       this.selectedCount = this.availableProfessions.filter(profession => profession.selected == true).length;
       console.log(this.selectedCount);
+      if (this.selectedCount == 0) this.stepperMessagesHandle.next({value:"INVALID"});
+      else this.stepperMessagesHandle.next({value:"VALID"});
     });
-    this.stepperMessagesHandle.next({value:"INVALID"});
+
 
     this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
@@ -79,6 +81,8 @@ export class Step4Component implements OnInit, OnDestroy {
           else this.selectedCount--;
 
     }
+    if (this.selectedCount > 0 ) this.stepperMessagesHandle.next({value:"VALID"});
+    else this.stepperMessagesHandle.next({value:"INVALID"});
   }
 
   ngOnDestroy() {

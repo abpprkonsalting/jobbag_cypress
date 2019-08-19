@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.component';
 import {WebStorageService} from '../../../../services/webstorage.service';
-import {HttpService} from '../../../../services/http.service';
 import { User } from '../../../../infrastructure/model/user.model';
 import { Profession } from '../../../../infrastructure/model/profession.model';
+import { ActivatedRoute } from '@angular/router';
 
 import { professions } from '../../../../app-constants';
 
@@ -23,23 +23,28 @@ export class Step3Component implements OnInit, OnDestroy{
   } = {x:0,y:0};
   private _stepperSubscriptionIndex: number;
 
-  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private httpService: HttpService) { }
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
-    this.professions = professions;
-    this.firstLevelProfessions = this.professions.filter( profession => profession.parentId == undefined );
-    this.selectedCount = this.firstLevelProfessions.filter(profession => profession.selected == true).length;
     this.webstorageService.getUser().subscribe(
       next => {
         this.user = next;
+        console.log(this.user);
       },
       error => {
         console.log(error.message);
         this.user = new User();
       }
     );
-    this.stepperMessagesHandle.next({value:"INVALID"});
+
+    this.route.data.subscribe( data => {
+      this.professions = data.professions;
+      this.firstLevelProfessions = this.professions.filter( profession => profession.parentId == undefined );
+      this.selectedCount = this.firstLevelProfessions.filter(profession => profession.selected == true).length;
+      if (this.selectedCount == 0)  this.stepperMessagesHandle.next({value:"INVALID"});
+      else this.stepperMessagesHandle.next({value:"VALID"});
+    });
 
     this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
@@ -49,7 +54,7 @@ export class Step3Component implements OnInit, OnDestroy{
             case "stepperReceivedOrderNext":
               if (this.selectedCount > 0) {
                 this.stepperMessagesHandle.next({value:"VALID"});
-                this.stepperMessagesHandle.next({value:"next",data:{'professions':this.professions}});
+                this.stepperMessagesHandle.next({value:"next"});
               }
               break;
             default:
@@ -76,6 +81,8 @@ export class Step3Component implements OnInit, OnDestroy{
             // Des-seleccionar los children
             this.professions.filter(profession => profession.parentId != undefined && profession.parentId == object.profession.id).forEach(profession => profession.selected = false);
           }
+          if (this.selectedCount > 0 ) this.stepperMessagesHandle.next({value:"VALID"});
+          else this.stepperMessagesHandle.next({value:"INVALID"});
     }
   }
 

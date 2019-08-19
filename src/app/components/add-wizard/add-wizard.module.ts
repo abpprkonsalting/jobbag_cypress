@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
-  MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
+  MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,MatProgressBarModule,
   MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,MatRadioModule,MatExpansionModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -19,6 +19,7 @@ import { Step3Component } from './project-steps/step3/step3.component';
 import { Step1Component as AccountStep1Component } from './create-account-steps/step1/step1.component';
 import { Step2Component as AccountStep2Component } from './create-account-steps/step2/step2.component';
 import { Step1Component as ConfigUserStep1Component } from './configure-user/step1/step1.component';
+import { Step1aComponent as ConfigUserStep1aComponent } from './configure-user/step1a/step1a.component';
 import { Step2Component as ConfigUserStep2Component } from './configure-user/step2/step2.component';
 import { Step3Component as ConfigUserStep3Component } from './configure-user/step3/step3.component';
 import { Step4Component as ConfigUserStep4Component } from './configure-user/step4/step4.component';
@@ -35,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AccountStep1Component,
     AccountStep2Component,
     ConfigUserStep1Component,
+    ConfigUserStep1aComponent,
     ConfigUserStep2Component,
     ConfigUserStep3Component,
     ConfigUserStep4Component,
@@ -42,7 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DragStepperComponent,
   ],
   imports: [
-    CommonModule,
+    CommonModule,MatProgressBarModule,
     MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
     MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
     MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,

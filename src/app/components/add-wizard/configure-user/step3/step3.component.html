@@ -13,8 +13,8 @@
             <span fxFlex="80%">{{profession.name}}</span>
           </mat-card-title>
 
-          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.type == 2" svgIcon="{{profession.avatar.url}}"></mat-icon>
-          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.type == 1">{{profession.avatar.url}}</mat-icon>
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.iconType == 2" svgIcon="{{profession.avatar.url}}"></mat-icon>
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.iconType == 1">{{profession.avatar.url}}</mat-icon>
 
         </mat-card>
 
