@@ -5,13 +5,16 @@ import { Inject, Injectable } from '@angular/core';
 import { LOCAL_STORAGE, SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { User } from '../infrastructure/model/user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, throwError,of} from 'rxjs';
+import { Observable, throwError,of,EMPTY} from 'rxjs';
 import { SessionToken } from '../infrastructure/model/sessionToken.model';
+
 import { Profession } from '../infrastructure/model/profession.model';
 import { Location } from '../infrastructure/model/location.model';
+import { Employee } from '../infrastructure/model/employee.model';
+import { Employer } from '../infrastructure/model/employer.model';
 
 import {HttpService} from './http.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap,take,mergeMap } from 'rxjs/operators';
 
 
 @Injectable()
@@ -177,6 +180,51 @@ export class WebStorageService {
     this.locations = locations;
     return this.locations;
   }
+
+  public getEmployee(): Observable<Employee> {
+
+    if (this.user.employee != null) return of(this.user.employee);
+    return this.httpService.getEmployee().pipe(
+      take(1),
+      mergeMap(employee => {
+
+        if (employee){
+          this.user.employee = <Employee>employee;
+          return of(this.user.employee);
+        } else {
+          return EMPTY;
+        }
+      })
+    );
+  }
+
+  public setEmployee(employee: Employee): Employee {
+    this.user.employee = employee;
+    return this.user.employee;
+  }
+
+  public getEmployer(): Observable<Employer> {
+
+    if (this.user.employer != null) return of(this.user.employer);
+    return this.httpService.getEmployer().pipe(
+      take(1),
+      mergeMap(employer => {
+
+        if (employer){
+          this.user.employer = <Employer>employer;
+          return of(this.user.employer);
+        } else {
+          return EMPTY;
+        }
+      })
+    );
+  }
+
+  public setEmployer(employer: Employer): Employer {
+    this.user.employer = employer;
+    return this.user.employer;
+  }
+
 
   /**************************** Private Methods ******************************/
 
