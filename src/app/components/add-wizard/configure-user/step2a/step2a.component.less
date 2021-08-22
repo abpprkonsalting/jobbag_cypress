@@ -1,0 +1,163 @@
+.step-content-wrapper {
+
+  padding: 20px;
+
+  &.mobile {
+    padding: 20px 0px;
+  }
+
+  .content-header {
+    margin: 10px 0;
+
+    &.mobile {
+      margin:0;
+    }
+  }
+
+  .content {
+
+    width: 100%;
+    height: 75%;
+
+    .content-column {
+      height: 100%;
+      padding: 5px;
+      flex-grow: 1;
+      width: 100%;
+
+      .content-column-header {
+        align-self: center;
+      }
+
+      .employee-content {
+        width: 100%;
+        height: 100%;
+
+        .experience-content {
+          display: flex;
+          padding: 10px;
+          border: 1px solid lightgray;
+          background: #fdfbfb;
+          height: 100%;
+          width: 100%;
+
+          &.mobile {
+            padding-top:0;
+          }
+
+          .experience-content-header {
+            border-right: 1px solid lightgray;
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            &.mobile {
+              border-right: none;
+              border-bottom: 1px solid lightgray;
+              justify-content: space-between;
+              padding:0;
+              flex-direction: row;
+            }
+          }
+
+          .experience-content-items {
+            width: 100%;
+            padding-left: 5px;
+            overflow: scroll;
+            height: 100%;
+            align-content: flex-start;
+
+            &.mobile {
+              padding-top:5px;
+            }
+
+            .experience-button {
+              background: #b5b5b5;
+              margin-right: 10px;
+              padding: 5px;
+              height: 40px;
+              margin-bottom: 5px;
+
+              .experience-button-title {
+                font-size: 14px;
+                margin: 0;
+              }
+
+              .experience-button-icon {
+                margin-right: 10px;
+              }
+
+              .experience-button-years {
+                font-size: 16px;
+                line-height: 16px;
+                margin: 0 0 -3px 10px;
+              }
+
+              .experience-button-close {
+                color: white;
+                margin-left: 10px;
+              }
+              &.country {
+                background:#07b8f1;
+              }
+              &.province {
+                background: #d6d6d6;
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .employee-action {
+    height: 25%;
+    width:100%;
+
+    &.mobile {
+      height: auto;
+    }
+
+    > div {
+      width: 33%;
+      margin: auto 0;
+      display:flex;
+
+      &.column-ratings {
+        flex-direction: column;
+        margin-right: auto;
+        min-width: 200px;
+
+        &.mobile {
+          flex-direction: row;
+    margin-bottom: 20px;
+    min-width: 100%;
+        }
+      }
+
+      mat-progress-bar {
+        margin-top: 10px;
+        width: 80%;
+
+        &.mobile {
+
+        margin-left: 10px;
+        }
+      }
+
+      .publish-button {
+        width: 80%;
+        margin: 0 auto;
+        background: lightblue;
+
+        &.mobile {
+          margin-left: 0;
+    width: 100%;
+        }
+      }
+    }
+  }
+}

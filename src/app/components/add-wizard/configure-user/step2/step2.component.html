@@ -1,86 +1,32 @@
 
-<div class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center" style="height: 100%">
+<div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="center center" ngClass.xs="mobile">
 
-<!--div class="content-header">Mis Roles:</div-->
+    <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around space-around" class="cards-wrapper" ngClass.xs="mobile">
 
-<div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="start start" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+      <mat-card class="steps-button" [ngClass.xs]="{'mobile':true}" fxLayout="column"
+                fxLayoutAlign="center center"
+                (mousedown)="onmousedown($event)" (mouseup)="onMouseUp({'$event':$event,'selected':'employer'})">
 
-    <div class="content-column" fxLayout="column" fxLayoutAlign="start start" *ngIf="this.user.employer != null">
+        <mat-card-title class="button-title" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center center">
+          <span fxFlex="80%">Perfil Empleador</span>
+        </mat-card-title>
 
-        <div class="content-column second" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start start">
-            <div class="content-column-header">Resumen como Empleador:</div>
-              <div class="employee-content">
-                  <div class="experience-content">
-                      <div class="experience-content-header">Projects:</div>
-                      <div fxLayout="row wrap" class="experience-content-items">
-                        <mat-card class="experience-button" *ngFor="let project of projects" fxLayout="row-reverse" fxLayoutAlign="row-reverse center" >
-                          <button mat-icon-button class="experience-button-close mobile"><mat-icon>close</mat-icon></button>
-                            <span class="experience-button-years">{{project.projectStatus.id}}</span>
-                            <mat-card-title class="experience-button-title mobile" ngClass.xs="" fxLayout="row" fxLayoutAlign="center center">
-                                {{project.title}}
-                            </mat-card-title>
-                        </mat-card>
-                      </div>
-                  </div>
+        <mat-icon class="steps-button-icon" ngClass.xs="mobile" >assignment_turned_in</mat-icon>
 
-                  <div class="experience-content">
-                      <div class="experience-content-header">Ambito Laboral:</div>
-                      <div fxLayout="row wrap" class="experience-content-items">
-                      </div>
-                  </div>
-                  <div fxLayout="row" fxLayoutAlign="space-between start" class="employee-action">
-                    <div class="column-ratings">
-                      Ratings: <mat-progress-bar mode="determinate" value="{{user.employer.rate}}"></mat-progress-bar>
-                    </div>
-                    <div><button mat-button class="publish-button"><mat-icon>more_horiz</mat-icon>Más</button></div>
-                  </div>
+      </mat-card>
 
+      <mat-card class="steps-button" [ngClass.xs]="{'mobile':true}" fxLayout="column"
+                fxLayoutAlign="center center"
+                (mousedown)="onmousedown($event)" (mouseup)="onMouseUp({'$event':$event,'selected':'employee'})">
 
-              </div>
-          </div>
+        <mat-card-title class="button-title" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center center">
+          <span fxFlex="80%">Perfil Empleado</span>
+        </mat-card-title>
+
+        <mat-icon class="steps-button-icon" ngClass.xs="mobile" >build</mat-icon>
+
+      </mat-card>
 
     </div>
-
-    <div class="content-column second" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start start" *ngIf="this.user.employee != null">
-      <div class="content-column-header">Resumen como Trabajador:</div>
-        <div class="employee-content">
-            <div class="experience-content">
-                <div class="experience-content-header">Profesiones:</div>
-                <div fxLayout="row wrap" class="experience-content-items">
-                  <mat-card class="experience-button" *ngFor="let experience of experiences" fxLayout="row-reverse" fxLayoutAlign="row-reverse center" >
-                    <button mat-icon-button class="experience-button-close mobile" (click)="removeExperience(experience.profession.id)" ><mat-icon>close</mat-icon></button>
-                      <span class="experience-button-years">{{experience.years}}</span>
-                      <mat-card-title class="experience-button-title mobile" ngClass.xs="" fxLayout="row" fxLayoutAlign="center center">
-                          {{experience.profession.name}}
-                      </mat-card-title>
-                      <mat-icon class="experience-button-icon mobile" ngClass.xs="" *ngIf="experience.profession.avatar.iconType == 2" svgIcon="{{experience.profession.avatar.url}}"></mat-icon>
-                      <mat-icon class="experience-button-icon mobile" ngClass.xs="mobile" *ngIf="experience.profession.avatar.iconType == 1">{{experience.profession.avatar.url}}</mat-icon>
-                  </mat-card>
-                </div>
-            </div>
-
-            <div class="experience-content">
-                <div class="experience-content-header">Ambito Laboral:</div>
-                <div fxLayout="row wrap" class="experience-content-items">
-                  <mat-card class="experience-button" *ngFor="let location of locations" fxLayout="row-reverse" fxLayoutAlign="row-reverse center" [ngClass]="{'country':location.parentId == undefined,'province':location.parentId != undefined}">
-                    <button mat-icon-button class="experience-button-close mobile" (click)="removeLocation(location.id)"><mat-icon>close</mat-icon></button>
-                      <mat-card-title class="experience-button-title mobile" ngClass.xs="" fxLayout="row" fxLayoutAlign="center center">
-                          {{location.name}}
-                      </mat-card-title>
-                  </mat-card>
-                </div>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="space-between start" class="employee-action">
-              <div class="column-ratings">
-                Ratings: <mat-progress-bar mode="determinate" value="{{user.employee.rate}}"></mat-progress-bar>
-              </div>
-              <div><button mat-button class="publish-button"><mat-icon>publish</mat-icon>CV</button></div>
-              <div><button mat-button class="publish-button"><mat-icon>more_horiz</mat-icon>Más</button></div>
-            </div>
-
-
-        </div>
-    </div>
-  </div>
 
 </div>

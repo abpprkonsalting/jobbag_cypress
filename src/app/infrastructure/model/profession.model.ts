@@ -1,22 +1,22 @@
-import { IconType } from '../enums/icon-types.enum';
+import { avatarType } from '../enums/icon-types.enum';
 
 export class Avatar {
-  iconType: IconType;
+  avatarType: avatarType;
   url: string;
 }
 
 export class Profession {
   id: number;
-  parentId?: number;
-  //countryIds: number[];
+  categories?: Profession[];
+  childrenProfessions?: Profession[];
   name: string;
   avatar: Avatar;
   selected?: boolean;
 
-  constructor(id: number,countryIds: number[],name: string,avatar: Avatar,parentId?: number) {
+  constructor(id: number,name: string,avatar: Avatar,categories?: Profession[],childrenProfessions?: Profession[]) {
     this.id = id;
-    this.parentId = (parentId != undefined && parentId != null) ? parentId : undefined;
-    //this.countryIds = countryIds;
+    this.categories = categories != undefined ? categories : undefined;
+    this.childrenProfessions = childrenProfessions != undefined ? childrenProfessions : undefined;
     this.name = name;
     this.avatar = avatar;
     this.selected = false;

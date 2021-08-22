@@ -1,115 +1,62 @@
 .step-content-wrapper {
 
-  padding: 20px;
-
+  height: 100%;
   &.mobile {
-    padding: 20px 5% 60px;
+    width:80%;margin: 0 auto;
+
   }
 
-  .content-header {
-    margin: 10px 0;
+  .step-title {
+    font-size: 120%;margin: 15px auto 30px;
   }
 
-  .content {
+  .cards-wrapper {
 
     width: 100%;
-    height: 100%;
-
-    .content-column {
+    &.mobile {
       height: 100%;
-      padding: 5px;
-      flex-grow: 1;
+      align-items: center;
+    }
 
-      .content-column-header {
-        align-self: center;
+    .steps-button {
+      width:28%;margin-bottom:20px;background:#e6e6e6;
+
+      &.selected {
+        background:lightblue;
+      }
+      &.mobile {
+        width:100%;
+        /*&.selected {
+          background:lightblue;
+        }*/
       }
 
-      .employee-content {
+      .button-title {
         width: 100%;
-        height: 100%;
+        text-align:center;
 
-        .experience-content {
-          display: flex;
-          padding: 10px;
-          border: 1px solid lightgray;
-          background: #fdfbfb;
-          height: 35%;
-          margin-top: 5px;
-
-          .experience-content-header {
-            border-right: 1px solid lightgray;
-            padding-right: 5px;
-          }
-
-          .experience-content-items {
-            width: 100%;
-            padding-left: 5px;
-            overflow: scroll;
-            height: 100%;
-            align-content: flex-start;
-
-
-            .experience-button {
-              background: #b5b5b5;
-              margin-right: 10px;
-              padding: 5px;
-              height: 40px;
-              margin-bottom: 5px;
-
-              .experience-button-title {
-                font-size: 14px;
-                margin: 0;
-              }
-
-              .experience-button-icon {
-                margin-right: 10px;
-              }
-
-              .experience-button-years {
-                font-size: 16px;
-                line-height: 16px;
-                margin: 0 0 -3px 10px;
-              }
-
-              .experience-button-close {
-                color: white;
-                margin-left: 10px;
-              }
-              &.country {
-                background:#07b8f1;
-              }
-              &.province {
-                background: #d6d6d6;
-              }
-            }
-          }
+        &.mobile {
+          place-content: flex-start;
         }
 
-        .employee-action {
-          height: 25%;
-          > div {
-            width: 33%;
-            margin: auto 0;
-            display:flex;
+        span {
+          font-weight: 100;
+          font-size:16px;
 
-            &.column-ratings {
-              flex-direction: column;
-            }
-
-            mat-progress-bar {
-              margin-top: 10px;
-              width: 80%;
-            }
-
-            .publish-button {
-              width: 80%;
-              margin: 0 auto;
-              background: lightblue;
-            }
+          &.mobile {
+            text-align:left;
           }
         }
       }
 
+      .steps-button-icon {
+        font-size: 100px;
+        height: 100px;
+        width: 100px;
+        margin: 20px;
+
+
+      }
     }
   }
 }

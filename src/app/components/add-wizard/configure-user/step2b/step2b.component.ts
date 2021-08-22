@@ -1,3 +1,4 @@
+
 import { Component, OnInit, OnDestroy,ViewChildren, QueryList,AfterViewInit} from '@angular/core';
 import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.component';
 import {WebStorageService} from '../../../../services/webstorage.service';
@@ -7,14 +8,15 @@ import { ActivatedRoute } from '@angular/router';
 import { MatExpansionPanel } from '@angular/material'
 
 @Component({
-  selector: 'step5',
-  templateUrl: './step5.component.html',
-  styleUrls: ['./step5.component.less']
+  selector: 'step2b',
+  templateUrl: './step2b.component.html',
+  styleUrls: ['./step2b.component.less']
 })
-export class Step5Component implements OnInit, OnDestroy,AfterViewInit {
+export class Step2bComponent implements OnInit, OnDestroy {
   @ViewChildren(MatExpansionPanel,{}) allPanelCountries: QueryList<MatExpansionPanel>;
   user: User;
   allLocations: Location[];
+  availableLocations: Location[];
   countries: Location[];
   clickPosition: {
     x: number;
@@ -30,23 +32,47 @@ export class Step5Component implements OnInit, OnDestroy,AfterViewInit {
     this.webstorageService.getUser().subscribe(
       next => {
         this.user = next;
+        console.log(this.user.employee.locations);
       },
       error => {
         console.log(error.message);
         this.user = new User();
       }
     );
-    this.route.data.subscribe( data => {
-      this.allLocations = data.locations;
-      this.countries = this.allLocations.filter(location => location.parentId == undefined);
-      this.countries.forEach(country =>{
-        country.children = [];
-        country.children.push(country);
-        let real = this.allLocations.filter(location => location.parentId != undefined && location.parentId == country.id);
-        country.children = country.children.concat(real);
-      });
-    });
-    this.stepperMessagesHandle.next({value:"INVALID"});
+
+    this.route.data.subscribe(
+      data => {
+        this.allLocations = data.locations;
+        console.log(this.allLocations);
+        let myLocationsIds = [];
+        this.user.employee.locations.forEach(
+          country => {
+            myLocationsIds.push(country.id);
+            if (country.children.length > 0 ) {
+              myLocationsIds = myLocationsIds.concat(country.children.map(child => child.id));
+            }
+        });
+        console.log(myLocationsIds);
+
+        this.countries = this.allLocations.filter(location => location.parentId == undefined);
+        this.countries.forEach(country =>{
+          country.children = [];
+          country.children.push(country);
+          let real = this.allLocations.filter(location => location.parentId != undefined && location.parentId == country.id);
+          real.forEach(child => {
+            if (myLocationsIds.includes(child.id)) {
+              child.selected = 2;
+              country.selected = 1;
+            }
+          });
+          if (real.every(child => child.selected == 2)) country.selected = 2;
+          country.children = country.children.concat(real);
+        });
+        console.log(this.countries);
+      }
+    );
+    this.stepperMessagesHandle.next({value:"VALID"});
+    this.stepperMessagesHandle.next({value:"RETURNBACK"});
 
     this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
@@ -55,8 +81,13 @@ export class Step5Component implements OnInit, OnDestroy,AfterViewInit {
 
           switch (message.value) {
             case "stepperReceivedOrderNext":
-              //this.onclick();
-              break;
+                this.updateUserLocations();
+                this.stepperMessagesHandle.next({value:9});
+                break;
+            case "stepperReceivedOrderPrev":
+                this.updateUserLocations();
+                this.stepperMessagesHandle.next({value:"prev"});
+                break;
             default:
               break;
           }
@@ -108,6 +139,28 @@ export class Step5Component implements OnInit, OnDestroy,AfterViewInit {
         }
       }
     }
+  }
+
+  updateUserLocations(){
+    this.countries = this.countries.filter(country => country.selected > 0);
+    this.countries.forEach(country => {
+      country.children.shift();
+      country.children = country.children.filter(child => child.selected > 0);
+      country = this.cloneCountry(country);
+    });
+    console.log(this.countries);
+    this.user.employee.locations = this.countries;
+  }
+
+  cloneCountry(country: Location) {
+    let newCountry = new Location(country.id, country.name,country.isoCode,country.flagUrl,[]);
+    if (country.children != undefined && country.children.length > 0) {
+      country.children.forEach(child => {
+        let newProvince = this.cloneCountry(child);
+        newCountry.children.push(newProvince);
+      });
+    }
+    return newCountry;
   }
 
   afterPanelExpand(id){

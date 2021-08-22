@@ -15,17 +15,17 @@
 <div class="step-controls" fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center" *ngIf="stepperShowNav != false">
 
   <button mat-button (click)="prev()" disabled="{{selectedIndex == 0}}">
-    <i class="material-icons" fxHide.xs fxShow.sm fxShow.md fxShow.lg fxShow.xl> keyboard_arrow_left </i>
-    <i class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>keyboard_arrow_up</i>
+    <mat-icon class="material-icons" fxHide.xs fxShow.sm fxShow.md fxShow.lg fxShow.xl svgIcon="keyboard_arrow_left"></mat-icon>
+    <mat-icon class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl svgIcon="keyboard_arrow_up"></mat-icon>
   </button>
 
   <button mat-button (click)="next()" fxHide="{{ selectedIndex == (_steps.length - 1)}}" disabled="{{!_allowed }}">
-    <i class="material-icons" fxHide.xs fxShow.sm fxShow.md fxShow.lg fxShow.xl>keyboard_arrow_right</i>
-    <i class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>keyboard_arrow_down</i>
+      <mat-icon class="material-icons" fxHide.xs fxShow.sm fxShow.md fxShow.lg fxShow.xl svgIcon="keyboard_arrow_right"></mat-icon>
+      <mat-icon class="material-icons" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl svgIcon="keyboard_arrow_down"></mat-icon>
   </button>
 
   <button mat-button (click)="reset()" fxHide="{{selectedIndex < (_steps.length - 1)}}">
-    <i class="material-icons">refresh</i>
+    <mat-icon class="material-icons" svgIcon="refresh"></mat-icon>
   </button>
 
 </div>

@@ -5,7 +5,7 @@
 
       <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around space-around" class="cards-wrapper" ngClass.xs="mobile">
 
-        <mat-card class="steps-button" [ngClass.xs]="{'mobile':true,'selected':profession.selected}" *ngFor="let profession of firstLevelProfessions" fxLayout="column"
+        <mat-card class="steps-button" [ngClass.xs]="{'mobile':true,'selected':profession.selected}" *ngFor="let profession of categories" fxLayout="column"
                   fxLayoutAlign="center center" [ngClass]="{'selected':profession.selected}" fxLayout.xs="row-reverse" fxLayoutAlign.xs="row-reverse center"
                   (mousedown)="onmousedown($event)" (mouseup)="onMouseUp({'$event':$event,'profession':profession})">
 
@@ -13,8 +13,8 @@
             <span fxFlex="80%">{{profession.name}}</span>
           </mat-card-title>
 
-          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.iconType == 2" svgIcon="{{profession.avatar.url}}"></mat-icon>
-          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.iconType == 1">{{profession.avatar.url}}</mat-icon>
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.avatartype == 2" svgIcon="{{profession.avatar.url}}"></mat-icon>
+          <mat-icon class="steps-button-icon" ngClass.xs="mobile" *ngIf="profession.avatar.avatartype == 1">{{profession.avatar.url}}</mat-icon>
 
         </mat-card>
 

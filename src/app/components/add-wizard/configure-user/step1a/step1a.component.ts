@@ -3,6 +3,7 @@ import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.co
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {WebStorageService} from '../../../../services/webstorage.service';
 import { User } from '../../../../infrastructure/model/user.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'step1a',
@@ -14,8 +15,9 @@ export class Step1aComponent implements OnInit, OnDestroy {
   user: User;
   private _stepperSubscriptionIndex;
   company: string = 'false';
+  nextStep: number;
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService) { }
+  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -35,11 +37,11 @@ export class Step1aComponent implements OnInit, OnDestroy {
 
     this.formGroup.statusChanges.subscribe(status => {  this.user.name = this.formGroup.controls.name.value;
                                                         this.user.surname = this.formGroup.controls.surname.value;
-                                                        this.webstorageService.setUser(this.user);
+                                                        this.webstorageService.setUser(this.user).subscribe(u => this.user = u);
                                                       }
     );
 
-    this.stepperMessagesHandle.next({value:"VALID"});
+    this.stepperMessagesHandle.next({value:"RETURNBACK"});
 
     this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
@@ -47,7 +49,11 @@ export class Step1aComponent implements OnInit, OnDestroy {
         if ( messageType == 'string') {
           switch (message.value) {
             case "stepperReceivedOrderNext":
-              //this.onclick();
+              this.stepperMessagesHandle.next({value:this.nextStep});
+              break;
+            case "stepperReceivedOrderPrev":
+                this.stepperMessagesHandle.next({value:"CANCELHISTORY"});
+              this.stepperMessagesHandle.next({value:"prev"});
               break;
             default:
               break;
@@ -55,6 +61,31 @@ export class Step1aComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.route.data.subscribe(
+      data => {
+        this.webstorageService.getUser().subscribe(
+          next => {
+            //console.log(next.employee.id);
+            //console.log(next.employer.id);
+            if (next.employee.id != undefined && next.employer.id == undefined){
+              this.nextStep = 4;
+            }
+            else if (next.employee.id == undefined && next.employer.id != undefined){
+              this.nextStep = 8;
+            }
+            else if (next.employee.id != undefined && next.employer.id != undefined){
+              this.nextStep = 3;
+            }
+            else if (next.employee.id == undefined && next.employer.id == undefined){
+              this.nextStep = 4;
+            }
+          }
+        );
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   onSelection($event) {

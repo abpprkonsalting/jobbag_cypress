@@ -15,7 +15,7 @@ import { professions } from '../../../../app-constants';
 export class Step3Component implements OnInit, OnDestroy{
   user: User;
   professions: Profession[];
-  firstLevelProfessions: Profession[];
+  categories: Profession[];
   selectedCount: number;
   clickPosition: {
     x: number;
@@ -40,11 +40,13 @@ export class Step3Component implements OnInit, OnDestroy{
 
     this.route.data.subscribe( data => {
       this.professions = data.professions;
-      this.firstLevelProfessions = this.professions.filter( profession => profession.parentId == undefined );
-      this.selectedCount = this.firstLevelProfessions.filter(profession => profession.selected == true).length;
+      this.categories = this.professions.filter( profession => profession.categories.length == 0 );
+      this.selectedCount = this.categories.filter(profession => profession.selected == true).length;
       if (this.selectedCount == 0)  this.stepperMessagesHandle.next({value:"INVALID"});
       else this.stepperMessagesHandle.next({value:"VALID"});
     });
+
+    this.stepperMessagesHandle.next({value:"RETURNBACK"});
 
     this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
@@ -57,6 +59,9 @@ export class Step3Component implements OnInit, OnDestroy{
                 this.stepperMessagesHandle.next({value:"next"});
               }
               break;
+              case "stepperReceivedOrderPrev":
+                  this.stepperMessagesHandle.next({value:4});
+                break;
             default:
               break;
           }
@@ -79,7 +84,7 @@ export class Step3Component implements OnInit, OnDestroy{
           else {
             this.selectedCount--;
             // Des-seleccionar los children
-            this.professions.filter(profession => profession.parentId != undefined && profession.parentId == object.profession.id).forEach(profession => profession.selected = false);
+            this.professions.filter(profession => profession.categories.length > 0 && profession.categories.includes(object.profession)).forEach(profession => profession.selected = false);
           }
           if (this.selectedCount > 0 ) this.stepperMessagesHandle.next({value:"VALID"});
           else this.stepperMessagesHandle.next({value:"INVALID"});

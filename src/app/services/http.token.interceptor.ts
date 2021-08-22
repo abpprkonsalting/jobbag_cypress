@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor,HttpRequest,HttpHandler,HttpEvent } from '@angular/common/http';
 import { WebStorageService } from './webstorage.service';
 import { SessionToken } from '../infrastructure/model/sessionToken.model';
+import { constants } from '../app-constants';
 
 import { Observable } from 'rxjs';
 
@@ -12,7 +13,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
       let sessionToken: SessionToken = this._webStorageService.getSessionToken();
-      if ( sessionToken != undefined && sessionToken.jwtAuth) {
+      if ((request.url.startsWith(constants.apiUrl) || request.url.startsWith("api")) &&  (sessionToken != undefined && sessionToken.jwtAuth)) {
         const customReq = request.clone({
         headers: request.headers.set('Authorization', ' Bearer ' + sessionToken.token)
       });

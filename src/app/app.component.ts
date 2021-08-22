@@ -45,10 +45,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.matIconRegistry.addSvgIcon('facebook',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'facebook.svg'));
     this.matIconRegistry.addSvgIcon('google-plus',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'google-plus.svg'));
     this.matIconRegistry.addSvgIcon('air_conditioner',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'air-conditioner.svg'));
+    this.matIconRegistry.addSvgIcon('exit_to_app',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'exit_to_app-24px.svg'));
+    this.matIconRegistry.addSvgIcon('keyboard_arrow_left',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'keyboard_arrow_left-24px.svg'));
+    this.matIconRegistry.addSvgIcon('keyboard_arrow_right',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'keyboard_arrow_right-24px.svg'));
+    this.matIconRegistry.addSvgIcon('keyboard_arrow_up',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'keyboard_arrow_up-24px.svg'));
+    this.matIconRegistry.addSvgIcon('keyboard_arrow_down',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'keyboard_arrow_down-24px.svg'));
+    this.matIconRegistry.addSvgIcon('refresh',this.domSanitizer.bypassSecurityTrustResourceUrl(constants.assetsUrl + 'refresh-24px.svg'));
   }
 
   ngOnInit() {
 
+    this.user = new User();
     this.webStorageService.getUser().subscribe(
       next => {
         if ( next.password != null && next.password != undefined && next.password != '') {
@@ -62,6 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         else {
           this.user = next;
+          console.log(this.user);
         }
       },
       error => {
@@ -78,11 +86,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Esta condición de abajo implica que hay un usuario logeado, por lo tanto lo que se hace es logout
     if (this.user.roles.length > 0) {
-      this.webStorageService.logout().subscribe(next => this.user = next,
-      error => {
-        console.log(error.message);
-        this.user = new User();
-      });
+      this.webStorageService.logout().subscribe(
+        next => {
+          this.user = next;
+          this.router.navigateByUrl('/',{skipLocationChange:false});
+        },
+        error => {
+          console.log(error.message);
+          this.user = new User();
+        });
     }
     else {
       // Esto es el caso contrario, por lo tanto se hace login
@@ -101,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
             break;
           case 'normal':
             this.webStorageService.login(result.email, result.password).subscribe(
-              user => { this.user = user },
+              user => { this.user = user;console.log(user) },
               error => { this.user = new User() });
             break;
           default:

@@ -18,7 +18,7 @@ export class Step1Component implements OnInit {
   constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>) {}
 
   ngOnInit() {
-    this.professions = professions.filter( profession => profession.parentId == undefined );
+    this.professions = professions.filter( profession => profession.categories.length == 0 );
   }
 
   onmousedown($event){

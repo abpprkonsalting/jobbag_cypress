@@ -1,5 +1,19 @@
-<div class="landing-page-wrapper">
+<div class="landing-page-wrapper" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center">
 
-  Landing Page
+    <div class="content-row content-full-width home-slider" fxLayout="row" fxLayoutAlign="start center">
+      <img src="{{sliderUrl}}">
+      <button mat-button class="landing-button work-button"  ngClass.xs="mobile" (click)="wantToWork()">I want to work</button>
+      <button mat-button class="landing-button hire-button"  ngClass.xs="mobile" (click)="wantToHire()">I need a service</button>
+    </div>
+
+    <div class="content-row center-container" fxLayout="row" fxLayoutAlign="start center">
+      Información general
+    </div>
+
+    <div class="content-row center-container" fxLayout="row" fxLayoutAlign="start center">
+      Portfolio ejemplos
+    </div>
+
+
 
 </div>

@@ -35,7 +35,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     this.formGroup.statusChanges.subscribe(status => {  this.user.name = this.formGroup.controls.name.value;
                                                         this.user.surname = this.formGroup.controls.surname.value;
-                                                        this.webstorageService.setUser(this.user);
+                                                        this.webstorageService.setUser(this.user).subscribe(u => this.user = u);
                                                       }
     );
 

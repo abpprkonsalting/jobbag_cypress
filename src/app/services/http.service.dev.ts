@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, EMPTY } from 'rxjs';
+import { Observable, of, EMPTY,throwError } from 'rxjs';
 import { constants } from '../app-constants';
 
 import { User } from '../infrastructure/model/user.model';
@@ -28,20 +28,25 @@ export class HttpService {
     return null;
   }
 
+  public setUser(user: User): Observable<User>{
+    console.log(user.getDto());
+    return of(user);
+  }
+
   public loginFacebook() {
-    window.location.href= constants.baseUrl + "connect/facebook";
+    window.location.href= constants.baseUrl + "api/connect/facebook";
   }
 
-  public getEmployee(): Observable<Employee> {
+  public getEmployee(id): Observable<Employee> {
 
-    //return EMPTY;
-    return of(employee);
+    return throwError('bla');
+    //return of(employee);
   }
 
-  public getEmployer(): Observable<Employer> {
+  public getEmployer(id): Observable<Employer> {
 
-    //return EMPTY;
-    return of(employer);
+    return throwError('bla');
+    //return of(employer);
   }
 
   public getProfessions(): Observable<Array<Profession>> {

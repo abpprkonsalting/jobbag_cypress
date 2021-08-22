@@ -1,0 +1,62 @@
+
+<div class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center" style="height: 100%">
+
+<div class="content-header" ngClass.xs="mobile" >Perfil Empleado:</div>
+
+<div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="start start" fxLayout.xs="column"
+  fxLayoutAlign.xs="center center">
+
+  <div class="content-column second" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start start">
+    <div class="employee-content">
+      <div class="experience-content" fxLayout="row" fxLayout.xs="column"  ngClass.xs="mobile">
+        <div class="experience-content-header" ngClass.xs="mobile" >
+        <span>Profesiones:</span>
+
+
+
+          <button mat-icon-button class="experience-button-close mobile" (click)="add()">
+          <mat-icon>add</mat-icon>
+        </button>
+
+        </div>
+        <div fxLayout="row wrap" class="experience-content-items"  ngClass.xs="mobile">
+          <mat-card class="experience-button" *ngFor="let experience of experiences" fxLayout="row-reverse"
+            fxLayoutAlign="row-reverse center">
+            <button mat-icon-button class="experience-button-close mobile"
+              (click)="removeExperience(experience.profession.id)">
+              <mat-icon>close</mat-icon>
+            </button>
+            <span class="experience-button-years">{{experience.years}}</span>
+            <mat-card-title class="experience-button-title mobile" ngClass.xs="" fxLayout="row"
+              fxLayoutAlign="center center">
+              {{experience.profession.name}}
+            </mat-card-title>
+            <mat-icon class="experience-button-icon mobile" ngClass.xs=""
+              *ngIf="experience.profession.avatar.avatarType == 2" svgIcon="{{experience.profession.avatar.url}}">
+            </mat-icon>
+            <mat-icon class="experience-button-icon mobile" ngClass.xs="mobile"
+              *ngIf="experience.profession.avatar.avatarType == 1">{{experience.profession.avatar.url}}</mat-icon>
+          </mat-card>
+          <div *ngIf="experiences.length == 0" style="margin-top:20px;">
+            Para añadir las profesiones en las cuales posee experiencia utilice el botón + arriba a la derecha
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+  <div class="content-footer" style="margin-top: auto;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column" class="employee-action" ngClass.xs="mobile" >
+    <div class="column-ratings" ngClass.xs="mobile">
+      Ratings: <mat-progress-bar mode="determinate" value="{{user.employee.rate}}"  ngClass.xs="mobile"></mat-progress-bar>
+    </div>
+    <div><button mat-button class="publish-button"  ngClass.xs="mobile"><mat-icon>publish</mat-icon>CV</button></div>
+  </div>
+</div>
+
+</div>

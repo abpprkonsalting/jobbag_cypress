@@ -1,0 +1,40 @@
+
+<div class="step-content-wrapper" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start center" style="height: 100%">
+
+<div class="content-header" ngClass.xs="mobile" >Perfil Empleador:</div>
+
+<div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="start start" fxLayout.xs="column"
+  fxLayoutAlign.xs="center center">
+
+  <div class="content-column second" ngClass.xs="mobile" fxLayout="column" fxLayoutAlign="start start">
+    <div class="employee-content">
+      <div class="experience-content" fxLayout="row" fxLayout.xs="column"  ngClass.xs="mobile">
+        <div class="experience-content-header" ngClass.xs="mobile" >
+          <span>Proyectos:</span>
+        </div>
+        <div fxLayout="row wrap" class="experience-content-items"  ngClass.xs="mobile">
+          <mat-card class="experience-button" *ngFor="let project of projects" fxLayout="row" (click)="openProject(project)"
+            fxLayoutAlign="row center" ngClass.xs="mobile">
+            <mat-card-title class="experience-button-title mobile" ngClass.xs="" fxLayout="row"
+              fxLayoutAlign="center center">
+              {{project.title}}
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="content-footer" style="margin-top: auto;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column" class="employee-action" ngClass.xs="mobile" >
+    <div class="column-ratings" ngClass.xs="mobile">
+      Ratings: <mat-progress-bar mode="determinate" value="{{user.employer.rate}}"  ngClass.xs="mobile"></mat-progress-bar>
+    </div>
+    <div class="statistics" ngClass.xs="mobile">
+      <button mat-button class="publish-button" ngClass.xs="mobile"><mat-icon>trending_up</mat-icon>Estadísticas</button>
+    </div>
+  </div>
+</div>
+
+</div>

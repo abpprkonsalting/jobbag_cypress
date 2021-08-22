@@ -1,0 +1,74 @@
+
+.step-content-wrapper {
+
+  height: 100%;
+  padding: 20px 0;
+
+  &.mobile {
+    padding: 20px 5% 60px;
+  }
+
+  .content {
+    width: 200px;
+    margin: 0 auto;
+
+    > * {
+      width:100%;
+    }
+
+    form {
+      > * {
+        width:100%;
+      }
+      ::ng-deep {
+        .mat-form-field-infix {
+          /*background: #f7f7f7;*/
+          border-top: none;
+
+          .mat-form-field-label {
+            padding-left: 15px;
+          }
+        }
+        .mat-form-field-appearance-legacy .mat-form-field-underline {
+          background-color: rgba(0, 0, 0, .32);
+        }
+      }
+
+      .login-button {
+        display: flex;
+        background: #008afc;
+        color: white;
+        width: 100%;
+        border-radius: 1px;
+        justify-content: center;
+
+        .mat-icon {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .remember-me {
+      margin: 15px 0;
+    }
+
+    .create-account-divider {
+      position: relative;
+    }
+
+    .create-account {
+      margin-top: 15px;
+      display: flex;
+      border: 1px solid #008afc;
+      width: 100%;
+      border-radius: 1px;
+      -webkit-box-pack: center;
+      justify-content: center;
+
+      .mat-icon {
+        transform: rotate(90deg);
+        margin-right: 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+
+
+<div class="step-content-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+  <div class="header">Mi Avatar:</div>
+
+  <div class="content" ngClass.xs="mobile" fxLayout="row" fxLayoutAlign="center center" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+
+      <div class="content-column" fxLayout="column" fxLayoutAlign="center center">
+        <image-upload
+          [url]="uploadUrl"
+          [max]="1"
+          (removed)="onRemoved($event)"
+          (uploadFinished)="onUploadFinished($event)"
+          [extensions]="['jpg','png']"
+          [uploadedFiles]="userImgUrl.length != 0 ? userImgUrl : ''"
+          [buttonCaption]="''"
+          [dropBoxMessage]="''"
+          [clearButtonCaption]="'Eliminar'"
+          [class]="'customClass'"
+          >
+        </image-upload>
+      </div>
+  </div>
+
+</div>
+

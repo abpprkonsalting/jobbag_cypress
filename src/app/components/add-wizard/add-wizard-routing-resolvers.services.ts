@@ -70,17 +70,17 @@ export class AddWizardRoutingResolversEmployeeService implements Resolve<any> {
         let experiences = [];
         let locations = [];
         if (employee){
-          if (employee.experience != null) {
-            experiences = employee.experience;
+          if (employee.experiences != null) {
+            experiences = employee.experiences;
           }
-          if (employee.workingLocations != null) {
-            employee.workingLocations.forEach( location => {
+          if (employee.locations != null) {
+            employee.locations.forEach( location => {
               locations = locations.concat(location,location.children);
             });
           }
           return of({'experiences':experiences,'locations':locations});
         } else {
-          return EMPTY;
+          return of({'experiences':[],'locations':[]});
         }
       })
     );
@@ -105,7 +105,7 @@ export class AddWizardRoutingResolversEmployerService implements Resolve<any> {
           }
           return of({'projects':projects});
         } else {
-          return EMPTY;
+          return of({'projects':[]});
         }
       })
     );

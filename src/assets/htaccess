@@ -4,15 +4,15 @@
 
     RewriteBase /
 
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    #RewriteCond %{HTTPS} off
+    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
 
-    RewriteCond %{HTTP_COOKIE} .*PHPSESSID=.*$ [NC]
-    RewriteCond %{HTTP_COOKIE} !.*loged_in_token=.*$ [NC]
-    RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico|svg)$
-    RewriteRule ^.*$ /api/checklogin [R=301,L]
+    #RewriteCond %{HTTP_COOKIE} .*PHPSESSID=.*$ [NC]
+    #RewriteCond %{HTTP_COOKIE} !.*loged_in_token=.*$ [NC]
+    #RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico|svg)$
+    #RewriteRule ^.*$ /api/checklogin [R=301,L]
 
-    RewriteCond %{REQUEST_URI} !^/web/index.html$
-    RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico|svg)$
-    RewriteRule .* /web/index.html [L,R=302]
+    #RewriteCond %{REQUEST_URI} !^/web/index.html$
+    #RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|css|js|map|ico|svg)$
+    #RewriteRule .* /web/index.html [L,R=302]
 </IfModule>

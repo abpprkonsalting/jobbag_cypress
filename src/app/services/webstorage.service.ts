@@ -14,7 +14,7 @@ import { Employee } from '../infrastructure/model/employee.model';
 import { Employer } from '../infrastructure/model/employer.model';
 
 import {HttpService} from './http.service';
-import { switchMap,take,mergeMap } from 'rxjs/operators';
+import { switchMap,take,mergeMap,catchError } from 'rxjs/operators';
 
 
 @Injectable()
@@ -27,20 +27,20 @@ export class WebStorageService {
   private _FIRST_TIME_CREDENTIALS_STORAGE_KEY = 'first_time_credentials';
   private _USER_CONFIRMED_STORAGE_KEY = 'user_confirmed';
   private _sessionToken:  SessionToken = new SessionToken();
+  private _wantToWork: boolean = false;
+  private _wantToHire: boolean = false;
 
   user: User = undefined;
   professions: Profession[] = undefined;
   locations: Location[] = undefined;
 
   constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage, httpService: HttpService) {
-    if (!environment.production) {
+    this.httpService = httpService;
+    /*if (!environment.production) {
       import('./http.service.dev').then(module => {
         this.httpService = new module.HttpService();
       });
-    }
-    else {
-      this.httpService = httpService;
-    }
+    }*/
   }
 
   public getUser(): Observable<User> {
@@ -78,9 +78,17 @@ export class WebStorageService {
     }
   }
 
-  public setUser(user: User) : User {
+  public setUser(user: User,updateBackEnd?: boolean) : Observable<User> {
     this.user = user;
-    return this.user;
+    if (updateBackEnd != null && updateBackEnd) {
+      return this.httpService.setUser(user).pipe(
+        switchMap( user => {
+          let fromT = <User> user;
+          this.user = new User(fromT.id,fromT.username,undefined,fromT.name,fromT.surname,fromT.imageUrl,fromT.roles,fromT.employee,fromT.employer,fromT.email);
+          return of(this.user);
+        }));
+    }
+    else return of(this.user);
   }
 
   public registerUser(user: User) : Observable<User> {
@@ -119,8 +127,16 @@ export class WebStorageService {
 
     // Aquí tengo que mandar a eliminar la sesión en el servidor (sea por token o por cookie), si es que hay, y después retornar el user vacio.
 
-    this.user = new User();
-    return of(this.user);
+    return this.httpService.logout().pipe(
+      mergeMap(b => {
+        this.user = new User();
+        return of(this.user);
+      }),
+      catchError((e:any)=> {
+        this.user = new User();
+        return of(this.user);
+      })
+    );
   }
 
   public setUserFromJWToken(token): User {
@@ -133,6 +149,7 @@ export class WebStorageService {
   public clearSessionToken() {
     this.sessionStorage.remove(this._TOKEN_STORAGE_KEY);
     this.localStorage.remove(this._TOKEN_STORAGE_KEY);
+    this._sessionToken = new SessionToken();
   }
 
   public saveRememberMe(rememberme) {
@@ -181,20 +198,30 @@ export class WebStorageService {
     return this.locations;
   }
 
-  public getEmployee(): Observable<Employee> {
+  public getEmployee(userId?:number): Observable<Employee> {
 
-    if (this.user.employee != null) return of(this.user.employee);
-    return this.httpService.getEmployee().pipe(
-      take(1),
+    if (userId == null && this.user.employee != null) return of(this.user.employee);
+
+    let id = userId != null ? userId : this.user.id;
+    return this.httpService.getEmployee(id).pipe(
       mergeMap(employee => {
 
         if (employee){
-          this.user.employee = <Employee>employee;
+          let emp = <Employee>employee;
+          console.log(emp);
+          this.user.employee = new Employee(emp.rate,emp.resume,emp.experiences,emp.locations,emp.id);
+          console.log(this.user);
           return of(this.user.employee);
         } else {
-          return EMPTY;
+          this.user.employee = new Employee(0,'',[],[]);
+          return of(this.user.employee);
         }
+      }),
+      catchError((e:any)=> {
+        this.user.employee = new Employee(0,'',[],[]);
+        return of(this.user.employee);
       })
+
     );
   }
 
@@ -203,19 +230,26 @@ export class WebStorageService {
     return this.user.employee;
   }
 
-  public getEmployer(): Observable<Employer> {
+  public getEmployer(userId?:number): Observable<Employer> {
 
-    if (this.user.employer != null) return of(this.user.employer);
-    return this.httpService.getEmployer().pipe(
-      take(1),
+    if (userId == null && this.user.employer != null) return of(this.user.employer);
+    let id = userId != null ? userId : this.user.id;
+
+    return this.httpService.getEmployer(id).pipe(
       mergeMap(employer => {
 
         if (employer){
-          this.user.employer = <Employer>employer;
+          let emp = <Employer>employer;
+          this.user.employer = new Employer(emp.rate,emp.projects,emp.id);
           return of(this.user.employer);
         } else {
-          return EMPTY;
+          this.user.employer = new Employer(0,[]);
+          return of(this.user.employer);
         }
+      }),
+      catchError((e:any)=> {
+        this.user.employer = new Employer(0,[]);
+        return of(this.user.employer);
       })
     );
   }
@@ -223,6 +257,22 @@ export class WebStorageService {
   public setEmployer(employer: Employer): Employer {
     this.user.employer = employer;
     return this.user.employer;
+  }
+
+  public setWantToWork(value) {
+    this._wantToWork = value;
+  }
+
+  public getWantToWork(): boolean {
+    return this._wantToWork;
+  }
+
+  public setWantToHire(value) {
+    this._wantToHire = value;
+  }
+
+  public getWantToHire(): boolean {
+    return this._wantToHire;
   }
 
 
@@ -240,7 +290,8 @@ export class WebStorageService {
 
   private setUserFromToken(token: string): User {
     const helper = new JwtHelperService();
-    this.user = <User> helper.decodeToken(token);
+    let fromT = <User> helper.decodeToken(token);
+    this.user = new User(fromT.id,fromT.username,undefined,fromT.name,fromT.surname,fromT.imageUrl,fromT.roles,undefined,undefined,fromT.email)
     return this.user;
   }
 

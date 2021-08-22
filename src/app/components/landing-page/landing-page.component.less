@@ -1,7 +1,39 @@
 .landing-page-wrapper {
-  min-height: 400px;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+
+  .home-slider {
+    width: 100%;
+    position: relative;
+    img {
+      width: 100%;
+    filter: grayscale(1) opacity(0.3);
+    }
+    .landing-button {
+      position: absolute;
+      width: 15%;
+      min-width:180px;
+      height: 60px;
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+      text-transform: uppercase;
+
+      &.work-button{
+        left: 25%;
+        top: 55%;
+        background: white;
+      }
+      &.hire-button {
+        left: 55%;
+        top: 55%;
+        background: white;
+      }
+      .mat-icon {
+        color: #3f51b5;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .center-container {
+    height: 400px;
+    max-width:1200px;
+  }
 }
