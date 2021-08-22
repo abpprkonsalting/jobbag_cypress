@@ -10,9 +10,9 @@ import { Project } from './infrastructure/model/project.model';
 import { ProjectStatus } from './infrastructure/model/status.model';
 
 export const constants = {
-  baseUrl: environment.production ? 'https://jobbag.ca/' : 'https://jobbag.ca/',
+  baseUrl: environment.production ? 'http://localhost:4200/' : 'http://localhost:4200//',
   webUrl: environment.production ? 'web/' : 'web/',
-  apiUrl: environment.production ? 'https://jobbag.ca/api/' : 'https://jobbag.ca/api/',
+  apiUrl: environment.production ? 'http://localhost:4200/api/' : 'http://localhost:4200//api/',
   assetsUrl: environment.production ? 'assets/' : 'assets/',
 };
 
