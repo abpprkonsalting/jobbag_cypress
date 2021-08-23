@@ -36,11 +36,11 @@ export class WebStorageService {
 
   constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage, httpService: HttpService) {
     this.httpService = httpService;
-    /*if (!environment.production) {
+    if (!environment.production) {
       import('./http.service.dev').then(module => {
         this.httpService = new module.HttpService();
       });
-    }*/
+    }
   }
 
   public getUser(): Observable<User> {

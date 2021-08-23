@@ -59,4 +59,9 @@ export class HttpService {
     return of(locations);
   }
 
+  public logout() {
+
+    return of('');
+  }
+
 }
