@@ -7,5 +7,10 @@
   "video": true,
   "videosFolder": "../../dist/cypress/{your-project}-e2e/videos",
   "screenshotsFolder": "../../dist/cypress/{your-project}-e2e/screenshots",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "baseUrl":"http://localhost:4200/web",
+  "pageLoadTimeout":600000,
+  "nodeVersion":"system",
+  "viewportWidth": 600,
+  "viewportHeight": 800
 }

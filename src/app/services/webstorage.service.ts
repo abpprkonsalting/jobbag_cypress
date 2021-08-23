@@ -13,7 +13,7 @@ import { Location } from '../infrastructure/model/location.model';
 import { Employee } from '../infrastructure/model/employee.model';
 import { Employer } from '../infrastructure/model/employer.model';
 
-import {HttpService} from './http.service';
+import {HttpService} from './http.service.dev';
 import { switchMap,take,mergeMap,catchError } from 'rxjs/operators';
 
 
@@ -36,11 +36,11 @@ export class WebStorageService {
 
   constructor(@Inject(LOCAL_STORAGE) private localStorage: StorageService, @Inject(SESSION_STORAGE) private sessionStorage, httpService: HttpService) {
     this.httpService = httpService;
-    if (!environment.production) {
+    /* if (!environment.production) {
       import('./http.service.dev').then(module => {
         this.httpService = new module.HttpService();
       });
-    }
+    } */
   }
 
   public getUser(): Observable<User> {

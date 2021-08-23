@@ -13,7 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
-import { HttpService } from './services/http.service';
+import { HttpService } from './services/http.service.dev';
 import {WebStorageService} from './services/webstorage.service';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { JwtHelperService } from '@auth0/angular-jwt';

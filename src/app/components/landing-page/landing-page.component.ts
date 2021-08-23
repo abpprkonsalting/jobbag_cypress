@@ -6,7 +6,7 @@ import { Experience } from '../../infrastructure/model/experience.model';
 import { Router,ActivatedRoute } from '@angular/router';
 
 import {constants} from '../../app-constants';
-import {HttpService} from '../../services/http.service';
+import {HttpService} from '../../services/http.service.dev';
 
 @Component({
   selector: 'app-landing-page',

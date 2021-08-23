@@ -3,7 +3,7 @@ import { DragStepperMessagesHandle } from '../../../drag-stepper/drag-stepper.co
 import {WebStorageService} from '../../../../services/webstorage.service';
 import { User } from '../../../../infrastructure/model/user.model';
 import { constants } from '../../../../app-constants';
-import {HttpService} from '../../../../services/http.service';
+import {HttpService} from '../../../../services/http.service.dev';
 
 @Component({
   selector: 'step4',
