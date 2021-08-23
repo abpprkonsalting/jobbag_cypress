@@ -33,7 +33,7 @@ import { Step3Component as SignInStep3Component } from './sign-in/step3/step3.co
 import { Step4Component as SignInStep4Component } from './sign-in/step4/step4.component';
 import { DragStepperComponent} from '../drag-stepper/drag-stepper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ImageUploadModule } from "angular2-image-upload";
+//import { ImageUploadModule } from "angular2-image-upload";
 
 @NgModule({
   declarations: [
@@ -66,7 +66,8 @@ import { ImageUploadModule } from "angular2-image-upload";
     MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,
     AddWizardRoutingModule,FlexLayoutModule,DragDropModule,MatRadioModule,
     CdkStepperModule,LayoutModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule,
-    MatExpansionModule, MatCheckboxModule,ImageUploadModule.forRoot()
+    //MatExpansionModule, MatCheckboxModule,ImageUploadModule.forRoot()
+    MatExpansionModule, MatCheckboxModule
   ]
 })
 export class AddWizardModule { }
