@@ -7,7 +7,11 @@
     "types": [
       "jasmine",
       "jasminewd2",
+      "cypress",
       "node"
     ]
-  }
+  },
+  "include": [
+    "**/*.ts"
+  ]
 }
