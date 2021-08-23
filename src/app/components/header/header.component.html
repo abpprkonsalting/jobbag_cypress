@@ -10,7 +10,7 @@
         <button class="mobile-button" ngClass.xs="is-mobile" mat-icon-button (click)="buttonPress()" fxShow.xs fxHide.sm fxHide.md fxHide.lg fxHide.xl>
           <mat-icon>more_vert</mat-icon>
         </button>
-        <a href="/" style="margin-right: auto;"><img src="{{logoUrl}}" style="height: 37px;"></a>
+        <a href="/" style="margin-right: auto;"><img id="jobbag-logo" src="{{logoUrl}}" style="height: 37px;"></a>
 
         <div *ngIf="user.roles.length > 0 && user.name != null && user.name != ''" fxHide.xs style="margin: 0 auto 0 20px;color:#3f51b5"> {{user.name + " " + user.surname}}</div>
 
