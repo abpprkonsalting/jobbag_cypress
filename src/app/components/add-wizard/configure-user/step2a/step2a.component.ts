@@ -13,10 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 export class Step2aComponent implements OnInit, OnDestroy {
   user: User;
   experiences: Experience[];
-  private _stepperSubscriptionIndex;
-  private _prevStep: number;
+  private stepperSubscriptionIndex;
+  private prevStep: number;
 
-  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -24,9 +25,9 @@ export class Step2aComponent implements OnInit, OnDestroy {
       next => {
         this.user = next;
 
-        if (this.user.employee.id != undefined && this.user.employer.id == undefined){
-          this._prevStep = 2;
-          this.stepperMessagesHandle.next({value:"RETURNBACK"});
+        if (this.user.employee.id !== undefined && this.user.employer.id === undefined) {
+          this.prevStep = 2;
+          this.stepperMessagesHandle.next({value: 'RETURNBACK'});
         }
 
       },
@@ -37,7 +38,7 @@ export class Step2aComponent implements OnInit, OnDestroy {
     );
     this.route.data.subscribe(
         data => {
-          if (data.employeeData != undefined){
+          if (data.employeeData !== undefined) {
             this.experiences = data.employeeData.experiences;
           }
         },
@@ -45,19 +46,18 @@ export class Step2aComponent implements OnInit, OnDestroy {
           console.log(error);
         });
 
-    //this.stepperMessagesHandle.next({value:"INVALID"});
+    // this.stepperMessagesHandle.next({value:"INVALID"});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepperReceivedOrderPrev":
-                this.stepperMessagesHandle.next({value:this._prevStep});
-              break;
-            case "stepperReceivedOrderNext":
-                this.stepperMessagesHandle.next({value: "next"});
-              break;
+            case 'stepperReceivedOrderPrev':
+                this.stepperMessagesHandle.next({value: this.prevStep});
+                break;
+            case 'stepperReceivedOrderNext':
+                this.stepperMessagesHandle.next({value: 'next'});
+                break;
             default:
               break;
           }
@@ -71,22 +71,21 @@ export class Step2aComponent implements OnInit, OnDestroy {
 
     this.user.employee.experiences.splice(
       this.user.employee.experiences.indexOf(
-        this.user.employee.experiences.find(exp => exp.profession.id == id)
-      ),1);
+        this.user.employee.experiences.find(exp => exp.profession.id === id)
+      ), 1);
   }
 
   add() {
-    //this.stepperMessagesHandle.next({value:"VALID"});
+    // this.stepperMessagesHandle.next({value:"VALID"});
     this.stepperMessagesHandle.next({value: 6});
   }
 
   onSelection($event) {
-    this.stepperMessagesHandle.next({value:"VALID"});
-    if ($event.value == 0) this.stepperMessagesHandle.next({value: "next"});
-    else this.stepperMessagesHandle.next({value: "last"});
+    this.stepperMessagesHandle.next({value: 'VALID'});
+    if ($event.value === 0) { this.stepperMessagesHandle.next({value: 'next'}); } else { this.stepperMessagesHandle.next({value: 'last'}); }
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Router, Resolve,RouterStateSnapshot,ActivatedRouteSnapshot} from '@angular/router';
+import {Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot} from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class AddWizardRoutingResolversProfessionsService implements Resolve<Prof
     return this.webStorageService.getAllProfessions().pipe(
       take(1),
       mergeMap(professions => {
-        if (professions){
+        if (professions) {
           return of(this.webStorageService.setAllProfessions(professions));
         } else {
           return EMPTY;
@@ -45,7 +45,7 @@ export class AddWizardRoutingResolversLocationsService implements Resolve<Locati
     return this.webStorageService.getAllLocations().pipe(
       take(1),
       mergeMap(locations => {
-        if (locations){
+        if (locations) {
           return of(this.webStorageService.setAllLocations(locations));
         } else {
           return EMPTY;
@@ -69,18 +69,18 @@ export class AddWizardRoutingResolversEmployeeService implements Resolve<any> {
       mergeMap(employee => {
         let experiences = [];
         let locations = [];
-        if (employee){
+        if (employee) {
           if (employee.experiences != null) {
             experiences = employee.experiences;
           }
           if (employee.locations != null) {
             employee.locations.forEach( location => {
-              locations = locations.concat(location,location.children);
+              locations = locations.concat(location, location.children);
             });
           }
-          return of({'experiences':experiences,'locations':locations});
+          return of({experiences, locations});
         } else {
-          return of({'experiences':[],'locations':[]});
+          return of({experiences: [], locations: []});
         }
       })
     );
@@ -99,13 +99,13 @@ export class AddWizardRoutingResolversEmployerService implements Resolve<any> {
       take(1),
       mergeMap(employer => {
         let projects = [];
-        if (employer){
-          if (employer.projects != null){
+        if (employer) {
+          if (employer.projects != null) {
             projects = employer.projects;
           }
-          return of({'projects':projects});
+          return of({projects});
         } else {
-          return of({'projects':[]});
+          return of({projects: []});
         }
       })
     );

@@ -14,15 +14,16 @@ export class Step2Component implements OnInit, OnDestroy {
   clickPosition: {
     x: number;
     y: number;
-  } = {x:0,y:0};
-  private _stepperSubscriptionIndex: number;
-  goToEmployee: boolean = true;
+  } = {x: 0, y: 0};
+  private stepperSubscriptionIndex: number;
+  goToEmployee = true;
 
-  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
-    this.stepperMessagesHandle.next({value:"INVALID"});
+    this.stepperMessagesHandle.next({value: 'INVALID'});
 
     this.webstorageService.getUser().subscribe(
       next => {
@@ -34,19 +35,21 @@ export class Step2Component implements OnInit, OnDestroy {
       }
     );
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepChanged":
+            case 'stepChanged':
               break;
-            case "stepperReceivedOrderNext":
-              this.stepperMessagesHandle.next({value:"VALID"});
+            case 'stepperReceivedOrderNext':
+              this.stepperMessagesHandle.next({value: 'VALID'});
               break;
-            case "stepperEnabled":
-              if (this.goToEmployee) this.stepperMessagesHandle.next({value:"next"});
-              else this.stepperMessagesHandle.next({value:8});
+            case 'stepperEnabled':
+              if (this.goToEmployee) {
+                this.stepperMessagesHandle.next({value: 'next'});
+              } else {
+                this.stepperMessagesHandle.next({value: 8});
+              }
               break;
             default:
               break;
@@ -57,21 +60,21 @@ export class Step2Component implements OnInit, OnDestroy {
 
   }
 
-  onmousedown($event){
+  onmousedown($event) {
     this.clickPosition.x = $event.x;
     this.clickPosition.y = $event.y;
-    //this.stepperMessagesHandle.next({value:"next"});
+    // this.stepperMessagesHandle.next({value:"next"});
   }
-  onMouseUp(object){
+  onMouseUp(object) {
     if ((object.$event.x <= this.clickPosition.x + 10) && (object.$event.x >= this.clickPosition.x - 10) &&
         (object.$event.y <= this.clickPosition.y + 10) && (object.$event.y >= this.clickPosition.y - 10)) {
 
-          if (object.selected == 'employer') this.goToEmployee = false;
-          this.stepperMessagesHandle.next({value:"VALID"});
+          if (object.selected === 'employer') { this.goToEmployee = false; }
+          this.stepperMessagesHandle.next({value: 'VALID'});
     }
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

@@ -35,16 +35,16 @@ export const professions: Profession[] = [
 ];
 
 export const locations: Location[] = [
-  new Location(1,'Canada','ca','',[]),
-  new Location(2,'Vancouver','va','',[],1),
-  new Location(3,'Otawa','ot','',[],1),
-  new Location(4,'España','es','',[]),
-  new Location(5,'Barcelona','ba','',[],4),
-  new Location(6,'Madrid','ma','',[],4),
-  new Location(7,'Cuba','cu','',[]),
-  new Location(8,'Habana','ha','',[],7),
-  new Location(9,'Santiago','sa','',[],7),
-  new Location(10,'Pinar','pr','',[],7),
+  new Location(1, 'Canada', 'ca', '', []),
+  new Location(2, 'Vancouver', 'va', '', [], 1),
+  new Location(3, 'Otawa', 'ot', '', [], 1),
+  new Location(4, 'España', 'es', '', []),
+  new Location(5, 'Barcelona', 'ba', '', [], 4),
+  new Location(6, 'Madrid', 'ma', '', [], 4),
+  new Location(7, 'Cuba', 'cu', '', []),
+  new Location(8, 'Habana', 'ha', '', [], 7),
+  new Location(9, 'Santiago', 'sa', '', [], 7),
+  new Location(10, 'Pinar', 'pr', '', [], 7),
 ];
 
 export const employee: Employee = new Employee(/*75,'resumee',
@@ -74,7 +74,7 @@ export const employee: Employee = new Employee(/*75,'resumee',
                                           new Location(8,'Habana','ha','',[],7),
                                           new Location(9,'Santiago','sa','',[],7),
                                         ])
-                                      ],1*/0,'',[],[],0
+                                      ],1*/0, '', [], [], 0
                                     );
 
 export const employer: Employer = new Employer(75,
@@ -87,6 +87,6 @@ export const employer: Employer = new Employer(75,
       new Profession(4,'Carpintero',{avatarType: avatarType.MaterialNative,url:'home'},1),
       new ProjectStatus(2,'cerrado',true)
       )
-  */],1);
+  */], 1);
 
 

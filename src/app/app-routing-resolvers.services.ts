@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Router, Resolve,RouterStateSnapshot,ActivatedRouteSnapshot} from '@angular/router';
+import {Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot} from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class RoutingResolversProfessionsService implements Resolve<Profession[]>
     return this.webStorageService.getAllProfessions().pipe(
       take(1),
       mergeMap(professions => {
-        if (professions){
+        if (professions) {
           return of(this.webStorageService.setAllProfessions(professions));
         } else {
           return EMPTY;
@@ -45,7 +45,7 @@ export class RoutingResolversLocationsService implements Resolve<Location[]> {
     return this.webStorageService.getAllLocations().pipe(
       take(1),
       mergeMap(locations => {
-        if (locations){
+        if (locations) {
           return of(this.webStorageService.setAllLocations(locations));
         } else {
           return EMPTY;

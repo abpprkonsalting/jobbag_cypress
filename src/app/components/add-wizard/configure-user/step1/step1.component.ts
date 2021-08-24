@@ -12,14 +12,15 @@ import { User } from '../../../../infrastructure/model/user.model';
 export class Step1Component implements OnInit, OnDestroy {
   formGroup: FormGroup;
   user: User;
-  private _stepperSubscriptionIndex;
-  company: string = 'false';
+  private stepperSubscriptionIndex;
+  company = 'false';
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService) { }
+  constructor(private formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webstorageService: WebStorageService) { }
 
   ngOnInit() {
 
-    this.formGroup = this._formBuilder.group({name: [''], surname: [''],direccion: ['']});
+    this.formGroup = this.formBuilder.group({name: [''], surname: [''], direccion: ['']});
     this.webstorageService.getUser().subscribe(
       next => {
         this.user = next;
@@ -39,15 +40,14 @@ export class Step1Component implements OnInit, OnDestroy {
                                                       }
     );
 
-    this.stepperMessagesHandle.next({value:"VALID"});
+    this.stepperMessagesHandle.next({value: 'VALID'});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepperReceivedOrderNext":
-              //this.onclick();
+            case 'stepperReceivedOrderNext':
+              // this.onclick();
               break;
             default:
               break;
@@ -63,6 +63,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

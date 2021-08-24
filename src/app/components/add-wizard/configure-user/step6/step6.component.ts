@@ -13,10 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 export class Step6Component implements OnInit, OnDestroy {
   user: User;
   projects: Project[] = [];
-  private _stepperSubscriptionIndex;
-  private _prevStep: number;
+  private stepperSubscriptionIndex;
+  private prevStep: number;
 
-  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -24,14 +25,13 @@ export class Step6Component implements OnInit, OnDestroy {
       next => {
         this.user = next;
 
-        if (this.user.employer.id != undefined && this.user.employee.id == undefined){
-          this._prevStep = 2;
+        if (this.user.employer.id !== undefined && this.user.employee.id === undefined) {
+          this.prevStep = 2;
+        } else if (this.user.employer.id !== undefined && this.user.employee.id !== undefined) {
+          this.prevStep = 3;
         }
-        else if (this.user.employer.id != undefined && this.user.employee.id != undefined) {
-          this._prevStep = 3;
-        }
-        this.stepperMessagesHandle.next({value:"RETURNBACK"});
-        this.stepperMessagesHandle.next({value:"INVALID"});
+        this.stepperMessagesHandle.next({value: 'RETURNBACK'});
+        this.stepperMessagesHandle.next({value: 'INVALID'});
       },
       error => {
         console.log(error.message);
@@ -40,7 +40,7 @@ export class Step6Component implements OnInit, OnDestroy {
     );
     this.route.data.subscribe(
         data => {
-          if (data.employerData != undefined){
+          if (data.employerData !== undefined) {
             this.projects = data.employerData.projects;
             console.log(this.projects);
           }
@@ -49,18 +49,17 @@ export class Step6Component implements OnInit, OnDestroy {
           console.log(error);
         });
 
-    //this.stepperMessagesHandle.next({value:"INVALID"});
+    // this.stepperMessagesHandle.next({value:"INVALID"});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepperReceivedOrderPrev":
-                this.stepperMessagesHandle.next({value:this._prevStep});
-              break;
-            case "stepperReceivedOrderNext":
-                //this.stepperMessagesHandle.next({value: "next"});
+            case 'stepperReceivedOrderPrev':
+                this.stepperMessagesHandle.next({value: this.prevStep});
+                break;
+            case 'stepperReceivedOrderNext':
+                // this.stepperMessagesHandle.next({value: "next"});
               break;
             default:
               break;
@@ -71,11 +70,11 @@ export class Step6Component implements OnInit, OnDestroy {
 
   }
 
-  openProject(project){
+  openProject(project) {
 
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

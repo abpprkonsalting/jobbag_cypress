@@ -20,50 +20,54 @@ import { Step2Component as SignInStep2Component } from './sign-in/step2/step2.co
 import { Step3Component as SignInStep3Component } from './sign-in/step3/step3.component';
 import { Step4Component as SignInStep4Component } from './sign-in/step4/step4.component';
 
-import {  AddWizardRoutingResolversProfessionsService, AddWizardRoutingResolversLocationsService,
-          AddWizardRoutingResolversEmployeeService, AddWizardRoutingResolversEmployerService } from './add-wizard-routing-resolvers.services';
+import {  AddWizardRoutingResolversProfessionsService,
+          AddWizardRoutingResolversLocationsService,
+          AddWizardRoutingResolversEmployeeService,
+          AddWizardRoutingResolversEmployerService } from './add-wizard-routing-resolvers.services';
 
-const routes:  Routes  = [
+const routes: Routes  = [
   { path:  'add-project',
     component:  AddWizardComponent,
-    data: {'header':"Nuevo Proyecto"},
+    data: {header: 'Nuevo Proyecto'},
     children: [
-      {path: '1',component: Step1Component},
-      {path: '2',component: Step2Component},
-      {path: '3',component: Step3Component}
+      {path: '1', component: Step1Component},
+      {path: '2', component: Step2Component},
+      {path: '3', component: Step3Component}
     ]
   },
   { path:  'create-account',
     component:  AddWizardComponent,
-    data: {'header':"",'showNav':false},
+    data: {header: '', showNav: false},
     children: [
-      {path: '1',component: AccountStep1Component},
-      {path: '2',component: AccountStep2Component}
+      {path: '1', component: AccountStep1Component},
+      {path: '2', component: AccountStep2Component}
     ]
   },
   { path:  'configure-user',
     component:  AddWizardComponent,
-    data: {'header':"",'showNav':true,'linear':false},
+    data: {header: '', showNav: true, linear: false},
     children: [
-      {path: '1',component: ConfigUserStep1Component,data:{}},
-      {path: '1a',component: ConfigUserStep1aComponent,data:{},resolve: { employeeData: AddWizardRoutingResolversEmployeeService, employerData: AddWizardRoutingResolversEmployerService} },
-      {path: '2',component: ConfigUserStep2Component,data:{}},
-      {path: '2a',component: ConfigUserStep2aComponent,data:{},resolve: { employeeData: AddWizardRoutingResolversEmployeeService}},
-      {path: '2b',component: ConfigUserStep2bComponent,data:{},resolve: { employeeData: AddWizardRoutingResolversEmployeeService, locations: AddWizardRoutingResolversLocationsService}},
-      {path: '3',component: ConfigUserStep3Component,resolve: { professions: AddWizardRoutingResolversProfessionsService } },
-      {path: '4',component: ConfigUserStep4Component,resolve: { professions: AddWizardRoutingResolversProfessionsService } },
-      {path: '6',component: ConfigUserStep6Component,resolve: { employerData: AddWizardRoutingResolversEmployerService} },
-      {path: '7',component: ConfigUserStep7Component,data:{}},
+      {path: '1', component: ConfigUserStep1Component, data: {}},
+      {path: '1a', component: ConfigUserStep1aComponent, data: {},
+        resolve: { employeeData: AddWizardRoutingResolversEmployeeService, employerData: AddWizardRoutingResolversEmployerService} },
+      {path: '2', component: ConfigUserStep2Component, data: {}},
+      {path: '2a', component: ConfigUserStep2aComponent, data: {}, resolve: { employeeData: AddWizardRoutingResolversEmployeeService}},
+      {path: '2b', component: ConfigUserStep2bComponent, data: {},
+        resolve: { employeeData: AddWizardRoutingResolversEmployeeService, locations: AddWizardRoutingResolversLocationsService}},
+      {path: '3', component: ConfigUserStep3Component, resolve: { professions: AddWizardRoutingResolversProfessionsService } },
+      {path: '4', component: ConfigUserStep4Component, resolve: { professions: AddWizardRoutingResolversProfessionsService } },
+      {path: '6', component: ConfigUserStep6Component, resolve: { employerData: AddWizardRoutingResolversEmployerService} },
+      {path: '7', component: ConfigUserStep7Component, data: {}},
     ]
   },
   { path:  'sign-in',
     component:  AddWizardComponent,
-    data: {'header':"",'showNav':true,'linear':false},
+    data: {header: '', showNav: true, linear: false},
     children: [
-      {path: '1',component: SignInStep1Component,data:{}},
-      {path: '2',component: SignInStep2Component,data:{}},
-      {path: '3',component: SignInStep3Component,data:{}},
-      {path: '4',component: SignInStep4Component,data:{}},
+      {path: '1', component: SignInStep1Component, data: {}},
+      {path: '2', component: SignInStep2Component, data: {}},
+      {path: '3', component: SignInStep3Component, data: {}},
+      {path: '4', component: SignInStep4Component, data: {}},
     ]
   }
 ];

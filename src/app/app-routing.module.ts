@@ -8,17 +8,18 @@ import {RoutingResolversEmployeeService, RoutingResolversEmployerService } from 
 
 const routes: Routes = [
   { path: 'add-project', component: AddWizardComponent },
-  { path: 'create-account', component: AddWizardComponent,data:{} },
+  { path: 'create-account', component: AddWizardComponent, data: {} },
   { path: 'configure-user', component: AddWizardComponent },
 
-  //{ path: '',component: LandingPageComponent,data:{},resolve: { employeeData: RoutingResolversEmployeeService, employerData: RoutingResolversEmployerService}  },
-  { path: '',component: LandingPageComponent,data:{}},
+  // { path: '',component: LandingPageComponent,data:{},resolve: { employeeData: RoutingResolversEmployeeService,
+  //  employerData: RoutingResolversEmployerService}  },
+  { path: '', component: LandingPageComponent, data: {}},
   { path: '**', component: NotFoundPageComponent }
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{useHash: true})],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

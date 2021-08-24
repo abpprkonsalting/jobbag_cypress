@@ -12,15 +12,16 @@ import { professions } from '../../../../app-constants';
   templateUrl: './step7.component.html',
   styleUrls: ['./step7.component.less']
 })
-export class Step7Component implements OnInit, OnDestroy{
+export class Step7Component implements OnInit, OnDestroy {
   user: User;
   clickPosition: {
     x: number;
     y: number;
-  } = {x:0,y:0};
-  private _stepperSubscriptionIndex: number;
+  } = {x: 0, y: 0};
+  private stepperSubscriptionIndex: number;
 
-  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webstorageService: WebStorageService, private route: ActivatedRoute) { }
+  constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webstorageService: WebStorageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -35,12 +36,11 @@ export class Step7Component implements OnInit, OnDestroy{
       }
     );
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepperReceivedOrderNext":
+            case 'stepperReceivedOrderNext':
               break;
             default:
               break;
@@ -50,21 +50,21 @@ export class Step7Component implements OnInit, OnDestroy{
     );
   }
 
-  onmousedown($event){
+  onmousedown($event) {
     this.clickPosition.x = $event.x;
     this.clickPosition.y = $event.y;
-    //this.stepperMessagesHandle.next({value:"next"});
+    // this.stepperMessagesHandle.next({value:"next"});
   }
-  onMouseUp($event){
+  onMouseUp($event) {
     if (($event.x <= this.clickPosition.x + 10) && ($event.x >= this.clickPosition.x - 10) &&
         ($event.y <= this.clickPosition.y + 10) && ($event.y >= this.clickPosition.y - 10)) {
           console.log(this.user);
-          this.webstorageService.setUser(this.user,true).subscribe(u => {this.user = u;console.log(this.user);});
+          this.webstorageService.setUser(this.user, true).subscribe(u => {this.user = u; console.log(this.user); });
 
     }
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

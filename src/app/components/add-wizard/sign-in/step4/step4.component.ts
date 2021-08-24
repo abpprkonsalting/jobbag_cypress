@@ -13,7 +13,7 @@ import {HttpService} from '../../../../services/http.service.dev';
 export class Step4Component implements OnInit, OnDestroy {
   private httpService: any;
   user: User = new User();
-  private _stepperSubscriptionIndex;
+  private stepperSubscriptionIndex;
   nextStep: number;
   uploadUrl = "";
   userImgUrl = new Array();
@@ -41,7 +41,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.stepperMessagesHandle.next({value:"RETURNBACK"});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
         let messageType = typeof (message.value);
         if ( messageType == 'string') {
@@ -82,6 +82,6 @@ export class Step4Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex);
   }
 }

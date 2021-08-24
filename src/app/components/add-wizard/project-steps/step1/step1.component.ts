@@ -13,23 +13,23 @@ export class Step1Component implements OnInit {
   clickPosition: {
     x: number;
     y: number;
-  } = {x:0,y:0};
+  } = {x: 0, y: 0};
 
   constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>) {}
 
   ngOnInit() {
-    this.professions = professions.filter( profession => profession.categories.length == 0 );
+    this.professions = professions.filter( profession => profession.categories.length === 0 );
   }
 
-  onmousedown($event){
+  onmousedown($event) {
     this.clickPosition.x = $event.x;
     this.clickPosition.y = $event.y;
-    //this.stepperMessagesHandle.next({value:"next"});
+    // this.stepperMessagesHandle.next({value:"next"});
   }
-  onMouseUp($event){
+  onMouseUp($event) {
     if (($event.x <= this.clickPosition.x + 10) && ($event.x >= this.clickPosition.x - 10) &&
         ($event.y <= this.clickPosition.y + 10) && ($event.y >= this.clickPosition.y - 10)) {
-          this.stepperMessagesHandle.next({value:"next"});
+          this.stepperMessagesHandle.next({value: 'next'});
     }
   }
 }

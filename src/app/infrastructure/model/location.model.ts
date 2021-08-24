@@ -10,32 +10,32 @@ export class Location {
   selected?: number;
   children: Location[];
 
-  constructor(id: number,name: string,isoCode: string, flagUrl: string,children: Location[],parentId?: number) {
+  constructor(id: number, name: string, isoCode: string, flagUrl: string, children: Location[], parentId?: number) {
     this.id = id;
-    this.parentId = (parentId != undefined && parentId != null) ? parentId : undefined;
+    this.parentId = (parentId !== undefined && parentId != null) ? parentId : undefined;
     this.name = name;
     this.flagUrl = flagUrl;
     this.isoCode = isoCode;
     this.selected = 0;
-    this.children = children.map(child => new Location(child.id,child.name,child.isoCode,child.flagUrl,child.children,child.parentId));
+    this.children = children.map(child => new Location(child.id, child.name, child.isoCode, child.flagUrl, child.children, child.parentId));
   }
 
-  public flaten(){
+  public flaten() {
 
     let children = [];
-    if (this.children.length > 0){
+    if (this.children.length > 0) {
       children = this.children.map(child => child.flaten());
     }
 
-    let parentId = this.parentId != null ? String(this.parentId) : null;
+    const parentId = this.parentId != null ? String(this.parentId) : null;
     return {
-      'id':String(this.id),
-      'parentId':parentId,
-      'name': this.name,
-      'isoCode': this.isoCode,
-      'flagUrl': this.flagUrl,
-      'children': children
-    }
+      id: String(this.id),
+      parentId,
+      name: this.name,
+      isoCode: this.isoCode,
+      flagUrl: this.flagUrl,
+      children
+    };
   }
 
 }

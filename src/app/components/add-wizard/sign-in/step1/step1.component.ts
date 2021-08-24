@@ -11,7 +11,7 @@ import { User } from '../../../../infrastructure/model/user.model';
 })
 export class Step1Component implements OnInit, OnDestroy {
   user: User;
-  private _stepperSubscriptionIndex;
+  private stepperSubscriptionIndex;
 
   constructor(protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webStorageService: WebStorageService) { }
 
@@ -19,7 +19,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     this.stepperMessagesHandle.next({value:"VALID"});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
         let messageType = typeof (message.value);
         if ( messageType == 'string') {
@@ -41,6 +41,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex);
   }
 }

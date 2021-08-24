@@ -15,10 +15,10 @@ import { Employer } from 'src/app/infrastructure/model/employer.model';
 export class Step2Component implements OnInit, OnDestroy {
   formGroup: FormGroup;
   user: User;
-  private _stepperSubscriptionIndex;
+  private stepperSubscriptionIndex;
   rememberme: boolean = true;
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webStorageService: WebStorageService,private router: Router) { }
+  constructor(private formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webStorageService: WebStorageService,private router: Router) { }
 
   ngOnInit() {
 
@@ -26,7 +26,7 @@ export class Step2Component implements OnInit, OnDestroy {
       next => {
         this.user = next;
         console.log(this.user);
-        this.formGroup = this._formBuilder.group({
+        this.formGroup = this.formBuilder.group({
           email: [this.user.email, Validators.required], password: [this.user.email, Validators.required]
         });
       },
@@ -38,7 +38,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.stepperMessagesHandle.next({value:"VALID"});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
       {
         let messageType = typeof (message.value);
         if ( messageType == 'string') {
@@ -113,6 +113,6 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex);
   }
 }

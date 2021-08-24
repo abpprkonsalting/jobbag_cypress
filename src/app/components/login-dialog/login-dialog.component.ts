@@ -15,7 +15,7 @@ export interface DialogData {
 })
 export class LoginDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<LoginDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+  constructor(public dialogRef: MatDialogRef<LoginDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnInit() {
   }

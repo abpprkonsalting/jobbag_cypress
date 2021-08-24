@@ -15,14 +15,15 @@ import { Employer } from 'src/app/infrastructure/model/employer.model';
 export class Step2Component implements OnInit, OnDestroy {
   formGroup: FormGroup;
   user: User;
-  private _stepperSubscriptionIndex;
-  rememberme: boolean = true;
+  private stepperSubscriptionIndex;
+  rememberme = true;
 
-  constructor(private _formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>, private webStorageService: WebStorageService,private router: Router) { }
+  constructor(private formBuilder: FormBuilder, protected stepperMessagesHandle: DragStepperMessagesHandle<Partial<any>>,
+              private webStorageService: WebStorageService, private router: Router) { }
 
   ngOnInit() {
 
-    this.formGroup = this._formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       email: ['', Validators.required], password: ['', Validators.required]
     });
 
@@ -36,15 +37,14 @@ export class Step2Component implements OnInit, OnDestroy {
       }
     );
 
-    this.stepperMessagesHandle.next({value:"VALID"});
+    this.stepperMessagesHandle.next({value: 'VALID'});
 
-    this._stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message =>
-      {
-        let messageType = typeof (message.value);
-        if ( messageType == 'string') {
+    this.stepperSubscriptionIndex = this.stepperMessagesHandle.subscribe(message => {
+        const messageType = typeof (message.value);
+        if ( messageType === 'string') {
           switch (message.value) {
-            case "stepperReceivedOrderNext":
-              //this.onclick();
+            case 'stepperReceivedOrderNext':
+              // this.onclick();
               break;
             default:
               break;
@@ -58,33 +58,29 @@ export class Step2Component implements OnInit, OnDestroy {
     if (this.formGroup.valid) {
       this.webStorageService.saveRememberMe(this.rememberme);
 
-      this.webStorageService.login(this.formGroup.controls.email.value,this.formGroup.controls.password.value).subscribe(
+      this.webStorageService.login(this.formGroup.controls.email.value, this.formGroup.controls.password.value).subscribe(
         user => {
           this.user = user;
           if (this.webStorageService.getWantToWork) {
-            if (this.user.employee != undefined && this.user.employee.id != 0) {
+            if (this.user.employee !== undefined && this.user.employee.id !== 0) {
               // ir a la lista de trabajos para escoger
-            }
-            else {
+            } else {
               // ir al wizzard para crear employee;
             }
             this.webStorageService.setWantToWork(false);
-          }
-          else if (this.webStorageService.getWantToHire) {
-            if (this.user.employer != undefined && this.user.employer.id != 0) {
+          } else if (this.webStorageService.getWantToHire) {
+            if (this.user.employer !== undefined && this.user.employer.id !== 0) {
               // ir al wizzard de crear proyecto nuevo
-            }
-            else {
+            } else {
               // ir al wizzard para crear employer;
             }
             this.webStorageService.setWantToHire(false);
           }
         },
-        error => { this.user = new User() });
-    }
-    else {
+        error => { this.user = new User(); });
+    } else {
       Object.keys(this.formGroup.controls).forEach((key) => {
-        if (!this.formGroup.get(key).valid) this.formGroup.get(key).markAsTouched();
+        if (!this.formGroup.get(key).valid) { this.formGroup.get(key).markAsTouched(); }
       });
     }
   }
@@ -93,26 +89,26 @@ export class Step2Component implements OnInit, OnDestroy {
     if (this.formGroup.valid) {
 
       if (this.webStorageService.getWantToWork) {
-        this.user = new User(0,this.formGroup.controls.email.value,this.formGroup.controls.password.value,null,null,null,[],new Employee(0,""),null,this.formGroup.controls.email.value);
-      }
-      else if (this.webStorageService.getWantToWork) {
-        this.user = new User(0,this.formGroup.controls.email.value,this.formGroup.controls.password.value,null,null,null,[],null,new Employer(0,[]),this.formGroup.controls.email.value);
+        this.user = new User(0, this.formGroup.controls.email.value, this.formGroup.controls.password.value,
+                              null, null, null, [], new Employee(0, ''), null, this.formGroup.controls.email.value);
+      } else if (this.webStorageService.getWantToWork) {
+        this.user = new User(0, this.formGroup.controls.email.value, this.formGroup.controls.password.value,
+                              null, null, null, [], null, new Employer(0, []), this.formGroup.controls.email.value);
       }
       this.webStorageService.setUser(this.user).subscribe(
         user => {
           this.user = user;
           console.log(this.user);
-          this.router.navigateByUrl('/create-account',{skipLocationChange:true});
+          this.router.navigateByUrl('/create-account', {skipLocationChange: true});
         });
-    }
-    else {
+    } else {
       Object.keys(this.formGroup.controls).forEach((key) => {
-        if (!this.formGroup.get(key).valid) this.formGroup.get(key).markAsTouched();
+        if (!this.formGroup.get(key).valid) { this.formGroup.get(key).markAsTouched(); }
       });
     }
   }
 
   ngOnDestroy() {
-    if (this._stepperSubscriptionIndex != undefined) this.stepperMessagesHandle.unsubscribe(this._stepperSubscriptionIndex);
+    if (this.stepperSubscriptionIndex !== undefined) { this.stepperMessagesHandle.unsubscribe(this.stepperSubscriptionIndex); }
   }
 }

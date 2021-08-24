@@ -4,8 +4,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {  MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
-  MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,MatProgressBarModule,
-  MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,MatRadioModule,MatExpansionModule, MatCheckboxModule  } from '@angular/material';
+  MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule, MatProgressBarModule,
+  MatListModule, MatMenuModule, MatDialogModule, MatStepperModule, MatRadioModule,
+  MatExpansionModule, MatCheckboxModule  } from '@angular/material';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkStepperModule } from '@angular/cdk/stepper';
@@ -33,7 +34,7 @@ import { Step3Component as SignInStep3Component } from './sign-in/step3/step3.co
 import { Step4Component as SignInStep4Component } from './sign-in/step4/step4.component';
 import { DragStepperComponent} from '../drag-stepper/drag-stepper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { ImageUploadModule } from "angular2-image-upload";
+// import { ImageUploadModule } from "angular2-image-upload";
 
 @NgModule({
   declarations: [
@@ -60,13 +61,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DragStepperComponent,
   ],
   imports: [
-    CommonModule,MatProgressBarModule,
+    CommonModule, MatProgressBarModule,
     MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule,
     MatFormFieldModule, MatInputModule, MatSidenavModule, MatGridListModule,
     MatListModule, MatMenuModule, MatDialogModule, MatStepperModule,
-    AddWizardRoutingModule,FlexLayoutModule,DragDropModule,MatRadioModule,
-    CdkStepperModule,LayoutModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule,
-    //MatExpansionModule, MatCheckboxModule,ImageUploadModule.forRoot()
+    AddWizardRoutingModule, FlexLayoutModule, DragDropModule, MatRadioModule,
+    CdkStepperModule, LayoutModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
+    // MatExpansionModule, MatCheckboxModule,ImageUploadModule.forRoot()
     MatExpansionModule, MatCheckboxModule
   ]
 })
